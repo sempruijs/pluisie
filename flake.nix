@@ -18,10 +18,19 @@
       url = "github:rustsec/advisory-db";
       flake = false;
     };
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
-  outputs = { self, nixpkgs, crane, fenix, flake-utils, advisory-db, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, crane, fenix, flake-utils, advisory-db, flake-parts, treefmt-nix, ... }:
+    flake-parts.lib.mkFlake { inherit self; } {
+      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
+      imports = [
+        treefmt-nix.flakeModule
+      ];
+
+      perSystem = { config, self', inputs', pkgs, lib, system, ... }:
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
@@ -116,33 +125,76 @@
           # });
         };
 
-        packages = {
-          default = backend;
-        } // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
-          my-crate-llvm-coverage = craneLibLLvmTools.cargoLlvmCov (commonArgs // {
-            inherit cargoArtifacts;
-          });
+        packages = 
+          let 
+            packageJSON = lib.importJSON ./frontend/package.json;
+          in {
+            backend = craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
+            
+            frontend = pkgs.buildNpmPackage {
+              npmDepsHash = "sha256-0000000000000000000000000000000000000000000000000000";
+              src = ./frontend;
+              pname = packageJSON.name;
+              version = packageJSON.version;
+              installPhase = ''
+                mkdir -p $out
+                cp -r build/* $out
+              '';
+              doCheck = true;
+              checkPhase = ''npm run test'';
+              NODE_OPTIONS = "--openssl-legacy-provider";
+            };
+            
+            default = self'.packages.backend;
+          } // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
+            my-crate-llvm-coverage = craneLibLLvmTools.cargoLlvmCov (commonArgs // {
+              inherit cargoArtifacts;
+            });
+          };
+
+        apps = {
+          backend = flake-utils.lib.mkApp { drv = self'.packages.backend; };
+          
+          dev = {
+            type = "app";
+            program = pkgs.writeShellApplication {
+              name = "app-dev-server";
+              runtimeInputs = [ pkgs.nodejs ];
+              text = ''npm install && npm run dev'';
+            };
+          };
+          preview = {
+            type = "app";
+            program = pkgs.writeShellApplication {
+              name = "preview-app";
+              runtimeInputs = [ pkgs.miniserve ];
+              text = ''miniserve --spa --index index.html --port 8080 ${self'.packages.frontend}'';
+            };
+          };
+          default = self'.apps.preview;
         };
 
-        apps.default = flake-utils.lib.mkApp {
-          drv = backend;
-        };
-
-        devShells.default = craneLibLLvmTools.devShell {
-          # Inherit inputs from checks.
-          checks = self.checks.${system};
-
-          # Additional dev-shell environment variables can be set directly
-          # MY_CUSTOM_DEVELOPMENT_VAR = "something else";
-
-          # Extra inputs can be added here; cargo and rustc are provided by default.
-          packages = [
-            # pkgs.ripgrep
-            pkgs.sqlx-cli
-            pkgs.typescript
-            pkgs.nodePackages_latest.typescript-language-server
-            pkgs.postgresql_16
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [ craneLibLLvmTools.devShell ];
+          buildInputs = with pkgs; [
+            nodejs
+            nodePackages_latest.nodejs
+            nodePackages_latest.svelte-language-server
+            nodePackages_latest."@tailwindcss/language-server"
+            nodePackages_latest.typescript-language-server
+            sqlx-cli
+            postgresql_16
+            config.treefmt.build.wrapper
           ];
         };
-      });
+
+        treefmt = {
+          projectRootFile = "flake.nix";
+          programs = {
+            prettier.enable = true;
+            nixpkgs-fmt.enable = true;
+          };
+        };
+      };
+};
 }

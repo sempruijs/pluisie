@@ -25,11 +25,11 @@ use crate::service::user::UserServiceImpl;
 use sqlx::PgPool;
 
 // Import all the different layers that make up the backend.
-pub mod controller;
-pub mod docs;
-pub mod domain;
-pub mod repository;
-pub mod service;
+pub mod controller; // rest api requests handeling
+pub mod docs; // api documentation
+pub mod domain; // types
+pub mod repository; // responsable for communicating with the database
+pub mod service; // buisness logic
 
 // This is responsible for protecting the endpoints with JWT.
 //
