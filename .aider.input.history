@@ -131,3 +131,17 @@
 
 # 2025-03-26 22:38:29.706578
 +y
+
+# 2025-03-26 23:08:50.444710
++I haev the following erro. Can you fix it:
+
+# 2025-03-26 23:10:06.459896
++I have the follwoing error:      (stack trace truncated; use '--show-trace' to show the full, detailed trace)
++
++       error: opening file '/nix/store/zaqjh8ja8jvrxdp2p92j4a6w4f92q3id-source/frontend/package.json': No such file or directory
+
+# 2025-03-26 23:16:13.819096
++I have the following error:  error: opening file '/nix/store/40yr4nhw93m0d3a06n3d6qwfdaywxwjg-source/package.json': No such file or directory
+
+# 2025-03-26 23:17:12.320755
++I have the following error with my flake when I run nix build .#frontend  error: opening file '/nix/store/40yr4nhw93m0d3a06n3d6qwfdaywxwjg-source/package.json': No such file or directory
