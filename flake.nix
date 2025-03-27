@@ -116,6 +116,39 @@
           # });
         };
 
+      apps = {
+      # dev = pkgs.writeShellApplication {
+      #         name = "app-dev-server";
+      #         runtimeInputs = [ pkgs.nodejs ];
+      #         text = ''
+      #           npm install
+      #           npm run dev
+      #         '';
+      #       };
+        dev = {
+            type = "app";
+            program = "${pkgs.writeShellApplication {
+              name = "app-dev-server";
+              runtimeInputs = [ pkgs.nodejs ];
+              text = ''
+                cd frontend
+                npm install
+                npm run dev
+              '';
+            }}/bin/app-dev-server";
+          };
+          preview = {
+            type = "app";
+            program = pkgs.writeShellApplication {
+              name = "preview-app";
+              runtimeInputs = [ pkgs.miniserve ];
+              text = ''
+                miniserve --spa --index index.html --port 8080 ${self.packages.frontend}
+              '';
+            };
+          };
+        };
+
         packages =
         let
           packageJSON = lib.importJSON ./frontend/package.json;
