@@ -145,3 +145,12 @@
 
 # 2025-03-26 23:17:12.320755
 +I have the following error with my flake when I run nix build .#frontend  error: opening file '/nix/store/40yr4nhw93m0d3a06n3d6qwfdaywxwjg-source/package.json': No such file or directory
+
+# 2025-03-26 23:18:24.758763
++I have the following error with my flake:  error: opening file '/nix/store/40yr4nhw93m0d3a06n3d6qwfdaywxwjg-source/package.json': No such file or directory
+
+# 2025-03-26 23:19:51.164361
++n
+
+# 2025-03-26 23:20:16.093407
++I have the following error with my flake:  error: opening file '/nix/store/40yr4nhw93m0d3a06n3d6qwfdaywxwjg-source/package.json': No such file or directory

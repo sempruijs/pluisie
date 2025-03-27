@@ -118,7 +118,7 @@
 
         packages =
         let
-          packageJSON = lib.importJSON ./package.json;
+          packageJSON = lib.importJSON ./frontend/package.json;
         in
         {
         frontend = pkgs.buildNpmPackage {
