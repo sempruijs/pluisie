@@ -2,6 +2,22 @@
 
 Easily get started building your backend with Rust and PostgreSQL.
 
+### Frontend
+
+You can easily build and run the svelte frontend with nix.
+
+for running a development server:
+
+```shell
+nix run .#dev
+```
+
+build the project and run all tests:
+
+```shell
+nix build .#frontend
+```
+
 ## About 
 
 Building a backend in Rust is not so hard if you know where to start.
