@@ -139,13 +139,13 @@
           };
           preview = {
             type = "app";
-            program = pkgs.writeShellApplication {
+            program = "${pkgs.writeShellApplication {
               name = "preview-app";
               runtimeInputs = [ pkgs.miniserve ];
               text = ''
-                miniserve --spa --index index.html --port 8080 ${self.packages.frontend}
+                miniserve --spa --index index.html --port 8080 ${self.packages.${system}.frontend}
               '';
-            };
+            }}/bin/preview-app";
           };
         };
 
@@ -191,6 +191,7 @@
           packages = [
             # pkgs.ripgrep
             pkgs.sqlx-cli
+            pkgs.nodejs_23
             pkgs.typescript
             pkgs.nodePackages_latest.typescript-language-server
             pkgs.postgresql_16
