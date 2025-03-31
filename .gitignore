@@ -4,3 +4,6 @@ backend/target
 backend/.DS_Store
 backend/.DS_Store
 .DS_Store
+.frontend/.svelte_kit
+.aider.chat.history.md
+.aider.input.history
