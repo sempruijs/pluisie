@@ -1,5 +1,6 @@
 .direnv
 result
+frontend/.svelte-kit
 backend/target
 backend/.DS_Store
 backend/.DS_Store
