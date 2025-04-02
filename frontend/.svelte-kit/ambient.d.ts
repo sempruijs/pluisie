@@ -65,6 +65,7 @@ declare module '$env/static/private' {
 	export const NIX_ENFORCE_NO_NATIVE: string;
 	export const NIX_PATH: string;
 	export const npm_config_init_module: string;
+	export const LaunchInstanceID: string;
 	export const NIXPKGS_CONFIG: string;
 	export const CXX: string;
 	export const _: string;
@@ -87,7 +88,6 @@ declare module '$env/static/private' {
 	export const buildPhase: string;
 	export const SSH_CONNECTION: string;
 	export const DIRENV_DIFF: string;
-	export const PROMPT: string;
 	export const INIT_CWD: string;
 	export const READELF: string;
 	export const GTK_A11Y: string;
@@ -109,8 +109,6 @@ declare module '$env/static/private' {
 	export const TZDIR: string;
 	export const AR: string;
 	export const AS: string;
-	export const VISUAL: string;
-	export const DISPLAY: string;
 	export const npm_lifecycle_event: string;
 	export const SHLVL: string;
 	export const NM: string;
@@ -129,7 +127,7 @@ declare module '$env/static/private' {
 	export const npm_execpath: string;
 	export const NIX_REMOTE: string;
 	export const XDG_RUNTIME_DIR: string;
-	export const RPROMPT: string;
+	export const NODE_PATH: string;
 	export const depsBuildTarget: string;
 	export const OBJCOPY: string;
 	export const out: string;
@@ -235,6 +233,7 @@ declare module '$env/dynamic/private' {
 		NIX_ENFORCE_NO_NATIVE: string;
 		NIX_PATH: string;
 		npm_config_init_module: string;
+		LaunchInstanceID: string;
 		NIXPKGS_CONFIG: string;
 		CXX: string;
 		_: string;
@@ -257,7 +256,6 @@ declare module '$env/dynamic/private' {
 		buildPhase: string;
 		SSH_CONNECTION: string;
 		DIRENV_DIFF: string;
-		PROMPT: string;
 		INIT_CWD: string;
 		READELF: string;
 		GTK_A11Y: string;
@@ -279,8 +277,6 @@ declare module '$env/dynamic/private' {
 		TZDIR: string;
 		AR: string;
 		AS: string;
-		VISUAL: string;
-		DISPLAY: string;
 		npm_lifecycle_event: string;
 		SHLVL: string;
 		NM: string;
@@ -299,7 +295,7 @@ declare module '$env/dynamic/private' {
 		npm_execpath: string;
 		NIX_REMOTE: string;
 		XDG_RUNTIME_DIR: string;
-		RPROMPT: string;
+		NODE_PATH: string;
 		depsBuildTarget: string;
 		OBJCOPY: string;
 		out: string;

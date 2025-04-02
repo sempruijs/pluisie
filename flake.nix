@@ -194,6 +194,9 @@
             pkgs.typescript
             pkgs.nodePackages_latest.typescript-language-server
             pkgs.postgresql_16
+            pkgs.nodejs
+            
+            
           ];
         };
       });
