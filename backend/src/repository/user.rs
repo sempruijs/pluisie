@@ -11,7 +11,7 @@ pub trait UserRepository: Send + Sync {
 
     async fn from_email(&self, email: String) -> Result<Option<User>, sqlx::Error>;
 
-    // add more functions such as update or delete.
+    async fn update(&self, updated_user: User) -> Result<(), sqlx::Error>;
 }
 
 #[derive(Debug, Clone)]
@@ -71,5 +71,19 @@ impl UserRepository for UserRepositoryImpl {
         .await?;
 
         Ok(query_result)
+    }
+
+    async fn update(&self, updated_user: User) -> Result<(), sqlx::Error> {
+        sqlx::query!(
+            "UPDATE users SET name = $1, email = $2, password = $3 WHERE user_id = $4",
+            updated_user.name,
+            updated_user.email,
+            updated_user.password,
+            updated_user.user_id
+        )
+        .execute(&self.pool)
+        .await?;
+
+        Ok(())
     }
 }
