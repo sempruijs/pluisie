@@ -29,7 +29,6 @@ declare module '$env/static/private' {
 	export const SHELL: string;
 	export const npm_command: string;
 	export const npm_config_userconfig: string;
-	export const COLORTERM: string;
 	export const __HM_SESS_VARS_SOURCED: string;
 	export const XDG_CONFIG_DIRS: string;
 	export const npm_config_cache: string;
@@ -45,6 +44,7 @@ declare module '$env/static/private' {
 	export const DIRENV_DIR: string;
 	export const STRINGS: string;
 	export const depsTargetTarget: string;
+	export const TERM_SESSION_ID: string;
 	export const stdenv: string;
 	export const COLOR: string;
 	export const LOCALE_ARCHIVE_2_27: string;
@@ -70,7 +70,6 @@ declare module '$env/static/private' {
 	export const _: string;
 	export const system: string;
 	export const HOST_PATH: string;
-	export const COMMAND_MODE: string;
 	export const IN_NIX_SHELL: string;
 	export const doInstallCheck: string;
 	export const HOME: string;
@@ -128,6 +127,7 @@ declare module '$env/static/private' {
 	export const TERMINFO_DIRS: string;
 	export const npm_execpath: string;
 	export const NIX_REMOTE: string;
+	export const LC_CTYPE: string;
 	export const XDG_RUNTIME_DIR: string;
 	export const RPROMPT: string;
 	export const depsBuildTarget: string;
@@ -160,7 +160,6 @@ declare module '$env/static/private' {
 	export const OLDPWD: string;
 	export const NIX_LDFLAGS: string;
 	export const nativeBuildInputs: string;
-	export const __CF_USER_TEXT_ENCODING: string;
 	export const name: string;
 	export const TERM_PROGRAM: string;
 	export const depsHostHostPropagated: string;
@@ -199,7 +198,6 @@ declare module '$env/dynamic/private' {
 		SHELL: string;
 		npm_command: string;
 		npm_config_userconfig: string;
-		COLORTERM: string;
 		__HM_SESS_VARS_SOURCED: string;
 		XDG_CONFIG_DIRS: string;
 		npm_config_cache: string;
@@ -215,6 +213,7 @@ declare module '$env/dynamic/private' {
 		DIRENV_DIR: string;
 		STRINGS: string;
 		depsTargetTarget: string;
+		TERM_SESSION_ID: string;
 		stdenv: string;
 		COLOR: string;
 		LOCALE_ARCHIVE_2_27: string;
@@ -240,7 +239,6 @@ declare module '$env/dynamic/private' {
 		_: string;
 		system: string;
 		HOST_PATH: string;
-		COMMAND_MODE: string;
 		IN_NIX_SHELL: string;
 		doInstallCheck: string;
 		HOME: string;
@@ -298,6 +296,7 @@ declare module '$env/dynamic/private' {
 		TERMINFO_DIRS: string;
 		npm_execpath: string;
 		NIX_REMOTE: string;
+		LC_CTYPE: string;
 		XDG_RUNTIME_DIR: string;
 		RPROMPT: string;
 		depsBuildTarget: string;
@@ -330,7 +329,6 @@ declare module '$env/dynamic/private' {
 		OLDPWD: string;
 		NIX_LDFLAGS: string;
 		nativeBuildInputs: string;
-		__CF_USER_TEXT_ENCODING: string;
 		name: string;
 		TERM_PROGRAM: string;
 		depsHostHostPropagated: string;
