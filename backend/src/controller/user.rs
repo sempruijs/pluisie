@@ -1,4 +1,5 @@
 use crate::domain::User;
+use rocket::put;
 use crate::service::user::UserService;
 use rocket::get;
 use rocket::post;
@@ -15,6 +16,13 @@ use uuid::Uuid;
 /// Request body for creating a user.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct CreateUserRequest {
+    pub email: String,
+    pub name: String,
+    pub password: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+struct UpdateUserRequest {
     pub email: String,
     pub name: String,
     pub password: String,
@@ -51,6 +59,38 @@ async fn create_user(
 
     // Call the `create` method and await its result
     match user_service.create(user).await {
+        Ok(()) => Json(true),
+        Err(_) => Json(false),
+    }
+}
+
+#[utoipa::path(
+    put,
+    path = "/users",
+    request_body = UpdateUserRequest,
+    responses(
+        (status = 201, description = "User updated successfully", body = bool),
+        (status = 400, description = "Invalid input data"),
+        (status = 500, description = "Internal server error")
+    ),
+    description = "Update a user, JWT is required",
+    operation_id = "updateUser",
+    tag = "Users"
+)]
+#[put("/", data = "<payload>")]
+async fn update_user(
+    payload: Json<UpdateUserRequest>,
+    user_service: &State<Arc<dyn UserService>>,
+    user: User,
+) -> Json<bool> {
+    let updated_user = User {
+        user_id: user.user_id,
+        name: payload.name.clone(),
+        email: payload.email.clone(),
+        password: payload.password.clone(),
+    };
+
+    match user_service.update(updated_user).await {
         Ok(()) => Json(true),
         Err(_) => Json(false),
     }
