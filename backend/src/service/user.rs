@@ -14,6 +14,8 @@ pub trait UserService: Send + Sync {
     /// Recieves a user given a user_id.
     /// Returns none if no user was found given the uuid.
     async fn from_uuid(&self, user_id: Uuid) -> Result<Option<User>, sqlx::Error>;
+
+    async fn update(&self, updated_user: User) -> Result<(), sqlx::Error>;
 }
 
 pub struct UserServiceImpl<T: UserRepository> {
@@ -41,6 +43,10 @@ impl<R: UserRepository> UserService for UserServiceImpl<R> {
     async fn from_uuid(&self, user_id: Uuid) -> Result<Option<User>, sqlx::Error> {
         // recieve the user from the database given a user_id.
         self.user_repository.from_uuid(user_id).await
+    }
+
+    async fn update(&self, updated_user: User) -> Result<(), sqlx::Error> {
+        self.user_repository.update(updated_user).await
     }
 }
 
