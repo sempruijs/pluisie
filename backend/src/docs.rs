@@ -7,5 +7,6 @@ use utoipa::OpenApi;
     create_user,
     get_user,
     login,
+    update_user,
 ))]
 pub struct ApiDoc;
