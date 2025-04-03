@@ -46,7 +46,12 @@ impl<R: UserRepository> UserService for UserServiceImpl<R> {
     }
 
     async fn update(&self, updated_user: User) -> Result<(), sqlx::Error> {
-        self.user_repository.update(updated_user).await
+        let mut user = updated_user;
+        // hash the password
+        user.password = hash_password(&user.password);
+
+        // store updated user
+        self.user_repository.update(user).await
     }
 }
 
