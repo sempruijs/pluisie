@@ -132,5 +132,5 @@ async fn get_user(
 
 // Combine all the user routes.
 pub fn user_routes() -> Vec<rocket::Route> {
-    routes![create_user, get_user]
+    routes![create_user, get_user, update_user]
 }
