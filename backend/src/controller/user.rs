@@ -55,6 +55,8 @@ async fn create_user(
         name: payload.name.clone(),
         email: payload.email.clone(),
         password: payload.password.clone(),
+        // todo: this should be updated later.
+        is_super: false,
     };
 
     // Call the `create` method and await its result
@@ -88,6 +90,8 @@ async fn update_user(
         name: payload.name.clone(),
         email: payload.email.clone(),
         password: payload.password.clone(),
+        // todo: this should be updated later.
+        is_super: false,
     };
 
     match user_service.update(updated_user).await {
