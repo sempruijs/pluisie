@@ -116,7 +116,7 @@ struct GetUserResponse {
         (status = 500, description = "Internal server error")
     ),
     description = "Recieve user details.",
-    operation_id = "createUser",
+    operation_id = "getUser",
     tag = "Users",
     security(
         ("jwt_auth" = [])
