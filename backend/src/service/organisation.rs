@@ -9,10 +9,10 @@ pub trait OrganisationService: Send + Sync {
 }
 
 pub struct OrganisationServiceImpl<T: OrganisationRepository> {
-    organisaton_repository: T,
+    organisation_repository: T,
 }
 
-impl<R: OrganisatonRepository> OrganisatonServiceImpl<R> {
+impl<R: OrganisationRepository> OrganisationServiceImpl<R> {
     pub fn new(organisation_repository: R) -> Self {
         Self { organisation_repository }
     }
