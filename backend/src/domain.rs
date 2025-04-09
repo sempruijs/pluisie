@@ -11,3 +11,11 @@ pub struct User {
     pub password: String,
     pub is_super: bool,
 }
+
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
+pub struct Organisation {
+    pub org_id: Uuid,
+    pub name: String,
+    pub picture: Option<String>,
+    pub description: Option<String>,
+}
