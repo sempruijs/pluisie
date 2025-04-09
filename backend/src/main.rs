@@ -1,6 +1,9 @@
 use crate::controller::authentication::authentication_routes;
+use crate::controller::organisation::organisation_routes;
 use crate::domain::User;
+use crate::repository::organisation::*;
 use crate::service::authentication::*;
+use crate::service::organisation::*;
 use crate::service::user::UserService;
 use crate::AuthenticationService;
 use dotenv::dotenv;
@@ -101,6 +104,11 @@ async fn main() -> Result<(), rocket::Error> {
     let user_service: Arc<dyn UserService> =
         Arc::new(UserServiceImpl::new(user_repository.clone()));
 
+    let organisation_repository = OrganisationRepositoryImpl::new(pool.clone());
+    let organisation_service: Arc<dyn OrganisationService> = Arc::new(
+        OrganisationServiceImpl::new(organisation_repository.clone()),
+    );
+
     let authentication_service: Arc<dyn AuthenticationService> = Arc::new(
         AuthenticationServiceImpl::new(user_repository.clone(), secret_key),
     );
@@ -119,6 +127,7 @@ async fn main() -> Result<(), rocket::Error> {
         // Here the service layers are given as arguments to the endpoints.
         // Add more service layers when you backend grows.
         .manage(user_service)
+        .manage(organisation_service)
         .manage(authentication_service)
         // expose swagger ui.
         // Go to http://localhost:8000/docs to view your endpoint documentation.
@@ -128,6 +137,7 @@ async fn main() -> Result<(), rocket::Error> {
         )
         // Mount all your routes here.
         .mount("/users", user_routes())
+        .mount("/organisation", organisation_routes())
         .mount("/login", authentication_routes())
         .attach(cors)
         .launch()
