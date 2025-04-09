@@ -1,5 +1,6 @@
 use crate::controller::authentication::*;
 use crate::controller::user::*;
+use crate::controller::organisation::*;
 use utoipa::OpenApi;
 
 #[derive(OpenApi)]
@@ -8,5 +9,6 @@ use utoipa::OpenApi;
     get_user,
     login,
     update_user,
+    create_organisation,
 ))]
 pub struct ApiDoc;
