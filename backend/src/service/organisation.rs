@@ -6,6 +6,8 @@ use uuid::Uuid;
 #[async_trait]
 pub trait OrganisationService: Send + Sync {
     async fn create(&self, organisation: Organisation) -> Result<(), sqlx::Error>;
+
+    async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error>;
 }
 
 pub struct OrganisationServiceImpl<T: OrganisationRepository> {
@@ -22,5 +24,9 @@ impl<R: OrganisationRepository> OrganisationServiceImpl<R> {
 impl<R: OrganisationRepository> OrganisationService for OrganisationServiceImpl<R> {
     async fn create(&self, organisation: Organisation) -> Result<(), sqlx::Error> {
         self.organisation_repository.create(organisation).await
+    }
+
+    async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error> {
+        self.organisation_repository.delete(org_id).await
     }
 }
