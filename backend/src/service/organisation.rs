@@ -8,6 +8,8 @@ pub trait OrganisationService: Send + Sync {
     async fn create(&self, organisation: Organisation) -> Result<(), sqlx::Error>;
 
     async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error>;
+
+    async fn get_org_id(&self, org_id: Uuid) -> Result<Option<Organisation>, sqlx::Error>;
 }
 
 pub struct OrganisationServiceImpl<T: OrganisationRepository> {
@@ -28,5 +30,9 @@ impl<R: OrganisationRepository> OrganisationService for OrganisationServiceImpl<
 
     async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error> {
         self.organisation_repository.delete(org_id).await
+    }
+
+    async fn get_org_id(&self, org_id: Uuid) -> Result<Option<Organisation>, sqlx::Error> {
+        self.organisation_repository.get_org_id(org_id).await
     }
 }
