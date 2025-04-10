@@ -106,6 +106,7 @@ async fn update_user(
 struct GetUserResponse {
     name: String,
     email: String,
+    is_super: bool,
 }
 
 #[utoipa::path(
@@ -132,6 +133,7 @@ async fn get_user(
     Ok(Json(GetUserResponse {
         email: user.email,
         name: user.name,
+        is_super: user.is_super,
     }))
 }
 
