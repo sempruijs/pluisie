@@ -6,6 +6,8 @@ use sqlx::PgPool;
 #[async_trait]
 pub trait OrganisationRepository: Send + Sync {
     async fn create(&self, organisation: Organisation) -> Result<(), sqlx::Error>;
+
+    async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error>;
 }
 
 #[derive(Debug, Clone)]
@@ -31,6 +33,20 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
             organisation.name,
             organisation.picture,
             organisation.description,
+        )
+        .execute(&self.pool)
+        .await?;
+
+        Ok(())
+    }
+
+    async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error> {
+        sqlx::query!(
+            r#"
+            DELETE FROM organisations
+            WHERE org_id = $1
+            "#,
+            org_id,
         )
         .execute(&self.pool)
         .await?;
