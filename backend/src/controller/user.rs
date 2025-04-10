@@ -19,6 +19,7 @@ struct CreateUserRequest {
     pub email: String,
     pub name: String,
     pub password: String,
+    pub is_super: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -56,7 +57,7 @@ async fn create_user(
         email: payload.email.clone(),
         password: payload.password.clone(),
         // todo: this should be updated later.
-        is_super: false,
+        is_super: payload.is_super.clone(),
     };
 
     // Call the `create` method and await its result
