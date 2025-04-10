@@ -3,6 +3,7 @@ use crate::domain::User;
 use crate::service::user::UserService;
 use crate::service::organisation::OrganisationService;
 use rocket::post;
+use rocket::delete;
 use rocket::response::status;
 use rocket::routes;
 use rocket::serde::json::Json;
@@ -13,7 +14,8 @@ use std::sync::Arc;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-/// Request body for creating a user.
+
+/// Request body for creating a organisation.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct CreateOrganisationRequest {
     pub name: String,
@@ -57,6 +59,44 @@ async fn create_organisation(
     }
 }
 
+/// Request body for delete a organisation.
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+struct DeleteOrganisationRequest {
+    pub org_id: String,
+}
+
+#[utoipa::path(
+    delete,
+    path = "/organisation",
+    request_body = DeleteOrganisationRequest,
+    responses(
+        (status = 201, description = "Organisation deleted successfully", body = bool),
+        (status = 400, description = "Invalid input data"),
+        (status = 500, description = "Internal server error")
+    ),
+    description = "delete an organisation. The name should be unique.",
+    operation_id = "DeleteOrganisation",
+    tag = "Organisation"
+)]
+#[delete("/", data = "<payload>")]
+async fn delete_organisation(
+    payload: Json<DeleteOrganisationRequest>,
+    organisation_service: &State<Arc<dyn OrganisationService>>,
+    user: User,
+) -> Json<bool> {
+
+    let org_id = Uuid::parse_str(&payload.org_id).expect("Invalid UUID format");
+    if user.is_super {
+         match organisation_service.delete(org_id).await {
+            Ok(()) => Json(true),
+            Err(_) => Json(false),
+        }
+    } else {
+        return Json(false)
+    }
+}
+
+
 pub fn organisation_routes() -> Vec<rocket::Route> {
-    routes![create_organisation]
+    routes![create_organisation, delete_organisation]
 }
