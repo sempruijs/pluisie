@@ -1,10 +1,8 @@
 use crate::domain::Organisation;
 use crate::domain::User;
-use crate::service::user::UserService;
 use crate::service::organisation::OrganisationService;
 use rocket::post;
 use rocket::delete;
-use rocket::response::status;
 use rocket::routes;
 use rocket::serde::json::Json;
 use rocket::State;
