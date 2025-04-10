@@ -85,15 +85,14 @@ async fn delete_organisation(
     user: User,
 ) -> Json<bool> {
 
-    let org_id = Uuid::parse_str(&payload.org_id).expect("Invalid UUID format");
-    if user.is_super {
-         match organisation_service.delete(org_id).await {
-            Ok(()) => Json(true),
-            Err(_) => Json(false),
-        }
-    } else {
-        return Json(false)
+    if let Ok(org_id) = Uuid::parse_str(&payload.org_id) {
+        if user.is_super {
+         if let Ok(()) = organisation_service.delete(org_id).await {
+            return Json(true);
+           }
+        } 
     }
+    Json(false)
 }
 
 
