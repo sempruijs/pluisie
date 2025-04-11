@@ -1,47 +1,33 @@
-<script lang="ts">
-	import { Effect } from 'effect';
-
-	let state: { result: string; count: number } = $state({
-		result: 'Loading...',
-		count: 0
-	});
-
-	// Simple Effect program that succeeds with a greeting
-	const program = Effect.succeed('Hello from Effect!');
-
-	// More complex Effect program that does some computation
-	const countProgram = Effect.gen(function* () {
-		// Simulate some async work
-		yield* Effect.sleep('100 millis');
-		return state.count + 1;
-	});
-
-	$effect(() => {
-		Effect.runPromise(program).then((greeting) => {
-			state.result = greeting;
-		});
-	});
-
-	// Function to increment counter using Effect
-	function increment() {
-		Effect.runPromise(countProgram).then((newCount) => {
-			state.count = newCount;
-		});
-	}
+<script>
+import Button from './../lib/components/Button.svelte';
 </script>
 
-<div class="m-8 p-4 border border-gray-300 rounded-md shadow-sm">
-	<h1 class="text-xl font-semibold mb-2">Pluisie</h1>
-	<a href="https://www.youtube.com/watch?v=65yvpAJU6Tw">Mooie motivatie link</a>
-	<p class="font-bold text-blue-600">{state.result}</p>
+<main class="flex1 center-v center-h flex-1 bg-gradient">
+		<div class="bg-white h-100 w-full max-w-lg md:max-w-xl mx-3 p-8 rounded-lg shadow-2xl">
+			<div class="flex2 my-4">
+				<h1 class="pl-1 font-semibold">E-mail:</h1>
+				<input type="text"
+				class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 shadow-gray-200 rounded-lg outline-none selecttext" 
+				/>
+			</div>
+			<div class="flex justify-between my-4">
+				<Button>
+					Login
+				</Button>
 
-	<div class="mt-4">
-		<h3 class="text-lg font-medium mb-2">Effect Counter: {state.count}</h3>
-		<button
-			on:click={increment}
-			class="bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-		>
-			Increment with Effect
-		</button>
-	</div>
-</div>
+				<Button color='red'>
+					Reset Account
+				</Button>
+			</div>
+			<div class="flex w-full h-0.5 bg-gray-300 my-5" />
+			<div>
+				<h1 class="font-semibold text-center">Of:</h1>
+			
+				<div class="flex justify-center">
+					<Button color="orange" padding="lg">
+						Registreer je nu als vrijwilliger
+					</Button>
+				</div>
+			</div>
+		</div>	
+</main>

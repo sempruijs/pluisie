@@ -1,1 +1,53 @@
 @import 'tailwindcss';
+
+.bg-gradient {
+    background-image: url("/Homebg.svg");
+    background-position: center;
+    background-size: cover;
+}
+
+.center-h {
+    display: flex;
+    justify-content: center;
+}
+
+.center-v {
+    display: flex;
+    align-items: center;
+}
+
+.hoverbutton {
+    position:relative;
+    transition: ease-in-out 0.2s;
+}
+
+
+.hoverbutton:hover {
+   transform: scale(1.025);
+   @apply hover:shadow-lg hover:shadow-gray-400;
+}
+
+.selecttext {
+    transform: scale(1.0);
+    transition: 0.2s ease;
+
+    @apply focus:shadow-lg focus:shadow-gray-400;
+}
+
+.selecttext:focus {
+    position: relative;
+    transition: ease-in-out 0.2s;
+    transform: scale(1.025);
+}
+
+.btn-green {
+    @apply bg-green-200 border-green-300;
+}
+
+.btn-orange {
+    @apply bg-orange-200 border-orange-300;
+}
+
+.btn-red {
+    @apply bg-red-200 border-red-300;
+}
