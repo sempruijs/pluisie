@@ -7,14 +7,6 @@
 </script>
 
 <div class="min-h-screen flex flex-col">
-	<Header />
-	
-	<div class="flex flex-1">
-		<Sidebar />
-		<main class="flex-1 p-4">
-			{@render children()}
-		</main>
-	</div>
-	
+	{@render children()}
 	<Footer />
 </div>
