@@ -3,7 +3,6 @@ use crate::domain::User;
 use crate::service::organisation::OrganisationService;
 use rocket::post;
 use rocket::delete;
-use rocket::get;
 use rocket::routes;
 use rocket::serde::json::Json;
 use rocket::State;
@@ -103,13 +102,13 @@ struct GetOrganisationResponse {
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
-struct GetOrganisationRequest{
-    org_id: String,
+struct GetOrganisationRequest {
+    pub org_id: String,
 }
 
 #[utoipa::path(
-    get,
-    path = "/organisation",
+    post,
+    path = "/organisation/get",
     request_body = GetOrganisationRequest,
     responses(
         (status = 201, description = "organisation recieved successfully", body = GetOrganisationResponse),
@@ -123,23 +122,26 @@ struct GetOrganisationRequest{
         ("jwt_auth" = [])
     )
 )]
-#[get("/")]
+#[post("/get", data = "<payload>")]
  async fn get_organisation(
-    user: User,
+    _user: User,
     payload: Json<GetOrganisationRequest>,
     organisation_service: &State<Arc<dyn OrganisationService>>,
 ) -> Json<GetOrganisationResponse> {
-    
-        if let Ok(Some(organisation)) = organisation_service.get_org_id(payload.org_id).await {
-            return Json(GetOrganisationResponse {
-                org_id: organisation.org_id.to_string(),
-                name: organisation.name,
-                picture: organisation.picture.unwrap_or_default(),
-                description: organisation.description.unwrap_or_default(),
-            });
-        }
+    // TODO: remove the expect
+    let org_id = Uuid::parse_str(&payload.org_id).expect("failed to parse uuid while trying to recieve an organisation");
+
+    if let Ok(Some(organisation)) = organisation_service.get_org_id(org_id).await {
+        return Json(GetOrganisationResponse {
+            org_id: organisation.org_id.to_string(),
+            name: organisation.name,
+            picture: organisation.picture.unwrap_or_default(),
+            description: organisation.description.unwrap_or_default(),
+        });
+    }
+
     // TODO: show be 404 not found
-    Json(GetOrganisationRequest {
+    Json(GetOrganisationResponse {
         org_id: payload.org_id.clone(),
         name: String::new(),
         picture: String::new(),
