@@ -1,0 +1,1 @@
+<div class="flex-1 bg-gradient-plant" />
