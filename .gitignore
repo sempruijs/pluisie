@@ -1,9 +1,8 @@
 .direnv
 result
 frontend/.svelte-kit
+frontend/node_modules
 backend/target
-backend/.DS_Store
-backend/.DS_Store
 .DS_Store
 .frontend/.svelte_kit
 .aider.chat.history.md
