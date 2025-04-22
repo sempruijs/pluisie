@@ -19,3 +19,13 @@ pub struct Organisation {
     pub picture: Option<String>,
     pub description: Option<String>,
 }
+
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
+pub struct AccessNotification {
+    pub notification_id: i32,
+    pub org_id: Uuid,
+    pub user_id: Uuid,
+    pub date: chrono::NaiveDate,
+    pub is_accepted: Option<bool>,
+    pub description: String,
+}

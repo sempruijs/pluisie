@@ -2,3 +2,4 @@
 pub mod authentication;
 pub mod user;
 pub mod organisation;
+pub mod access_notification;
