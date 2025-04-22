@@ -2,6 +2,7 @@
 import Button from './../lib/components/Button.svelte';
 </script>
 
+// maybe you could move this into a login dialog component
 <main class="flex1 center-v center-h flex-1 bg-gradient">
 		<div class="bg-white h-75 w-full max-w-lg md:max-w-xl mx-3 p-8 rounded-lg shadow-2xl">
 			<div class="flex2 my-4">
