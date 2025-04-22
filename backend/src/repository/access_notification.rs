@@ -6,7 +6,7 @@ use sqlx::PgPool;
 #[async_trait]
 pub trait AccessNotificationRepository: Send + Sync {
 
-    async fn get_AccessNotification_by_user_id(&self, user_id: Uuid, ) -> Result<Vec<AccessNotification>, sqlx::Error>;
+    async fn get_access_notification_by_user_id(&self, user_id: Uuid, ) -> Result<Vec<AccessNotification>, sqlx::Error>;
 
 }
 
@@ -24,7 +24,7 @@ impl AccessNotificationRepositoryImpl {
 #[async_trait]
 impl AccessNotificationRepository for AccessNotificationRepositoryImpl {
     
-    async fn get_AccessNotification_by_user_id(&self, user_id: Uuid) -> Result<Vec<AccessNotification>, sqlx::Error> {
+    async fn get_access_notification_by_user_id(&self, user_id: Uuid) -> Result<Vec<AccessNotification>, sqlx::Error> {
         let access_notification = sqlx::query_as!::<_,
         AccessNotification>(
             r#" 
