@@ -11,6 +11,7 @@ use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
 use uuid::Uuid;
+use rocket::get; 
 
 /// Request body for creating a organisation.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -149,7 +150,36 @@ struct GetOrganisationRequest {
     })
 }
 
-
+#[utoipa::path(
+    get,
+    path = "/organisation/all",
+    responses(
+        (status = 201, description = "Organisation recieved successfully", body = Vec<GetOrganisationResponse>),
+        (status = 400, description = "Invalid input data"),
+        (status = 500, description = "Internal server error")
+    ),
+    description = "Get all organisations",
+    operation_id = "GetAllOrganisations",
+    tag = "Organisation"
+)]
+#[get("/all")]
+async fn get_all_organisation(
+    organisation_service: &State<Arc<dyn OrganisationService>>,
+    _user: User,
+) -> Json<Vec<GetOrganisationResponse>> {
+    match organisation_service.get_all_org().await {
+        Ok(organisations) => {
+            let result = organisations.into_iter().map(|org| GetOrganisationResponse {
+                org_id: org.org_id.to_string(),
+                name: org.name,
+                picture: org.picture.unwrap(),
+                description: org.description.unwrap(),
+            }).collect::<Vec<GetOrganisationResponse>>();
+            Json(result)
+        },
+        Err(_) => panic!("Failed to fetch all organisations"),
+    }
+}
 pub fn organisation_routes() -> Vec<rocket::Route> {
-    routes![create_organisation, delete_organisation, get_organisation]
+    routes![create_organisation, delete_organisation, get_organisation, get_all_organisation]
 }
