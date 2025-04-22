@@ -148,6 +148,8 @@ struct GetOrganisationRequest {
         description: String::new(),
     })
 }
+
+
 pub fn organisation_routes() -> Vec<rocket::Route> {
     routes![create_organisation, delete_organisation, get_organisation]
 }
