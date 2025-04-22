@@ -19,7 +19,6 @@ import Button from './../lib/components/Button.svelte';
 					Reset Account
 				</Button>
 			</div>
-			<div class="flex w-full h-0.5 bg-gray-300 my-5" />
 			<div>
 				<h1 class="font-semibold text-center">Of:</h1>
 			

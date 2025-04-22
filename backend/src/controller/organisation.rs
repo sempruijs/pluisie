@@ -12,7 +12,6 @@ use std::sync::Arc;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-
 /// Request body for creating a organisation.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct CreateOrganisationRequest {
@@ -93,7 +92,62 @@ async fn delete_organisation(
     Json(false)
 }
 
+/// Response for recieving organisation information.
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+struct GetOrganisationResponse {
+    org_id: String,
+    name: String,
+    picture: String,
+    description: String,
+}
 
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+struct GetOrganisationRequest {
+    pub org_id: String,
+}
+
+#[utoipa::path(
+    post,
+    path = "/organisation/get",
+    request_body = GetOrganisationRequest,
+    responses(
+        (status = 201, description = "organisation recieved successfully", body = GetOrganisationResponse),
+        (status = 400, description = "Invalid input data"),
+        (status = 500, description = "Internal server error")
+    ),
+    description = "Recieve organisation details.",
+    operation_id = "getOrganisation",
+    tag = "Organisation",
+    security(
+        ("jwt_auth" = [])
+    )
+)]
+#[post("/get", data = "<payload>")]
+ async fn get_organisation(
+    _user: User,
+    payload: Json<GetOrganisationRequest>,
+    organisation_service: &State<Arc<dyn OrganisationService>>,
+) -> Json<GetOrganisationResponse> {
+    // TODO: remove the expect
+    let org_id = Uuid::parse_str(&payload.org_id).expect("failed to parse uuid while trying to recieve an organisation");
+
+    if let Ok(Some(organisation)) = organisation_service.get_org_id(org_id).await {
+        return Json(GetOrganisationResponse {
+            org_id: organisation.org_id.to_string(),
+            name: organisation.name,
+            picture: organisation.picture.unwrap_or_default(),
+            description: organisation.description.unwrap_or_default(),
+        });
+    }
+
+    // TODO: show be 404 not found
+    Json(GetOrganisationResponse {
+        org_id: payload.org_id.clone(),
+        name: String::new(),
+        picture: String::new(),
+        description: String::new(),
+    })
+}
 pub fn organisation_routes() -> Vec<rocket::Route> {
-    routes![create_organisation, delete_organisation]
+    routes![create_organisation, delete_organisation, get_organisation]
 }
