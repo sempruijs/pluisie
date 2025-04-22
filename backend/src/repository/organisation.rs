@@ -10,6 +10,8 @@ pub trait OrganisationRepository: Send + Sync {
     async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error>;
 
     async fn get_org_id(&self, org_id: Uuid)-> Result<Option<Organisation>, sqlx::Error>;
+
+    async fn get_all_org(&self)-> Result<Vec<Organisation>, sqlx::Error>;
 }
 
 #[derive(Debug, Clone)]
@@ -70,5 +72,16 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
         .await?;
 
         Ok(organisation)
+    }
+
+    async fn get_all_org(&self)-> Result<Vec<Organisation>, sqlx::Error> {
+        let organisations = sqlx::query_as::<_, Organisation>(
+            "SELECT org_id, name, picture, description FROM organisations"
+        )
+        .fetch_all(&self.pool)
+        .await?;
+
+        Ok(organisations)
+
     }
 }
