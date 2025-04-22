@@ -8,7 +8,6 @@ body {
     font-family: 'Roboto Slab', serif;
     font-weight: 1000;
 }
-
 .bg-gradient {
     background-image: url("/Homebg.svg");
     background-position: center;
@@ -19,6 +18,7 @@ body {
     background-image: url("/registratiepaginabg-3.svg");
     background-position: center;
     background-size: cover;
+
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
