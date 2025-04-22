@@ -25,7 +25,7 @@ impl AccessNotificationRepositoryImpl {
 impl AccessNotificationRepository for AccessNotificationRepositoryImpl {
     
     async fn get_access_notification_by_user_id(&self, user_id: Uuid) -> Result<Vec<AccessNotification>, sqlx::Error> {
-        let access_notification = sqlx::query_as!::<_,
+        let access_notification = sqlx::query_as::<_,
         AccessNotification>(
             r#" 
             SELECT DISTINCT ON (org_id, user_id) * FROM access_notifications
