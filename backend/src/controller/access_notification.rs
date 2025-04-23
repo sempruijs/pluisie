@@ -22,7 +22,7 @@ use crate::User;
 
 #[utoipa::path(
     get,
-    path = "/access-notifications",
+    path = "/access-notification",
     responses(
         (status = 200, description = "Recieved notification list successfully", body = [AccessNotificationResponse]),
         (status = 404, description = "Not found"),
