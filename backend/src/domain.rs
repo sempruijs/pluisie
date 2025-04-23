@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use serde::Serialize;
+use chrono::NaiveDate;
 use sqlx::FromRow;
 use uuid::Uuid;
 
@@ -25,7 +26,8 @@ pub struct AccessNotification {
     pub notification_id: i32,
     pub org_id: Uuid,
     pub user_id: Uuid,
-    pub date: chrono::NaiveDate,
+    pub date: NaiveDate,
+    // option because a none means pending
     pub is_accepted: Option<bool>,
     pub description: String,
 }
