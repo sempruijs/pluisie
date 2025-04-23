@@ -8,7 +8,7 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
-use uuid::Uuid;
+use crate::User;
 
 //api::get_access_notification_by_user_id
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -22,35 +22,22 @@ use uuid::Uuid;
 
 #[utoipa::path(
     get,
-    path = "/access-notifications/{user_id}",
-    params(
-        ("user_id" = String, Path, description = "De ID van de gebruiker waarvoor notificaties worden opgehaald")
-    ),
+    path = "/access-notifications",
     responses(
-        (status = 200, description = "Lijst van access notifications", body = [AccessNotificationResponse]),
-        (status = 404, description = "Geen access notifications gevonden"),
-        (status = 500, description = "Interne server fout"),
+        (status = 200, description = "Recieved notification list successfully", body = [AccessNotificationResponse]),
+        (status = 404, description = "Not found"),
+        (status = 500, description = "Internal server error"),
     ),
-    description = "Get access notifications by user id",
-    operation_id = "get_access_notification_by_user_id",
-    tag = "AccessNotification"
+    description = "Get access notifications from user id",
+    operation_id = "getAccessNotifications",
+    tag = "Access Notification"
 )]
-#[get("/access-notifications/<user_id>")]
-async fn get_access_notification_by_user_id(
-    user_id: String,
+#[get("/")]
+async fn get_access_notification(
     service: &State<Arc<dyn AccessNotificationService>>,
+    user: User
 ) -> Result<Json<Vec<AccessNotificationResponse>>, status::Custom<String>> {
-    let user_id = match Uuid::parse_str(&user_id) {
-        Ok(uuid) => uuid,
-        Err(_) => {
-            return Err(status::Custom(
-                rocket::http::Status::BadRequest,
-                "Invalid UUID format".to_string(),
-            ));
-        }
-    };
-
-    match service.get_access_notification_by_user_id(user_id).await{
+    match service.get_access_notification(user.user_id).await {
         Ok(access_notifications) => {
             let response: Vec<AccessNotificationResponse> = access_notifications
                 .into_iter()
@@ -74,6 +61,6 @@ async fn get_access_notification_by_user_id(
 // Combine all the access_notifications routes.
 pub fn access_notification_routes() -> Vec<rocket::Route> {
     routes![
-        get_access_notification_by_user_id
+        get_access_notification
     ]
 }

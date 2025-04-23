@@ -1,4 +1,7 @@
 use crate::controller::authentication::authentication_routes;
+use crate::service::access_notification::AccessNotificationService;
+use crate::service::access_notification::AccessNotificationServiceImpl;
+use crate::controller::access_notification::access_notification_routes;
 use crate::controller::organisation::organisation_routes;
 use crate::domain::User;
 use crate::repository::organisation::*;
@@ -24,6 +27,7 @@ extern crate rocket;
 use crate::controller::user::*;
 use crate::docs::ApiDoc;
 use crate::repository::user::UserRepositoryImpl;
+use crate::repository::access_notification::AccessNotificationRepositoryImpl;
 use crate::service::user::UserServiceImpl;
 use sqlx::PgPool;
 
@@ -104,6 +108,10 @@ async fn main() -> Result<(), rocket::Error> {
     let user_service: Arc<dyn UserService> =
         Arc::new(UserServiceImpl::new(user_repository.clone()));
 
+    let access_notification_repository = AccessNotificationRepositoryImpl::new(pool.clone());
+    let access_notification_service: Arc<dyn AccessNotificationService> =
+        Arc::new(AccessNotificationServiceImpl::new(access_notification_repository.clone()));
+
     let organisation_repository = OrganisationRepositoryImpl::new(pool.clone());
     let organisation_service: Arc<dyn OrganisationService> = Arc::new(
         OrganisationServiceImpl::new(organisation_repository.clone()),
@@ -129,6 +137,7 @@ async fn main() -> Result<(), rocket::Error> {
         .manage(user_service)
         .manage(organisation_service)
         .manage(authentication_service)
+        .manage(access_notification_service)
         // expose swagger ui.
         // Go to http://localhost:8000/docs to view your endpoint documentation.
         .mount(
@@ -139,6 +148,7 @@ async fn main() -> Result<(), rocket::Error> {
         .mount("/users", user_routes())
         .mount("/organisation", organisation_routes())
         .mount("/login", authentication_routes())
+        .mount("/access-notification", access_notification_routes())
         .attach(cors)
         .launch()
         .await?;
