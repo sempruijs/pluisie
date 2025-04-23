@@ -1,4 +1,3 @@
-use crate::domain::AccessNotification;
 use crate::service::access_notification::AccessNotificationService;
 use rocket::get;
 use rocket::response::status;
