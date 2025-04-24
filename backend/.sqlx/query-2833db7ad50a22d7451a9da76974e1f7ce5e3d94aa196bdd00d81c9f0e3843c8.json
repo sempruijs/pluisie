@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO access_notifications (org_id, user_id, date, is_accepted, description)\n            VALUES ($1, $2, $3, NULL, $4)\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Date",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "2833db7ad50a22d7451a9da76974e1f7ce5e3d94aa196bdd00d81c9f0e3843c8"
+}
