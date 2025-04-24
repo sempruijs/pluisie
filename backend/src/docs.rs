@@ -14,6 +14,7 @@ use utoipa::OpenApi;
     delete_organisation,
     get_organisation,
     get_all_organisation,
-    get_access_notification
+    get_access_notification,
+    create_access_notification,
 ))]
 pub struct ApiDoc;
