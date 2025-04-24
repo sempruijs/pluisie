@@ -1,4 +1,6 @@
 <script>
+    import Button from "$lib/components/Button.svelte";
+
     let geboortedatum = '';
 
     function formatGeboortedatum(e) {
@@ -38,37 +40,56 @@
                 Hier leer je hoe je veilig en verantwoord alcohol schenkt. Zodra je de e-learning correct afrond, heb je je IVA!
             </p>
         </div>
-        <div class="">
-            <h1 class="font-bold text-3xl">Aanmeld formulier</h1>
+        <div>
+            <h1 class="font-bold text-3xl">Aanmeldformulier</h1>
         </div>
         <div class="py-8 sha">
-                <h3>Voornaam:</h3>
-            <input type="text"
+            <div class="form-control">
+                <h3 class="form-label">Voornaam:</h3>
+            <input type="text" required
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     />
+            </div>
                     <h3>Tussenvoegsels:</h3>
             <input type="text"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     />
-                    <h3>Achternaam:</h3>
-            <input type="text"
+            <div class="form-control">
+                    <h3 class="form-label">Achternaam:</h3>
+            <input type="text" required
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     />
-                    <h3>Geboortedatum:</h3>
-            <input type="text"
+            </div>
+            <div class="form-control">
+                    <h3 class="form-label">Geboortedatum:</h3>
+            <input type="text" required
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     placeholder="dd-mm-jjjj"
                     maxlength="10"
                     bind:value={geboortedatum}
                     on:input={formatGeboortedatum}
                     />
-                    <h3>Telefoon nummer:</h3>
+            </div>
+                    <h3>Telefoonnummer:</h3>
             <input type="text"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     />
-            <h3>IVA uploaden:</h3>
-            <div class="w-full h-50 bg-dragfile shadow-2xl">
-
+            <div class="form-control">
+            <h3 class="form-label">IVA uploaden:</h3>
+                <div class="w-full mx-auto h-50 bg-dragfile shadow-2x border-2 border-dashed border-gray-400">
+                    <div class="text-center my-10 justify-items-center text-gray-500">
+                        <p>Sleep hier je bestanden naar toe</p>
+                        <p class="my-3">Of:</p>
+                        <Button color="yellow">
+                            Upload vanaf je computer
+                        </Button>
+                    </div>
+                </div>
+            </div>
+            <div class="my-5">
+            <Button color="orange" padding="lg" width="max">
+                Verstuur aanmelding
+            </Button>
             </div>
         </div>   
     </div>
