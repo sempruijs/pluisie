@@ -87,7 +87,7 @@ async fn create_access_notification(
 ) -> Json<bool> {
     let org_id = Uuid::parse_str(&payload.org_id).unwrap();
 
-    match service.create_access_notification(user.user_id, org_id, payload.description.clone()).await {
+    match service.create_access_notification(org_id, user.user_id, payload.description.clone()).await {
         Ok(true) => Json(true),
         _ => Json(false),
     }
