@@ -17,7 +17,7 @@
          }
 </script>
 
-<div class="flex-1 bg-gradient-plant">
+<div class="flex-1 bg-gradient-plant pt-16">
     <div class="center-v center-h mt-10">
         <img src="/hideoutlogo.png" alt="Logo" />
     </div>
