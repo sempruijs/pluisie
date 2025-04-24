@@ -58,6 +58,34 @@ async fn get_access_notification(
     }
 }
 
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+ struct CreateAccessNotificationRequest {
+    pub org_id: String,
+    pub description: String,
+ }
+
+#[utoipa::path(
+    post,
+    path = "/access-notification",
+    request_body = CreateAccessNotificationRequest, 
+    responses(
+        (status = 200, description = "Access notification created succesfully", body = bool),
+        (status = 404, description = "Not found"),
+        (status = 500, description = "Internal server error"),
+    ),
+    description = "Create access notification",
+    operation_id = "CreateAccessNotifications",
+    tag = "Access Notification"
+)]
+#[post("/", data = "<payload>")]
+async fn create_access_notification(
+    service: &State<Arc<dyn AccessNotificationService>>,
+    user: User,
+    payload: Json<CreateAccessNotificationRequest>,
+) -> Result<Json<bool>, status::Custom<String>> {
+    match service.create_access_notification(user.user_id, payload.org_id, payload.description).await{
+        
+    }}
 // Combine all the access_notifications routes.
 pub fn access_notification_routes() -> Vec<rocket::Route> {
     routes![
