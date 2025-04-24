@@ -75,10 +75,18 @@ body {
     @apply bg-red-200 border-red-300;
 }
 
+.btn-yellow {
+    @apply bg-yellow-200 border-yellow-300 text-black;
+}
+
 .bg-color-register {
     background-color: #EAEAEA;
 }
 
 .bg-dragfile {
     background-color: #f6f6f6;
+}
+
+.form-control:has(input[required]) .form-label::before {
+    content: '*';
 }
