@@ -3,10 +3,11 @@ use crate::repository::access_notification::*;
 use rocket::async_trait;
 use uuid::Uuid;
 
-// Here you add your business logic here.
 #[async_trait]
 pub trait AccessNotificationService: Send + Sync {
     async fn get_access_notification(&self, user_id: Uuid) -> Result<Vec<AccessNotification>, sqlx::Error>;
+    
+    async fn create_access_notification(&self, org_id: Uuid, user_id: Uuid, description: String) -> Result<bool, sqlx::Error>;
 }
 
 pub struct AccessNotificationServiceImpl<T: AccessNotificationRepository> {
@@ -25,6 +26,8 @@ impl<R: AccessNotificationRepository> AccessNotificationService for AccessNotifi
     async fn get_access_notification(&self, user_id: Uuid) -> Result<Vec<AccessNotification>, sqlx::Error> {
         self.access_notification_repository.get_access_notification(user_id).await
     }
-
+    async fn create_access_notification(&self, org_id: Uuid, user_id: Uuid, description: String) -> Result<bool, sqlx::Error>{
+        self.access_notification_repository.create_access_notification(org_id, user_id, description).await
+    }
 }
 
