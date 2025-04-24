@@ -1,4 +1,6 @@
 use crate::service::access_notification::AccessNotificationService;
+ use uuid::Uuid;
+use rocket::post;
 use rocket::get;
 use rocket::response::status;
 use rocket::routes;
@@ -82,13 +84,19 @@ async fn create_access_notification(
     service: &State<Arc<dyn AccessNotificationService>>,
     user: User,
     payload: Json<CreateAccessNotificationRequest>,
-) -> Result<Json<bool>, status::Custom<String>> {
-    match service.create_access_notification(user.user_id, payload.org_id, payload.description).await{
-        
-    }}
+) -> Json<bool> {
+    let org_id = Uuid::parse_str(&payload.org_id).unwrap();
+
+    match service.create_access_notification(user.user_id, org_id, payload.description.clone()).await {
+        Ok(true) => Json(true),
+        _ => Json(false),
+    }
+}
+
 // Combine all the access_notifications routes.
 pub fn access_notification_routes() -> Vec<rocket::Route> {
     routes![
-        get_access_notification
+        get_access_notification,
+        create_access_notification,
     ]
 }
