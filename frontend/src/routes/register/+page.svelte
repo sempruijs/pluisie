@@ -76,7 +76,7 @@
                     />
             <div class="form-control">
             <h3 class="form-label">IVA uploaden:</h3>
-                <div class="w-full mx-auto h-50 bg-dragfile shadow-2x border-2 border-dashed border-gray-400">
+                <div class="w-full mx-auto h-50 bg-dragfile shadow-2xl border-2 border-dashed border-gray-400">
                     <div class="text-center my-10 justify-items-center text-gray-500">
                         <p>Sleep hier je bestanden naar toe</p>
                         <p class="my-3">Of:</p>
@@ -91,6 +91,21 @@
                 Verstuur aanmelding
             </Button>
             </div>
+            <div class="border-2 p-2 bg-white rounded">
+                <p>
+                    We zullen zo spoedig mogelijk contact met je opnemen om je één dagje in te werken en om je te verwelkomen in onze fantastische vrijwilligers groep. 
+                </p>
+                <p>
+                    Nogmaals, bedankt voor je bereidheid om bij te dragen aan het succes van het Science Café Hideout!
+                </p>
+                <p class="pt-3">
+                    Met vriendelijke groet,
+                </p>
+                <p>
+                    Het bestuur van Science Café Hideout
+                </p>
+            </div>
+
         </div>   
     </div>
 </div> 
