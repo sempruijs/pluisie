@@ -90,3 +90,19 @@ body {
 .form-control:has(input[required]) .form-label::before {
     content: '*';
 }
+
+.headerhover:hover {
+    transform: scale(1.025);
+    @apply hover:shadow-lg border-black border-2;
+
+}
+
+.headerhover {
+    position:relative;
+    transition: ease-in-out 0.2s;
+}
+
+.border-zero {
+    @apply border-2 border-transparent rounded;
+    
+}
