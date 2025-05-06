@@ -61,6 +61,12 @@
                     />
             </div>
             <div class="form-control">
+                <h3 class="form-label">E-mail:</h3>
+        <input type="text" required
+                class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                />
+        </div>
+            <div class="form-control">
                     <h3 class="form-label">Geboortedatum:</h3>
             <input type="text" required
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
