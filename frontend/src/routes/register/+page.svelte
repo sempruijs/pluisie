@@ -1,6 +1,6 @@
 <script>
     import Button from "$lib/components/Button.svelte";
-
+    import Header from "$lib/components/Header.svelte";
     let geboortedatum = '';
 
     function formatGeboortedatum(e) {
@@ -18,7 +18,7 @@
         geboortedatum = formatted;
          }
 </script>
-
+<Header />
 <div class="flex-1 bg-gradient-plant pt-16">
     <div class="center-v center-h mt-10">
         <img src="/hideoutlogo.png" alt="Logo" />
