@@ -102,6 +102,11 @@ body {
     transition: ease-in-out 0.2s;
 }
 
+.selectlist:hover {
+    transition: ease-out 0.4s;
+    
+}
+
 .border-zero {
     @apply border-2 border-transparent rounded;
     

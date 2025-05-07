@@ -16,7 +16,18 @@
         if (year) formatted += '-' + year;
 
         geboortedatum = formatted;
-         }
+        }
+
+        let selected = 'Indicium';
+        let options = ['Avanti', 'Indicium', 'Codex', 'SOG']
+        let open = false;
+
+        function selectOption(option) {
+            selected = option;
+            open = false;
+        }
+        
+        import { slide } from 'svelte/transition';
 </script>
 <Header />
 <div class="flex-1 bg-gradient-plant pt-16">
@@ -82,7 +93,7 @@
                     />
             <div class="form-control">
             <h3 class="form-label">IVA uploaden:</h3>
-                <div class="w-full mx-auto h-50 bg-dragfile shadow-2xl border-2 border-dashed border-gray-400">
+                <div class="w-full mx-auto h-50 bg-dragfile shadow-2xl border-2 border-dashed border-gray-400 mb-3">
                     <div class="text-center my-10 justify-items-center text-gray-500">
                         <p>Sleep hier je bestanden naar toe</p>
                         <p class="my-3">Of:</p>
@@ -91,6 +102,40 @@
                         </Button>
                     </div>
                 </div>
+            </div>
+            
+            <div class="w-full">
+                <label class="block mb-1 text-black"><h3>Selecteer je vereniging:</h3></label>
+            
+            <div class="relative">
+                <button
+                class="w-full min-h-10 bg-gray-200 border px-3 border-gray-400 rounded-lg outline-none text-left cursor-pointer"
+                on:click={() => open = !open}
+                >
+                    {selected}
+                    <span class="absolute right-3 transition-transform duration-500"
+                            class:rotate-180={open}
+                    >
+                    &#x21e7;
+                    </span>
+                </button>
+
+                {#if open}
+                    <ul class="w-full mt-1 bg-white border border-gray-400 rounded-lg shadow max-h-40 overflow-y-auto"
+                    transition:slide
+                    >
+                        
+                        {#each options as option}
+                        <li
+                            class="px-4 py-2 hover:bg-gray-200 selectlist cursor-pointer"
+                            on:click={() => selectOption(option)}
+                        >
+                            {option}
+                        </li>
+                    {/each}
+                </ul>
+              {/if}
+             </div>
             </div>
             <div class="my-5">
             <Button color="orange" padding="lg" width="max">
