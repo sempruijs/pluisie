@@ -11,6 +11,7 @@ pub struct User {
     pub email: String,
     pub password: String,
     pub is_super: bool,
+    pub iva: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]

@@ -20,6 +20,7 @@ struct CreateUserRequest {
     pub name: String,
     pub password: String,
     pub is_super: bool,
+    pub iva: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -27,6 +28,7 @@ struct UpdateUserRequest {
     pub email: String,
     pub name: String,
     pub password: String,
+    pub iva: String,
 }
 
 // Utoipa is the crate that generates swagger documentation for your endpoints.
@@ -58,6 +60,7 @@ async fn create_user(
         password: payload.password.clone(),
         // todo: this should be updated later.
         is_super: payload.is_super.clone(),
+        iva: Some(payload.iva.clone()),
     };
 
     // Call the `create` method and await its result
@@ -93,6 +96,7 @@ async fn update_user(
         password: payload.password.clone(),
         // todo: this should be updated later.
         is_super: false,
+        iva: Some(payload.iva.clone()),
     };
 
     match user_service.update(updated_user).await {
@@ -107,6 +111,7 @@ struct GetUserResponse {
     name: String,
     email: String,
     is_super: bool,
+    iva: String,
 }
 
 #[utoipa::path(
@@ -134,6 +139,7 @@ async fn get_user(
         email: user.email,
         name: user.name,
         is_super: user.is_super,
+        iva: user.iva.unwrap_or_default(),
     }))
 }
 

@@ -6,6 +6,10 @@ CREATE TABLE users (
     is_super BOOLEAN NOT NULL
 );
 
+column iva toevoegen in users:
+
+ALTER TABLE users ADD COLUMN iva TEXT NULL;
+
 CREATE TABLE organisations (
     org_id UUID PRIMARY KEY,
     name TEXT NOT NULL,
