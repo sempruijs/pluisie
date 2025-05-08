@@ -27,7 +27,18 @@
             open = false;
         }
         
+        let showPopup = false;
+        function handleSubmit(){
+            console.log ("test mf's")
+            showPopup = true;
+
+            setTimeout(()=> {
+                showPopup = false;
+            }, 9000);
+        }
+
         import { slide } from 'svelte/transition';
+
 </script>
 <Header />
 <div class="flex-1 bg-gradient-plant pt-16">
@@ -114,7 +125,7 @@
                 >
                     {selected}
                     <span class="absolute right-3 transition-transform duration-500"
-                            class:rotate-180={open}
+                            class:-rotate-180={open}
                     >
                     &#x21e7;
                     </span>
@@ -138,25 +149,30 @@
              </div>
             </div>
             <div class="my-5">
-            <Button color="orange" padding="lg" width="max">
+            <Button color="orange" padding="lg" width="max"
+            on:click={handleSubmit}
+            >
                 Verstuur aanmelding
             </Button>
             </div>
-            <div class="border-2 p-2 bg-white rounded">
-                <p>
-                    We zullen zo spoedig mogelijk contact met je opnemen om je één dagje in te werken en om je te verwelkomen in onze fantastische vrijwilligers groep. 
-                </p>
-                <p>
-                    Nogmaals, bedankt voor je bereidheid om bij te dragen aan het succes van het Science Café Hideout!
-                </p>
-                <p class="pt-3">
-                    Met vriendelijke groet,
-                </p>
-                <p>
-                    Het bestuur van Science Café Hideout
-                </p>
-            </div>
-
+            {#if showPopup}
+                <div class="popup-container">
+                    <div class="popup">
+                    <p>
+                        We zullen zo spoedig mogelijk contact met je opnemen om je één dagje in te werken en om je te verwelkomen in onze fantastische vrijwilligers groep.
+                    </p>
+                    <p class="mt-2">
+                        Nogmaals, bedankt voor je bereidheid om bij te dragen aan het succes van het Science Café Hideout!
+                    </p>
+                    <p class="pt-3 font-semibold">
+                        Met vriendelijke groet,
+                    </p>
+                    <p>
+                        Het bestuur van Science Café Hideout
+                    </p>
+                    </div>
+                </div>
+            {/if}
         </div>   
     </div>
 </div> 
