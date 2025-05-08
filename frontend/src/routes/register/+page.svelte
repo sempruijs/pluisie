@@ -3,6 +3,14 @@
     import Header from "$lib/components/Header.svelte";
     let geboortedatum = '';
 
+    function opendropDown() {
+        open = !open
+        if (open)(
+            dropdownContainer.scrollIntoView({
+                behavior:'smooth'
+     })
+        )
+    }
     function formatGeboortedatum(e) {
         let input = e.target.value.replace(/\D/g, '');
         if (input.length > 8) input = input.slice(0, 8);
@@ -19,7 +27,7 @@
         }
 
         let selected = 'Indicium';
-        let options = ['Avanti', 'Indicium', 'Codex', 'SOG']
+        let options = ['Avanti', 'Indicium', 'Codex', 'SOG', 'test', 'test', 'test', 'test']
         let open = false;
 
         function selectOption(option) {
@@ -38,6 +46,8 @@
         }
 
         import { slide } from 'svelte/transition';
+
+        let dropdownContainer;
 
 </script>
 <Header />
@@ -121,7 +131,9 @@
             <div class="relative">
                 <button
                 class="w-full min-h-10 bg-gray-200 border px-3 border-gray-400 rounded-lg outline-none text-left cursor-pointer"
-                on:click={() => open = !open}
+                on:click={() =>
+                    opendropDown()
+                }
                 >
                     {selected}
                     <span class="absolute right-3 transition-transform duration-500"
@@ -130,7 +142,7 @@
                     &#x21e7;
                     </span>
                 </button>
-
+            <div bind:this={dropdownContainer}>
                 {#if open}
                     <ul class="w-full mt-1 bg-white border border-gray-400 rounded-lg shadow max-h-40 overflow-y-auto"
                     transition:slide
@@ -144,8 +156,9 @@
                             {option}
                         </li>
                     {/each}
-                </ul>
+                    </ul>
               {/if}
+            </div>
              </div>
             </div>
             <div class="my-5">
