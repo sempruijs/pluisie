@@ -23,7 +23,7 @@ CREATE TABLE role_history (
 );
 
 CREATE TABLE timeslots (
-    timeslot_id SERIAL PRIMARY KEY,
+    timeslot_id UUID PRIMARY KEY,
     created TIMESTAMPTZ NOT NULL DEFAULT now(),
     org_id UUID REFERENCES organisations(org_id),
     user_id UUID REFERENCES users(user_id),
