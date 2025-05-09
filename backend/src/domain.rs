@@ -35,7 +35,7 @@ pub struct AccessNotification {
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
 pub struct Timeslot {
-    pub timeslot_id: i32,
+    pub timeslot_id: Uuid,
     pub created: DateTime<Utc>,
     pub org_id: Uuid,
     pub user_id: Uuid,

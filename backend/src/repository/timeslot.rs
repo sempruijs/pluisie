@@ -27,9 +27,11 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
     async fn create(&self, timeslot: Timeslot) -> Result<(), sqlx::Error> {
         sqlx::query!(
             r#"
-            INSERT INTO timeslots (org_id, user_id, date, hour, is_enrolled)
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO timeslots (timeslot_id, created, org_id, user_id, date, hour, is_enrolled)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             "#,
+            timeslot.timeslot_id,
+            timeslot.created,
             timeslot.org_id,
             timeslot.user_id,
             timeslot.date,
