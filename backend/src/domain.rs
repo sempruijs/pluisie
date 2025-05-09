@@ -1,8 +1,8 @@
 use serde::Deserialize;
 use serde::Serialize;
-use chrono::NaiveDate;
 use sqlx::FromRow;
 use uuid::Uuid;
+use chrono::{DateTime, NaiveDate, Utc};
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
 pub struct User {
@@ -31,4 +31,15 @@ pub struct AccessNotification {
     // option because a none means pending
     pub is_accepted: Option<bool>,
     pub description: String,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
+pub struct Timeslot {
+    pub timeslot_id: i32,
+    pub created: DateTime<Utc>,
+    pub org_id: Uuid,
+    pub user_id: Uuid,
+    pub date: NaiveDate,
+    pub hour: i16, 
+    pub is_enrolled: bool,
 }
