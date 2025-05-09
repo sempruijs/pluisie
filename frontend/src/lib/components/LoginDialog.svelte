@@ -9,10 +9,11 @@
   		/>
   	</div>
   	<div class="flex justify-between my-4">
-  		<Button>
-  			Login
-  		</Button>
-
+		<a href="/selectcafe">
+			<Button>
+				Login
+			</Button>
+		</a>
   		<Button color='red'>
   			Reset Account
   		</Button>
