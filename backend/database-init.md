@@ -3,12 +3,9 @@ CREATE TABLE users (
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    is_super BOOLEAN NOT NULL
+    is_super BOOLEAN NOT NULL,
+    iva TEXT NOT NULL
 );
-
-column iva toevoegen in users:
-
-ALTER TABLE users ADD COLUMN iva TEXT NULL;
 
 CREATE TABLE organisations (
     org_id UUID PRIMARY KEY,
