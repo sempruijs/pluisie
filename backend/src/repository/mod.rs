@@ -2,4 +2,4 @@
 pub mod user;
 pub mod organisation;
 pub mod access_notification;
-pub mod agenda; 
+pub mod timeslot; 
