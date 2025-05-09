@@ -22,6 +22,6 @@ impl<R: TimeslotRepository> TimeslotServiceImpl<R> {
 #[async_trait]
 impl<R: TimeslotRepository> TimeslotService for TimeslotServiceImpl<R> {
     async fn create(&self, timeslot: Timeslot) -> Result<(), sqlx::Error> {
-        self.timeslot_repository.create(times-lot).await
+        self.timeslot_repository.create(timeslot).await
     }
 }
