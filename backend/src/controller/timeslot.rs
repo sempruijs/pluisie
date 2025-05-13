@@ -1,4 +1,6 @@
 use crate::service::timeslot::TimeslotService;
+use chrono::NaiveDate;
+use crate::parser::*;
 use chrono::Utc;
  use crate::domain::Timeslot;
 use uuid::Uuid;
@@ -42,12 +44,12 @@ async fn create(
     payload: Json<CreateTimeslotRequest>,
 ) -> Json<bool> {
     let org_id = Uuid::parse_str(&payload.org_id).expect("faild to parse org_id");
+    let date: NaiveDate = parse_iso8601_date(&payload.date).expect("Failed to parse date");
     let timeslot = Timeslot {
         timeslot_id: Uuid::new_v4(),
         org_id,
         user_id: user.user_id,
-        // todo: data should be parsed 8601
-        date: todo!(),
+        date,
         created: Utc::now(),
         hour: payload.hour.clone(),
         is_enrolled: payload.is_enrolled.clone(),
