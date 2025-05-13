@@ -10,9 +10,10 @@
   
   <div class="flex justify-center w-full">
     <div class="bg-white rounded-xl shadow-md p-6 w-full max-w-md border border-gray-300">
-      <div class="text-center text-xl font-semibold mb-4">Welkom Op Je Profiel!</div>
+      <div class="text-center text-xl mb-4">Welkom Op Je Profiel!</div>
   
-      <div class="flex items-center space-x-3 mb-4">
+      <!-- Side-by-side image and name, centered inline -->
+      <div class="flex items-center space-x-3 mb-4 justify-center">
         {#if profileImageUrl}
           <img
             src={profileImageUrl}
@@ -29,19 +30,19 @@
       </div>
   
       <div class="space-y-2 text-sm">
-        <div class="flex justify-between pb-1">
+        <div class="flex justify-between border-b pb-1">
           <span>Geboortedatum:</span>
           <span>{birthDate}</span>
         </div>
-        <div class="flex justify-between pb-1">
+        <div class="flex justify-between border-b pb-1">
           <span>Mijn voornaamwoorden:</span>
           <span>{pronouns}</span>
         </div>
-        <div class="flex justify-between pb-1">
+        <div class="flex justify-between border-b pb-1">
           <span>IVA:</span>
           <span class="text-green-600 italic">{iva}</span>
         </div>
-        <div class="flex justify-between pb-1">
+        <div class="flex justify-between border-b pb-1">
           <span>Vereniging:</span>
           <span>{vereniging}</span>
         </div>
