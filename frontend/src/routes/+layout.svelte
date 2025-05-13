@@ -9,7 +9,6 @@
 </script>
 
 <div class="min-h-screen flex flex-col">
-	<ApplicationTimeline />
 	{@render children()}
 	<Footer />
 </div>
