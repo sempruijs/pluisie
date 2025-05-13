@@ -1,5 +1,6 @@
 <script>
     import Header from "$lib/components/Header.svelte";
+    import Button from "$lib/components/Button.svelte";
 
     let cafes = [
         {name: "Hideout Café", address: "Heidelberglaan 15", image: "/hideout.png" },
@@ -9,20 +10,40 @@
     ];
 
     let selected = cafes[1];
+    let open = false;
+    let dropdownContainer;
+
+    function opendropDown() {
+        open = !open;
+        if (open) {
+          setTimeout(() => {
+            dropdownContainer?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }, 50);
+        }
+    }
+
 </script>
 <Header />
-    <div class="flex-1 bg-gradient-plant content-center">
-        <div class="max-w-5/10 mx-auto">
+    <div class="flex-1 bg-gradient-plant flex items-center">
+        <div class="max-w-2xl w-full mx-auto p-5">
             <div class="h-auto bg-color-register mx-auto m-10 p-8 rounded-xl shadow-2xl shadow-black">
                 <h1 class="font-bold text-2xl text-center">Selecteer een Nieuw Café:</h1>
                 <p class="text-center">Kies één van de volgende locaties om</p>
                 <p class="text-center">een aanmeldverzoek te sturen.</p>
                 
-                {#each cafes as cafe}
+                {#each cafes as cafe} 
+                <!-- svelte-ignore a11y_click_events_have_key_events -->
+                <!-- svelte-ignore a11y_no_static_element_interactions -->
                 <div
-                  on:click={() => selected = cafe}
-                  class="cursor-pointer flex items-center gap-3 p-4 my-3 rounded-lg shadow transition
-                  {selected === cafe ? 'bg-yellow-200 border border-yellow-300 cafehover' : 'bg-white cafehover'}"
+                  on:click={() => {
+                    selected = cafe;
+                    opendropDown()
+                  }}
+                  class="cursor-pointer flex items-center gap-3 p-4 my-3 rounded-lg shadow transition cafehover
+                  {selected === cafe ? 'cafehover-selected' : 'bg-white'}"
                 >
                   <img
                     src={cafe.image}
@@ -35,6 +56,31 @@
                   </div>
                 </div>
               {/each}
+              {#if open}
+              <div bind:this={dropdownContainer} class="mt-6 p-6 bg-white rounded-xl shadow">
+                <h2 class="text-lg font-semibold mb-2">Je hebt gekozen voor:</h2>
+                <p class="mb-4">
+                  <strong>{selected.name}</strong>, {selected.address}
+                </p>
+
+                <label for="motivation" class="block mb-2 text-gray-700">Licht je motivatie toe:</label>
+                <textarea
+                  id="motivation"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus: outline-none focus:ring-2 focus:ring-yellow-400"
+                  rows="4"
+                  placeholder="Waarom wil je je aanmelden bij dit café?"
+                 ></textarea> 
+
+                 <Button
+                 color="orange"
+                 class="mt-3"
+                  on:click={() => alert('Aanmelding verstuurd voor: ${selected.name}')}
+                  >
+                  
+                    Verzenden
+              </Button>
+              </div>
+            {/if}
             </div>
         </div>
     </div>
