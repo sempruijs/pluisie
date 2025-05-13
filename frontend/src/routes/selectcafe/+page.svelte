@@ -1,6 +1,8 @@
 <script>
+	import { slide } from 'svelte/transition';
     import Header from "$lib/components/Header.svelte";
     import Button from "$lib/components/Button.svelte";
+    import { tick } from "svelte";
 
     let cafes = [
         {name: "Hideout Café", address: "Heidelberglaan 15", image: "/hideout.png" },
@@ -25,6 +27,16 @@
         }
     }
 
+    let showPopup = false;
+        function handleSubmit(){
+            console.log ("test mf's")
+            showPopup = true;
+
+            setTimeout(()=> {
+                showPopup = false;
+            }, 2500);
+        }
+
 </script>
 <Header />
     <div class="flex-1 bg-gradient-plant flex items-center">
@@ -38,10 +50,23 @@
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <!-- svelte-ignore a11y_no_static_element_interactions -->
                 <div
-                  on:click={() => {
+                  on:click={async () => {
+                   if (selected === cafe) {
+                    open = !open; 
+                   } else {
                     selected = cafe;
-                    opendropDown()
-                  }}
+                    open = true;
+                   }
+
+                   if (open) {
+                    await tick();
+                      dropdownContainer?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                      });
+                    }
+                   }
+                  }
                   class="cursor-pointer flex items-center gap-3 p-4 my-3 rounded-lg shadow transition cafehover
                   {selected === cafe ? 'cafehover-selected' : 'bg-white'}"
                 >
@@ -57,7 +82,10 @@
                 </div>
               {/each}
               {#if open}
-              <div bind:this={dropdownContainer} class="mt-6 p-6 bg-white rounded-xl shadow">
+              <div bind:this={dropdownContainer}
+                in:slide
+                out:slide
+                class="mt-6 p-6 bg-white rounded-xl shadow">
                 <h2 class="text-lg font-semibold mb-2">Je hebt gekozen voor:</h2>
                 <p class="mb-4">
                   <strong>{selected.name}</strong>, {selected.address}
@@ -74,11 +102,19 @@
                  <Button
                  color="orange"
                  class="mt-3"
-                  on:click={() => alert('Aanmelding verstuurd voor: ${selected.name}')}
+                  on:click={handleSubmit}
                   >
                   
                     Verzenden
               </Button>
+              {#if showPopup}
+              <div class="popup-container">
+                  <div class="popup">
+                    <p>Bedankt voor je aanmelding!</p>
+                    <p>&copy;De Hideout</p>
+                  </div>
+              </div>
+            {/if}
               </div>
             {/if}
             </div>
