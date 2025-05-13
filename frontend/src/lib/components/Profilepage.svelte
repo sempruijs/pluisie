@@ -8,15 +8,15 @@
     export let profileImageUrl = "";
 </script>
 
-<div class="flex justify-center w-full">
-    <div class="bg-white rounded-xl shadow-md p-8 w-full max-w-lg border border-gray-300">
+<div class="flex justify-center w-full px-4 sm:px-6 lg:px-0">
+    <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl">
         <!-- Welcome message outside the border -->
         <div class="text-center text-2xl mb-6">
             Welkom Op Je Profiel!
         </div>
 
         <!-- The rest of the profile content inside a single border -->
-        <div class="border border-gray-300 p-6 rounded-lg">
+        <div class="border border-gray-500 p-6 rounded-lg">
             
             <!-- Side-by-side image and name inside the border -->
             <div class="flex items-center space-x-4 mb-6 justify-center">
@@ -47,7 +47,8 @@
                 </div>
                 <div class="flex justify-between pb-2">
                     <span>IVA:</span>
-                    <span class="text-green-600 italic">{iva}</span>
+                    <!-- Make "IVA" clickable -->
+                    <a href="/iva-details" class="text-green-600 italic hover:underline">{iva}</a>
                 </div>
                 <div class="flex justify-between pb-2">
                     <span>Vereniging:</span>
@@ -55,7 +56,8 @@
                 </div>
                 <div class="flex justify-between">
                     <span>Cafés:</span>
-                    <span class="text-orange-500 italic underline">{cafesStatus}</span>
+                    <!-- Make "Cafés" clickable -->
+                    <a href="/cafes-status" class="text-orange-500 italic underline hover:underline">{cafesStatus}</a>
                 </div>
             </div>
         </div>
