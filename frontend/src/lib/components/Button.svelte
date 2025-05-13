@@ -2,7 +2,7 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher()
 
-    let { color, padding, width }: {color?: string, padding?: string, width?: string} = $props();
+    let { color, padding, width, class: className }: {color?: string, padding?: string, width?: string, class?: string} = $props();
 
     let color_style = "btn-green";
     let padding_style = "p-3 px-7.5";
@@ -29,6 +29,6 @@
     }
 </script>
 
-<button onclick={(e) => dispatch("click", e)} class="{color_style} {width_style} max-h-6 {padding_style} border shadow-xl shadow-gray-300 rounded-lg flex items-center justify-center text-center hoverbutton">
+<button onclick={(e) => dispatch("click", e)} class="{color_style} {width_style} max-h-6 {padding_style} border shadow-xl shadow-gray-300 rounded-lg flex items-center justify-center text-center hoverbutton {className || ''}">
     <slot/>
 </button>

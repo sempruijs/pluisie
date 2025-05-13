@@ -135,6 +135,7 @@ body {
 }
 
 .cafehover {
+    @apply hover:bg-yellow-100;
     transition: ease-in-out 0.3s;
 }
 
@@ -142,6 +143,6 @@ body {
     transform: scale(1.08);
 }
 
-.cafehover:hover {
-    @apply bg-yellow-200
+.cafehover-selected {
+    @apply bg-yellow-200 border-2 border-yellow-400 hover:bg-yellow-200
 }
