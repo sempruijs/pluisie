@@ -6,51 +6,58 @@
     export let vereniging = "Indicium";
     export let cafesStatus = "In behandeling...";
     export let profileImageUrl = "";
-  </script>
-  
-  <div class="flex justify-center w-full">
-    <div class="bg-white rounded-xl shadow-md p-6 w-full max-w-md border border-gray-300">
-      <div class="text-center text-xl mb-4">Welkom Op Je Profiel!</div>
-  
-      <!-- Side-by-side image and name, centered inline -->
-      <div class="flex items-center space-x-3 mb-4 justify-center">
-        {#if profileImageUrl}
-          <img
-            src={profileImageUrl}
-            alt={name}
-            class="w-10 h-10 rounded-full object-cover"
-          />
-        {:else}
-          <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-xs text-gray-600">
-            IMG
-          </div>
-        {/if}
-  
-        <div class="text-lg">{name}</div>
-      </div>
-  
-      <div class="space-y-2 text-sm">
-        <div class="flex justify-between border-b pb-1">
-          <span>Geboortedatum:</span>
-          <span>{birthDate}</span>
+</script>
+
+<div class="flex justify-center w-full">
+    <div class="bg-white rounded-xl shadow-md p-8 w-full max-w-lg border border-gray-300">
+        <!-- Welcome message outside the border -->
+        <div class="text-center text-2xl mb-6">
+            Welkom Op Je Profiel!
         </div>
-        <div class="flex justify-between border-b pb-1">
-          <span>Mijn voornaamwoorden:</span>
-          <span>{pronouns}</span>
+
+        <!-- The rest of the profile content inside a single border -->
+        <div class="border border-gray-300 p-6 rounded-lg">
+            
+            <!-- Side-by-side image and name inside the border -->
+            <div class="flex items-center space-x-4 mb-6 justify-center">
+                {#if profileImageUrl}
+                    <img
+                        src={profileImageUrl}
+                        alt={name}
+                        class="w-16 h-16 rounded-full object-cover"
+                    />
+                {:else}
+                    <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-lg text-gray-600">
+                        IMG
+                    </div>
+                {/if}
+
+                <div class="text-xl">{name}</div>
+            </div>
+
+            <!-- Info section inside the border -->
+            <div class="space-y-3 text-base">
+                <div class="flex justify-between pb-2">
+                    <span>Geboortedatum:</span>
+                    <span>{birthDate}</span>
+                </div>
+                <div class="flex justify-between pb-2">
+                    <span>Mijn voornaamwoorden:</span>
+                    <span>{pronouns}</span>
+                </div>
+                <div class="flex justify-between pb-2">
+                    <span>IVA:</span>
+                    <span class="text-green-600 italic">{iva}</span>
+                </div>
+                <div class="flex justify-between pb-2">
+                    <span>Vereniging:</span>
+                    <span>{vereniging}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Cafés:</span>
+                    <span class="text-orange-500 italic underline">{cafesStatus}</span>
+                </div>
+            </div>
         </div>
-        <div class="flex justify-between border-b pb-1">
-          <span>IVA:</span>
-          <span class="text-green-600 italic">{iva}</span>
-        </div>
-        <div class="flex justify-between border-b pb-1">
-          <span>Vereniging:</span>
-          <span>{vereniging}</span>
-        </div>
-        <div class="flex justify-between">
-          <span>Cafés:</span>
-          <span class="text-orange-500 italic underline">{cafesStatus}</span>
-        </div>
-      </div>
     </div>
-  </div>
-  
+</div>
