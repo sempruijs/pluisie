@@ -1,3 +1,3 @@
 # backend
 
-Documentation can be found at http://localhost:8000/docs
+Documentation can be found at http://45.32.236.116:8000/docs/
