@@ -93,13 +93,17 @@ body {
 
 .headerhover:hover {
     transform: scale(1.025);
-    @apply hover:shadow-lg border-black border-2;
+    @apply hover:shadow-lg border-black border-b-2;
 
 }
 
 .headerhover {
     position:relative;
     transition: ease-in-out 0.2s;
+}
+
+.headerhover {
+    @apply border-transparent border-b-2;
 }
 
 .selectlist:hover {
@@ -140,9 +144,18 @@ body {
 }
 
 .cafehover:hover {
-    transform: scale(1.08);
+    transform: scale(1.03);
 }
 
 .cafehover-selected {
     @apply bg-yellow-200 border-2 border-yellow-400 hover:bg-yellow-200
+}
+
+.profilehover:hover {
+    @apply border-b-2 border-l-2 border-black p-1 bg-gray-200
+}
+
+.profilehover:hover {
+    transform: scale(1.3);
+    transition: ease-in-out 0.3s;
 }
