@@ -57,7 +57,7 @@
                 <div class="flex justify-between">
                     <span>Cafés:</span>
                     <!-- Make "Cafés" clickable -->
-                    <a href="/cafes-status" class="text-orange-500 italic underline hover:underline">{cafesStatus}</a>
+                    <a href="/profile/cafes-status" class="text-orange-500 italic underline hover:underline">{cafesStatus}</a>
                 </div>
             </div>
         </div>
