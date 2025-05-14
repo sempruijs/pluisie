@@ -43,3 +43,6 @@ pub struct Timeslot {
     pub hour: i16, 
     pub is_enrolled: bool,
 }
+
+pub struct UserID(pub Uuid);
+pub struct OrgID(pub Uuid);

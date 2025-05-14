@@ -1,5 +1,7 @@
 use rocket::async_trait;
 use crate::domain::Organisation;
+use crate::domain::UserID;
+use crate::domain::OrgID;
 use sqlx::types::Uuid;
 use sqlx::PgPool;
 
@@ -12,6 +14,8 @@ pub trait OrganisationRepository: Send + Sync {
     async fn get_org_id(&self, org_id: Uuid)-> Result<Option<Organisation>, sqlx::Error>;
 
     async fn get_all_org(&self)-> Result<Vec<Organisation>, sqlx::Error>;
+
+    async fn get_by_user_id(user_id: UserID) -> Result<Vec<OrgID>, sqlx::Error>;
 }
 
 #[derive(Debug, Clone)]
