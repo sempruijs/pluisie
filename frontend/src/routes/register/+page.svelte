@@ -42,6 +42,7 @@
 
             setTimeout(()=> {
                 showPopup = false;
+                 window.location.href = "/"
             }, 9000);
         }
 

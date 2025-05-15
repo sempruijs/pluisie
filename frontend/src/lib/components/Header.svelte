@@ -1,4 +1,4 @@
-<div class="fixed top-0 left-0 right-0 h-15 bg-auto z-40 pointer-events-none bg-gradient-plant shadow"></div>
+<div class="fixed top-0 left-0 right-0 h-15 bg-auto z-40 pointer-events-none bg-gradient-plant shadow" />
 <header class="fixed top-0 left-0 right-0 w-full z-50 text-black">
   <nav class="w-full flex items-center justify-between h-16 px-4">
     

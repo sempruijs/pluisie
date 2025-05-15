@@ -10,6 +10,6 @@
 
 <div class="min-h-screen flex flex-col">
 	{@render children()}
-
 	<Footer />
+	
 </div>
