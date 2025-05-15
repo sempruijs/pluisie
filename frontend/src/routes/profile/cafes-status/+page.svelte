@@ -4,7 +4,7 @@
     import Profilepage from "$lib/components/Profilepage.svelte";
     import ApplicationTimeline from "$lib/components/ApplicationTimeline.svelte";
 </script>
-<main class="flex-1 bg-gradient-plant">
+<main class="flex-1 flex items-center justify-center bg-gradient-plant">
 <Header />
 <ApplicationTimeline />
 </main>

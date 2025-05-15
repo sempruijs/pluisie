@@ -34,7 +34,8 @@
 
             setTimeout(()=> {
                 showPopup = false;
-            }, 2500);
+                window.location.href = "/profile/cafes-status"
+            }, 3250);
         }
 
 </script>
@@ -111,7 +112,12 @@
               <div class="popup-container">
                   <div class="popup">
                     <p>Bedankt voor je aanmelding!</p>
-                    <p>&copy;De Hideout</p>
+                    <p class="pt-3 font-semibold">
+                      Met vriendelijke groet,
+                  </p>
+                  <p>
+                      Het bestuur van Science Café Hideout
+                  </p>
                   </div>
               </div>
             {/if}

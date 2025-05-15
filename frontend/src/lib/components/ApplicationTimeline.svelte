@@ -1,5 +1,23 @@
 <script>
-  export let currentStep = 2;
+  export let currentStep = 1;
+
+  function handleKey(event) {
+    if (event.key === '+') {
+      if (currentStep < 4 ) currentStep += 1;
+    } else if (event.key === '-') {
+      if (currentStep > 1) currentStep -= 1;
+    }
+  }
+
+  import { onMount, onDestroy } from "svelte";
+
+  onMount(() => {
+    window.addEventListener('keydown', handleKey);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener('keydown', handleKey);
+  });
 
   const steps = [
     "Verzoek Aangemaakt",
@@ -9,6 +27,7 @@
   ];
 </script>
 
+<div class="flex justify-center items-center">
 <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-0">
   <div class="rounded-xl shadow-2xl p-6 sm:p-10 bg-white">
     <p class="text-2xl font-semibold mb-8 mt-5 text-center">Aanmeldverzoek In Behandeling...</p>
@@ -42,6 +61,7 @@
       </div>
     </div>
 
-    <p class="text-xs mt-10 -mb-5 text-center">Hulp bij problemen? Contact op hoofdbar@cafehideout.nL</p>
+    <p class="text-xs mt-10 mb-0 text-center">Hulp bij problemen? Contact op hoofdbar@cafehideout.nL</p>
   </div>
+</div>
 </div>
