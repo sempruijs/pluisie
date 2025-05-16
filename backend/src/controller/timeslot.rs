@@ -2,7 +2,7 @@ use crate::service::timeslot::TimeslotService;
 use chrono::NaiveDate;
 use crate::parser::*;
 use chrono::Utc;
- use crate::domain::Timeslot;
+use crate::domain::Timeslot;
 use uuid::Uuid;
 use rocket::post;
 use rocket::response::status;
@@ -24,6 +24,7 @@ struct CreateTimeslotRequest {
     pub is_enrolled: bool,
  }
 
+/// This endpoint is not secure because you can enter any type of org_id and it will add it regardless of the user role premissions
 #[utoipa::path(
     post,
     path = "/timeslot",
