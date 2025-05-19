@@ -3,11 +3,24 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
-  build-backend:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest  # Indented correctly under 'build'
+
     steps:
-      - uses: actions/checkout@v3
-      - run: cd ${{ github.workspace }}
-      - uses: cachix/install-nix-action@v18
-      - run: nix build -L
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+
+      - name: Build Nix derivation
+        run: |
+          nix build .#frontend
+          echo "site output is in result/"
+
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./result
