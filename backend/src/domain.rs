@@ -46,3 +46,14 @@ pub struct Timeslot {
 
 pub struct UserID(pub Uuid);
 pub struct OrgID(pub Uuid);
+
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
+pub struct Day{
+    pub date: NaiveDate,
+    pub hours: Vec<Hour>
+}
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
+pub struct Hour{
+    pub hour: u8,
+    pub people_amount: u8,
+}
