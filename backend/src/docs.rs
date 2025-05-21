@@ -2,6 +2,7 @@ use crate::controller::authentication::*;
 use crate::controller::user::*;
 use crate::controller::organisation::*;
 use crate::controller::access_notification::*;
+use crate::controller::timeslot::*;
 use utoipa::OpenApi;
 
 #[derive(OpenApi)]
@@ -16,5 +17,6 @@ use utoipa::OpenApi;
     get_all_organisation,
     get_access_notification,
     create_access_notification,
+    get_days,
 ))]
 pub struct ApiDoc;
