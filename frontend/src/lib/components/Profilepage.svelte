@@ -1,7 +1,6 @@
 <script>
     export let name = "Bert Jan";
     export let birthDate = "01-02-2003";
-    export let pronouns = "Hij/hem";
     export let iva = "Bert Jan’s IVA";
     export let vereniging = "Indicium";
     export let cafesStatus = "In behandeling...";
@@ -40,10 +39,6 @@
                 <div class="flex justify-between pb-2">
                     <span>Geboortedatum:</span>
                     <span>{birthDate}</span>
-                </div>
-                <div class="flex justify-between pb-2">
-                    <span>Mijn voornaamwoorden:</span>
-                    <span>{pronouns}</span>
                 </div>
                 <div class="flex justify-between pb-2">
                     <span>IVA:</span>
