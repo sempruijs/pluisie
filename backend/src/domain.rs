@@ -3,6 +3,7 @@ use serde::Serialize;
 use sqlx::FromRow;
 use uuid::Uuid;
 use chrono::{DateTime, NaiveDate, Utc};
+use utoipa::ToSchema;
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
 pub struct User {
@@ -47,12 +48,13 @@ pub struct Timeslot {
 pub struct UserID(pub Uuid);
 pub struct OrgID(pub Uuid);
 
-#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow, ToSchema)]
 pub struct Day{
+    #[schema(value_type = String)]
     pub date: NaiveDate,
     pub hours: Vec<Hour>
 }
-#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow, ToSchema)]
 pub struct Hour{
     pub hour: u8,
     pub people_amount: u8,
