@@ -1,4 +1,5 @@
 use crate::domain::Timeslot;
+use std::collections::BTreeMap;
 use crate::domain::Day;
 use crate::domain::Hour;
 use rocket::async_trait;
@@ -50,7 +51,13 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
         Ok(())
     }
 
-    async fn get_days(&self, user_id: Uuid, org_id: Uuid, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error> {
+    async fn get_days(
+        &self,
+        user_id: Uuid,
+        org_id: Uuid,
+        start_date: NaiveDate,
+        end_date: NaiveDate,
+    ) -> Result<Vec<Day>, sqlx::Error> {
         let rows = sqlx::query!(
             r#"
             SELECT date, hour, COUNT(*) AS people_amount
@@ -70,30 +77,27 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
         .fetch_all(&self.pool)
         .await?;
 
-        // Groepeer resultaten per datum
-        let mut day_map: HashMap<NaiveDate, Vec<Hour>> = HashMap::new();
+        let day_map: BTreeMap<NaiveDate, Vec<Hour>> = rows
+            .into_iter()
+            .fold(BTreeMap::new(), |mut acc, row| {
+                let date = row.date;
+                let hour = row.hour as u8;
+                let people_amount = row.people_amount.unwrap_or(0) as u8;
 
-        for row in rows {
-            let date = row.date;
-            let hour = row.hour as u8;
-            let people_amount = row.people_amount.unwrap_or(0) as u8;
+                acc.entry(date)
+                    .or_default()
+                    .push(Hour { hour, people_amount });
 
-            day_map
-                .entry(date)
-                .or_insert_with(Vec::new)
-                .push(Hour { hour, people_amount });
-        }
+                acc
+            });
 
-        // Zet map om naar geordende Vec<Day>
-        let mut days: Vec<Day> = day_map
+        let days = day_map
             .into_iter()
             .map(|(date, mut hours)| {
                 hours.sort_by_key(|h| h.hour);
                 Day { date, hours }
             })
             .collect();
-
-        days.sort_by_key(|d| d.date);
 
         Ok(days)
     }
