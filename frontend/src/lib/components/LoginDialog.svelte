@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from "./Button.svelte";
 	import { Effect, pipe } from "effect";
-	import { loginEffect } from "$lib/ts/login";
+	import { Login } from "$lib/ts/login";
 
 	const form = $state({
 		email: "",
@@ -9,7 +9,7 @@
 	});
 
 	const handleLogin = (email: string, password: string) => {
-		Effect.runPromise(loginEffect({ email, password }))
+		Effect.runPromise(Login({ email, password }))
 			.then(({ jwt }) => {
 				console.log("JWT:", jwt);
 				localStorage.setItem("jwt", jwt);
