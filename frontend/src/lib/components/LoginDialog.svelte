@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Button from "./Button.svelte";
 	import { Effect, pipe } from "effect";
 	import { loginEffect } from "$lib/ts/login";
@@ -8,22 +8,16 @@
 		password: "",
 	});
 
-	const handleLogin = async () => {
-		const program = pipe(
-			loginEffect({ email: form.email, password: form.password }),
-			Effect.tap(({ jwt }) =>
-				Effect.sync(() => {
-					console.log("JWT:", jwt);
-					localStorage.setItem("jwt", jwt);
-					window.location.href = "/selectcafe";
-				}),
-			),
-			Effect.catchAll((error) =>
-				Effect.sync(() => alert("Login failed: " + error.message)),
-			),
-		);
-
-		await Effect.runPromise(program);
+	const handleLogin = (email: string, password: string) => {
+		Effect.runPromise(loginEffect({ email, password }))
+			.then(({ jwt }) => {
+				console.log("JWT:", jwt);
+				localStorage.setItem("jwt", jwt);
+				window.location.href = "/selectcafe";
+			})
+			.catch((error) => {
+				alert("Login failed: " + error.message);
+			});
 	};
 </script>
 
@@ -49,7 +43,9 @@
 		/>
 	</div>
 	<div class="flex justify-between my-4">
-		<button onclick={handleLogin}>Login</button>
+		<button onclick={() => handleLogin(form.email, form.password)}
+			>Login</button
+		>
 		<Button color="red">Reset Account</Button>
 	</div>
 	<div class="flex w-full h-0.5 bg-gray-300 my-5">
