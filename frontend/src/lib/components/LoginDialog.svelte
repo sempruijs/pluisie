@@ -1,5 +1,10 @@
 <script>
 	import Button from "./Button.svelte";
+
+	const form = $state({
+		email: "",
+		password: "",
+	});
 </script>
 
 <div
@@ -9,14 +14,16 @@
 		<h1 class="pl-1 font-semibold">E-mail:</h1>
 		<input
 			type="text"
+			bind:value={form.email}
 			class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 shadow-gray-200 rounded-lg outline-none selecttext"
 			placeholder="email"
 		/>
 	</div>
 	<div class="flex2 my-4">
-		<h1 class="pl-1 font-semibold">wachtwoord</h1>
+		<h1 class="pl-1 font-semibold">Wachtwoord</h1>
 		<input
 			type="password"
+			bind:value={form.password}
 			class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 shadow-gray-200 rounded-lg outline-none selecttext"
 			placeholder="password"
 		/>
