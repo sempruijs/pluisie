@@ -1,4 +1,5 @@
 import { Effect } from "effect";
+import { apiUrl } from "./server"; 
 
 export interface LoginRequest {
     email: string;
@@ -10,25 +11,36 @@ export interface LoginResponse {
 }
 
 export const Login = (
-    payload: LoginRequest
-): Effect.Effect<LoginResponse, Error> =>
-    Effect.tryPromise({
-        try: async () => {
-            const response = await fetch("http://45.32.236.116:8000/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    accept: "application/json",
-                },
-                body: JSON.stringify(payload),
-            });
+  payload: LoginRequest
+) =>
+  Effect.gen(function* () {
+    const url = yield* apiUrl("/login");
 
-            if (!response.ok) {
-                const text = await response.text();
-                throw new Error(`Login failed (${response.status}): ${text}`);
-            }
-
-            return await response.json() as LoginResponse;
-        },
-        catch: (err) => new Error("Login request failed: " + String(err)),
+    const response = yield* Effect.tryPromise({
+      try: () =>
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify(payload),
+        }),
+      catch: (err) => new Error("Login request failed: " + String(err)),
     });
+
+    if (!response.ok) {
+      const text = yield* Effect.tryPromise({
+        try: () => response.text(),
+        catch: () => "Unable to read error response",
+      });
+      throw new Error(`Login failed (${response.status}): ${text}`);
+    }
+
+    const data = yield* Effect.tryPromise({
+      try: () => response.json() as Promise<LoginResponse>,
+      catch: (err) => new Error("Failed to parse JSON: " + String(err)),
+    });
+
+    return data;
+  });

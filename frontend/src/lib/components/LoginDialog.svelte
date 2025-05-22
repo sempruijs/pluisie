@@ -2,14 +2,23 @@
 	import Button from "./Button.svelte";
 	import { Effect, pipe } from "effect";
 	import { Login } from "$lib/ts/login";
+	import { provideServerConfig, ServerConfig } from "$lib/ts/server";
+	import type { ServerConfigSchema } from "$lib/ts/server";
 
 	const form = $state({
 		email: "",
 		password: "",
 	});
 
+	const productionConfig: ServerConfigSchema = {
+		ip: "45.32.236.116",
+		port: 8000,
+	};
+
 	const handleLogin = (email: string, password: string) => {
-		Effect.runPromise(Login({ email, password }))
+		Effect.runPromise(
+			provideServerConfig(productionConfig)(Login({ email, password })),
+		)
 			.then(({ jwt }) => {
 				console.log("JWT:", jwt);
 				localStorage.setItem("jwt", jwt);
