@@ -9,7 +9,7 @@ export interface LoginResponse {
     jwt: string;
 }
 
-export const loginEffect = (
+export const Login = (
     payload: LoginRequest
 ): Effect.Effect<LoginResponse, Error> =>
     Effect.tryPromise({
