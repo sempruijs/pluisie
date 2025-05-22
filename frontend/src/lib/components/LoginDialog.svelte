@@ -13,6 +13,14 @@
 			placeholder="email"
 		/>
 	</div>
+	<div class="flex2 my-4">
+		<h1 class="pl-1 font-semibold">wachtwoord</h1>
+		<input
+			type="password"
+			class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 shadow-gray-200 rounded-lg outline-none selecttext"
+			placeholder="password"
+		/>
+	</div>
 	<div class="flex justify-between my-4">
 		<a href="/selectcafe">
 			<Button>Login</Button>
