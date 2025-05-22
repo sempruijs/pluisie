@@ -67,8 +67,7 @@ async fn create(
 
 //api::get_days
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
-struct GetDaysrequest {
-    pub user_id: String,
+struct GetDaysRequest {
     pub org_id: String,
     pub start_date: String,
     pub end_date: String,
@@ -76,7 +75,7 @@ struct GetDaysrequest {
 #[utoipa::path(
     get,
     path = "/timeslot",
-    request_body = GetDaysrequest,
+    request_body = GetDaysRequest,
     responses(
         (status = 200, description = "Recieved timeslot list successfully", body = Vec<Day>),
         (status = 404, description = "Not found"),
@@ -90,14 +89,13 @@ struct GetDaysrequest {
 async fn get_days(
     service: &State<Arc<dyn TimeslotService>>,
     user: User,
-    payload: Json<GetDaysrequest>,
+    payload: Json<GetDaysRequest>,
 ) -> Result<Json<Vec<Day>>, status::Custom<String>> {
-    let user_id = Uuid::parse_str(&payload.user_id).expect("faild to parse user_id");
     let org_id = Uuid::parse_str(&payload.org_id).expect("faild to parse org_id");
     let start_date: NaiveDate = parse_iso8601_date(&payload.start_date).expect("Failed to parse start date");
     let end_date: NaiveDate = parse_iso8601_date(&payload.end_date).expect("Failed to parse end date");
 
-    match service.get_days(user_id, org_id, start_date, end_date).await {
+    match service.get_days(user.user_id, org_id, start_date, end_date).await {
         Ok(days) => Ok(Json(days)),
         Err(e) => Err(status::Custom(
             rocket::http::Status::InternalServerError,
