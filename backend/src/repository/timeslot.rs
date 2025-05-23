@@ -16,6 +16,8 @@ pub trait TimeslotRepository: Send + Sync {
 
     async fn get_days(&self, user_id: Uuid, org_id: Uuid, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
 
+    async fn delete_days(&self, timeslot_id: Uuid) -> Result<(), sqlx::Error>;
+
 }
 
 #[derive(Debug, Clone)]
@@ -101,4 +103,19 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
 
         Ok(days)
     }
+
+    async fn delete_days(&self, timeslot_id: Uuid) -> Result<(), sqlx::Error> {
+        sqlx::query!(
+            r#"
+            DELETE FROM timeslots
+            WHERE timeslot_id = $1
+            "#,
+            timeslot_id
+        )
+        .execute(&self.pool)
+        .await?;
+
+        Ok(())
+    }
+
 }
