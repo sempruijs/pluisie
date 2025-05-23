@@ -6,13 +6,6 @@
     import { serverConfig } from "$lib/config/config.template";
     import { onMount } from "svelte";
 
-    const user: User = {
-        name: "bla",
-        email: "bla@bla.nl",
-        iva: "",
-        is_super: false,
-    };
-
     const state = $state({
         user: Option.none<User>(),
     });
