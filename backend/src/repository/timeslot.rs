@@ -1,4 +1,3 @@
-use crate::domain::Timeslot;
 use sqlx::QueryBuilder;
 use std::collections::BTreeMap;
 use crate::domain::Day;
@@ -6,15 +5,10 @@ use crate::domain::Hour;
 use rocket::async_trait;
 use sqlx::types::Uuid;
 use sqlx::PgPool;
-use chrono::Utc;
-use std::collections::HashMap;
 use chrono::NaiveDate;
 
 #[async_trait]
 pub trait TimeslotRepository: Send + Sync {
-
-    async fn create(&self, timeslot: Timeslot) -> Result<(), sqlx::Error>;
-
     async fn get_days(&self, user_id: Uuid, org_id: Uuid, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
 
     async fn subscribe_to_hours(&self, date: NaiveDate, hours: Vec<u8>, is_enrolled: bool, user_id: Uuid, org_id: Uuid) -> Result<(), sqlx::Error>;
@@ -33,26 +27,6 @@ impl TimeslotRepositoryImpl {
 
 #[async_trait]
 impl TimeslotRepository for TimeslotRepositoryImpl {
-    async fn create(&self, timeslot: Timeslot) -> Result<(), sqlx::Error> {
-        sqlx::query!(
-            r#"
-            INSERT INTO timeslots (timeslot_id, created, org_id, user_id, date, hour, is_enrolled)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
-            "#,
-            timeslot.timeslot_id,
-            timeslot.created,
-            timeslot.org_id,
-            timeslot.user_id,
-            timeslot.date,
-            timeslot.hour,
-            timeslot.is_enrolled
-        )
-        .execute(&self.pool)
-        .await?;
-
-        Ok(())
-    }
-
     async fn get_days(
         &self,
         user_id: Uuid,
@@ -119,6 +93,8 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
         builder.push("VALUES ");
 
         let mut separated = builder.separated(", ");
+        let hours = hours.into_iter().map(|hour| hour as i16).collect::<Vec<i16>>();
+
         for hour in hours {
             separated.push_bind(Uuid::new_v4())
                 .push_bind(org_id)

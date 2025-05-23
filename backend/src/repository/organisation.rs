@@ -1,7 +1,5 @@
 use rocket::async_trait;
 use crate::domain::Organisation;
-use crate::domain::UserID;
-use crate::domain::OrgID;
 use sqlx::types::Uuid;
 use sqlx::PgPool;
 

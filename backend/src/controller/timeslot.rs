@@ -1,14 +1,10 @@
 use crate::service::timeslot::TimeslotService;
 use chrono::NaiveDate;
 use crate::parser::*;
-use chrono::Utc;
 use crate::domain::User;
-use crate::domain::Timeslot;
 use crate::domain::Day;
-use crate::domain::Hour;
 use uuid::Uuid;
 use rocket::post;
-use rocket::get;
 use rocket::response::status;
 use rocket::routes;
 use rocket::serde::json::Json;
@@ -67,8 +63,8 @@ struct GetDaysRequest {
     pub end_date: String,
 }
 #[utoipa::path(
-    get,
-    path = "/timeslot",
+    post,
+    path = "/timeslot/get",
     request_body = GetDaysRequest,
     responses(
         (status = 200, description = "Recieved timeslot list successfully", body = Vec<Day>),
@@ -79,7 +75,7 @@ struct GetDaysRequest {
     operation_id = "GetTimeslot",
     tag = "Timeslot"
 )]
-#[get("/", data = "<payload>")]
+#[post("/get", data = "<payload>")]
 async fn get_days(
     service: &State<Arc<dyn TimeslotService>>,
     user: User,
