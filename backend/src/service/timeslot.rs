@@ -1,7 +1,9 @@
-use crate::domain::Day;
+use crate::domain::timeslot::Day;
 use crate::repository::timeslot::*;
 use rocket::async_trait;
 use chrono::NaiveDate;
+use crate::domain::organisation::OrgID;
+use crate::domain::user::UserID;
 
 #[async_trait]
 pub trait TimeslotService: Send + Sync {

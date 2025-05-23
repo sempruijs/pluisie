@@ -1,6 +1,6 @@
 use rocket::async_trait;
-use crate::domain::Organisation;
-use sqlx::types::Uuid;
+use crate::domain::organisation::OrgID;
+use crate::domain::organisation::Organisation;
 use sqlx::PgPool;
 
 #[async_trait]
@@ -35,7 +35,7 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
             INSERT INTO organisations (org_id, name, picture, description)
             VALUES ($1, $2, $3, $4)
             "#,
-            organisation.org_id,
+            *organisation.org_id,
             organisation.name,
             organisation.picture,
             organisation.description,
@@ -52,7 +52,7 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
             DELETE FROM organisations
             WHERE org_id = $1
             "#,
-            org_id,
+            *org_id,
         )
         .execute(&self.pool)
         .await?;
@@ -68,7 +68,7 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
             FROM organisations
             WHERE org_id = $1
             "#,
-            org_id,
+            *org_id,
         )
         .fetch_optional(&self.pool)
         .await?;

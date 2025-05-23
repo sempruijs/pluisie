@@ -1,5 +1,5 @@
-use crate::domain::User;
-use crate::domain::UserID;
+use crate::domain::user::User;
+use crate::domain::user::UserID;
 use crate::repository::user::*;
 use bcrypt::hash;
 use rocket::async_trait;

@@ -1,6 +1,6 @@
 use crate::service::access_notification::AccessNotificationService;
-use crate::domain::UserID;
- use uuid::Uuid;
+ use crate::domain::organisation::OrgID;
+use crate::domain::user::UserID;
 use rocket::post;
 use rocket::get;
 use rocket::response::status;
@@ -46,7 +46,7 @@ async fn get_access_notification(
                 .into_iter()
                 .map(|notification| AccessNotificationResponse {
                     org_id: notification.org_id,
-                    user_id: UserID(notification.user_id),
+                    user_id: notification.user_id,
                     date: notification.date.to_string(),
                     is_accepted: notification.is_accepted,
                     description: notification.description,
@@ -86,9 +86,7 @@ async fn create_access_notification(
     user: User,
     payload: Json<CreateAccessNotificationRequest>,
 ) -> Json<bool> {
-    let org_id = Uuid::parse_str(&payload.org_id).unwrap();
-
-    match service.create_access_notification(org_id, user.user_id, payload.description.clone()).await {
+    match service.create_access_notification(payload.org_id.clone(), user.user_id, payload.description.clone()).await {
         Ok(true) => Json(true),
         _ => Json(false),
     }

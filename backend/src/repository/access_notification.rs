@@ -1,8 +1,9 @@
-use crate::domain::AccessNotification;
+use crate::domain::access_notification::AccessNotification;
 use rocket::async_trait;
-use sqlx::types::Uuid;
 use sqlx::PgPool;
 use chrono::Utc;
+use crate::domain::user::UserID;
+ use crate::domain::organisation::OrgID;
 
 #[async_trait]
 pub trait AccessNotificationRepository: Send + Sync {
@@ -53,8 +54,8 @@ impl AccessNotificationRepository for AccessNotificationRepositoryImpl {
             INSERT INTO access_notifications (org_id, user_id, date, is_accepted, description)
             VALUES ($1, $2, $3, NULL, $4)
             "#,
-            org_id,
-            user_id,
+            *org_id,
+            *user_id,
             date,
             description
         )

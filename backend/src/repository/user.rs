@@ -1,5 +1,5 @@
-use crate::domain::User;
-use crate::domain::UserID;
+use crate::domain::user::User;
+use crate::domain::user::UserID;
 use rocket::async_trait;
 use sqlx::PgPool;
 
@@ -31,7 +31,7 @@ impl UserRepository for UserRepositoryImpl {
         sqlx::query!(
             "INSERT INTO users (user_id, name, email, password, is_super, iva)
              VALUES ($1, $2, $3, $4, $5, $6)",
-            user.user_id,
+            *user.user_id,
             user.name,
             user.email,
             user.password,
@@ -80,7 +80,7 @@ impl UserRepository for UserRepositoryImpl {
             updated_user.password,
             updated_user.is_super,
             updated_user.iva,
-            updated_user.user_id
+            *updated_user.user_id
         )
         .execute(&self.pool)
         .await?;
