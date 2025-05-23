@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use std::convert::TryFrom;
 use serde::Serialize;
 use sqlx::FromRow;
 use uuid::Uuid;
@@ -58,4 +59,13 @@ pub struct Day {
 pub struct Hour {
     pub hour: u8,
     pub people_amount: u8,
+}
+
+impl TryFrom<&str> for UserID {
+    type Error = uuid::Error;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        let uuid = Uuid::parse_str(value)?;
+        Ok(UserID(uuid))
+    }
 }

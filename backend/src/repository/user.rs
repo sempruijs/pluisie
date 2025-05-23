@@ -1,13 +1,13 @@
 use crate::domain::User;
+use crate::domain::UserID;
 use rocket::async_trait;
-use sqlx::types::Uuid;
 use sqlx::PgPool;
 
 #[async_trait]
 pub trait UserRepository: Send + Sync {
     async fn create(&self, user: User) -> Result<(), sqlx::Error>;
 
-    async fn from_uuid(&self, user_id: Uuid) -> Result<Option<User>, sqlx::Error>;
+    async fn from_uuid(&self, user_id: UserID) -> Result<Option<User>, sqlx::Error>;
 
     async fn from_email(&self, email: String) -> Result<Option<User>, sqlx::Error>;
 
@@ -43,13 +43,13 @@ impl UserRepository for UserRepositoryImpl {
         Ok(())
     }
 
-    async fn from_uuid(&self, user_id: Uuid) -> Result<Option<User>, sqlx::Error> {
+    async fn from_uuid(&self, user_id: UserID) -> Result<Option<User>, sqlx::Error> {
         let user = sqlx::query_as!(
             User,
             "SELECT user_id, name, email, password, is_super, iva
              FROM users
              WHERE user_id = $1",
-            user_id
+            user_id.0
         )
         .fetch_optional(&self.pool)
         .await?;
