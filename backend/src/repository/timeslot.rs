@@ -1,4 +1,5 @@
 use crate::domain::Timeslot;
+use sqlx::QueryBuilder;
 use std::collections::BTreeMap;
 use crate::domain::Day;
 use crate::domain::Hour;
@@ -16,8 +17,7 @@ pub trait TimeslotRepository: Send + Sync {
 
     async fn get_days(&self, user_id: Uuid, org_id: Uuid, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
 
-    async fn delete_days(&self, timeslot_id: Uuid) -> Result<(), sqlx::Error>;
-
+    async fn subscribe_to_hours(&self, date: NaiveDate, hours: Vec<u8>, is_enrolled: bool, user_id: Uuid, org_id: Uuid) -> Result<(), sqlx::Error>;
 }
 
 #[derive(Debug, Clone)]
@@ -104,16 +104,31 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
         Ok(days)
     }
 
-    async fn delete_days(&self, timeslot_id: Uuid) -> Result<(), sqlx::Error> {
-        sqlx::query!(
-            r#"
-            DELETE FROM timeslots
-            WHERE timeslot_id = $1
-            "#,
-            timeslot_id
-        )
-        .execute(&self.pool)
-        .await?;
+    async fn subscribe_to_hours(
+        &self,
+        date: NaiveDate,
+        hours: Vec<u8>,
+        is_enrolled: bool,
+        user_id: Uuid,
+        org_id: Uuid,
+    ) -> Result<(), sqlx::Error> {
+        let mut builder = QueryBuilder::new(
+            "INSERT INTO timeslots (timeslot_id, org_id, user_id, date, hour, is_enrolled) ",
+        );
+
+        builder.push("VALUES ");
+
+        let mut separated = builder.separated(", ");
+        for hour in hours {
+            separated.push_bind(Uuid::new_v4())
+                .push_bind(org_id)
+                .push_bind(user_id)
+                .push_bind(date)
+                .push_bind(hour as i16)
+                .push_bind(is_enrolled);
+        }
+
+        builder.build().execute(&self.pool).await?;
 
         Ok(())
     }
