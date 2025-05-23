@@ -1,5 +1,5 @@
 import { Effect } from "effect";
-import { apiUrl } from "./server"; 
+import { apiUrl } from "./server";
 import type { User } from "./domain";
 
 export const GetUser = (jwt: string) =>
@@ -31,5 +31,5 @@ export const GetUser = (jwt: string) =>
       catch: (err) => new Error("Failed to parse JSON: " + String(err)),
     });
 
-    return Effect.succeed(user);
+    return user;
   });
