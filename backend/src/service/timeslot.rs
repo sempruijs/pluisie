@@ -1,6 +1,4 @@
-use crate::domain::Timeslot;
 use crate::domain::Day;
-use crate::domain::Hour;
 use crate::repository::timeslot::*;
 use rocket::async_trait;
 use uuid::Uuid;
@@ -8,7 +6,6 @@ use chrono::NaiveDate;
 
 #[async_trait]
 pub trait TimeslotService: Send + Sync {
-
     async fn subscribe_to_hours(&self, date: NaiveDate, hours: Vec<u8>, is_enrolled: bool, user_id: Uuid, org_id: Uuid) -> Result<(), sqlx::Error>;
 
     async fn get_days(&self, user_id: Uuid, org_id: Uuid, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
