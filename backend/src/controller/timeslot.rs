@@ -17,14 +17,13 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
-use rocket::delete;
 
-//api::post_timeslot
+//api::subscribe_to_hours
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
-struct CreateTimeslotRequest {
+struct SubscribeToHoursRequest {
     pub org_id: String,
     pub date: String,
-    pub hour: i16,
+    pub hours: Vec<u8>,
     pub is_enrolled: bool,
  }
 
@@ -32,35 +31,29 @@ struct CreateTimeslotRequest {
 #[utoipa::path(
     post,
     path = "/timeslot",
-    request_body = CreateTimeslotRequest,
+    request_body = SubscribeToHoursRequest,
     responses(
-        (status = 200, description = "Recieved timeslot list successfully", body = bool),
+        (status = 200, description = "Subscribed to hours successfully", body = bool),
         (status = 404, description = "Not found"),
         (status = 500, description = "Internal server error"),
     ),
-    description = "Create timeslot list",
-    operation_id = "CreateTimeslot",
+    description = "Subscribe to hours",
+    operation_id = "SubcribeToHours",
     tag = "Timeslot"
 )]
 #[post("/", data = "<payload>")]
-async fn create(
+async fn subscirbe_to_hours(
     service: &State<Arc<dyn TimeslotService>>,
     user: User,
-    payload: Json<CreateTimeslotRequest>,
+    payload: Json<SubscribeToHoursRequest>,
 ) -> Json<bool> {
-    let org_id = Uuid::parse_str(&payload.org_id).expect("faild to parse org_id");
+    let org_id = Uuid::parse_str(&payload.org_id).expect("Faild to parse org_id");
     let date: NaiveDate = parse_iso8601_date(&payload.date).expect("Failed to parse date");
-    let timeslot = Timeslot {
-        timeslot_id: Uuid::new_v4(),
-        org_id,
-        user_id: user.user_id,
-        date,
-        created: Utc::now(),
-        hour: payload.hour.clone(),
-        is_enrolled: payload.is_enrolled.clone(),
-    }; 
+    let user_id = user.user_id;
+    let hours = payload.hours.clone();
+    let is_enrolled = payload.is_enrolled.clone();
 
-    match service.create(timeslot).await {
+    match service.subscribe_to_hours(date, hours, is_enrolled, user_id, org_id).await {
         Ok(()) => Json(true),
         _ => Json(false),
     }
@@ -105,37 +98,9 @@ async fn get_days(
     }
 }
 
-//api:: delete_days
-#[derive(Debug, Serialize, Deserialize, ToSchema)]
-struct DeleteDaysRequest {
-    pub timeslot_id: String,
-}
-
-#[utoipa::path(
-    delete,
-    path = "/timeslot",
-    request_body = DeleteDaysRequest,
-    responses(
-        (status = 200, description = "Timeslot deleted successfully", body = bool),
-        (status = 404, description = "Not found"),
-        (status = 500, description = "Internal server error"),
-    ),
-    description = "Delete timeslot",
-    operation_id = "DeleteTimeslot",
-    tag = "Timeslot"
-)]
-#[delete("/", data = "<payload>")]
-async fn delete_days(
-    service: &State<Arc<dyn TimeslotService>>,
-    payload: Json<DeleteDaysRequest>,
-) -> Json<bool>{
-   Json(true)
-}
-
-
 // Combine all the access_notifications routes.
 pub fn timeslots_routes() -> Vec<rocket::Route> {
     routes![
-        create, get_days, delete_days, 
+        subscirbe_to_hours, get_days, 
     ]
 }

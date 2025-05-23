@@ -18,6 +18,6 @@ use utoipa::OpenApi;
     get_access_notification,
     create_access_notification,
     get_days,
-    delete_days,
+    subscirbe_to_hours,
 ))]
 pub struct ApiDoc;
