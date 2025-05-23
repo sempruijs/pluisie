@@ -1,7 +1,9 @@
 use sqlx::QueryBuilder;
+use crate::domain::organisation::OrgID;
+use crate::domain::user::UserID;
 use std::collections::BTreeMap;
-use crate::domain::Day;
-use crate::domain::Hour;
+use crate::domain::timeslot::Day;
+use crate::domain::timeslot::Hour;
 use rocket::async_trait;
 use sqlx::types::Uuid;
 use sqlx::PgPool;
@@ -45,8 +47,8 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
             GROUP BY date, hour
             ORDER BY date, hour
             "#,
-            user_id,
-            org_id,
+            *user_id,
+            *org_id,
             start_date,
             end_date,
         )
@@ -97,8 +99,8 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
 
         for hour in hours {
             separated.push_bind(Uuid::new_v4())
-                .push_bind(org_id)
-                .push_bind(user_id)
+                .push_bind(*org_id)
+                .push_bind(*user_id)
                 .push_bind(date)
                 .push_bind(hour as i16)
                 .push_bind(is_enrolled);

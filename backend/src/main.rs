@@ -3,7 +3,7 @@ use crate::service::access_notification::AccessNotificationService;
 use crate::service::access_notification::AccessNotificationServiceImpl;
 use crate::controller::access_notification::access_notification_routes;
 use crate::controller::organisation::organisation_routes;
-use crate::domain::User;
+use crate::domain::user::User;
 use crate::repository::organisation::*;
 use crate::service::authentication::*;
 use crate::service::organisation::*;

@@ -1,5 +1,5 @@
-use crate::domain::User;
-use crate::domain::UserID;
+use crate::domain::user::User;
+use crate::domain::user::UserID;
 use crate::repository::user::UserRepository;
 use bcrypt::verify;
 use chrono::{Duration, Utc};
@@ -8,7 +8,6 @@ use jsonwebtoken::{encode, EncodingKey, Header};
 use rocket::async_trait;
 use serde::Deserialize;
 use serde::Serialize;
-use uuid::Uuid;
 
 /// Claims are encoded in the JWT.
 #[derive(Debug, Serialize, Deserialize)]

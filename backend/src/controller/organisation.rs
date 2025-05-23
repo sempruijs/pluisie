@@ -1,5 +1,6 @@
-use crate::domain::Organisation;
-use crate::domain::User;
+use crate::domain::organisation::Organisation;
+use crate::domain::organisation::OrgID;
+use crate::domain::user::User;
 use crate::service::organisation::OrganisationService;
 use rocket::post;
 use rocket::delete;
@@ -10,7 +11,6 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
-use uuid::Uuid;
 use rocket::get; 
 
 /// Request body for creating a organisation.
@@ -83,13 +83,11 @@ async fn delete_organisation(
     user: User,
 ) -> Json<bool> {
 
-    if let Ok(org_id) = Uuid::parse_str(&payload.org_id) {
-        if user.is_super {
-         if let Ok(()) = organisation_service.delete(org_id).await {
+    if user.is_super {
+        if let Ok(()) = organisation_service.delete(payload.org_id.clone()).await {
             return Json(true);
-           }
-        } 
-    }
+        }
+    } 
     Json(false)
 }
 
@@ -129,10 +127,7 @@ struct GetOrganisationRequest {
     payload: Json<GetOrganisationRequest>,
     organisation_service: &State<Arc<dyn OrganisationService>>,
 ) -> Json<GetOrganisationResponse> {
-    // TODO: remove the expect
-    let org_id = Uuid::parse_str(&payload.org_id).expect("failed to parse uuid while trying to recieve an organisation");
-
-    if let Ok(Some(organisation)) = organisation_service.get_org_id(org_id).await {
+    if let Ok(Some(organisation)) = organisation_service.get_org_id(payload.org_id.clone()).await {
         return Json(GetOrganisationResponse {
             org_id: organisation.org_id,
             name: organisation.name,

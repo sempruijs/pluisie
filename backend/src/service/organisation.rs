@@ -1,7 +1,7 @@
-use crate::domain::Organisation;
+use crate::domain::organisation::Organisation;
 use crate::repository::organisation::*;
 use rocket::async_trait;
-use uuid::Uuid;
+use crate::domain::organisation::OrgID;
 
 #[async_trait]
 pub trait OrganisationService: Send + Sync {

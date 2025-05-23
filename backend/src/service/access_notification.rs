@@ -1,6 +1,9 @@
-use crate::domain::AccessNotification;
+use crate::domain::access_notification::AccessNotification;
 use crate::repository::access_notification::*;
 use rocket::async_trait;
+use crate::domain::organisation::OrgID;
+use crate::domain::user::UserID;
+
 
 #[async_trait]
 pub trait AccessNotificationService: Send + Sync {
