@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { User } from "$lib/ts/domain";
+    import { logout } from "$lib/ts/logout";
     import { Effect, Option } from "effect";
     import { GetUser } from "$lib/ts/GetUser";
     import { provideServerConfig } from "$lib/ts/server";
@@ -37,7 +38,7 @@
     <div class="flex justify-center w-full px-4 sm:px-6 lg:px-0">
         <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl">
             <!-- Welcome message outside the border -->
-            <div class="text-center text-2xl mb-6">Welkom Op Je Profiel!</div>
+            <h1 class="text-center text-2xl mb-6">Welkom Op Je Profiel!</h1>
 
             <!-- The rest of the profile content inside a single border -->
             <div class="border border-gray-500 p-6 rounded-lg">
@@ -90,6 +91,7 @@
                     </div>
                 </div>
             </div>
+            <button onclick={logout}>logut</button>
         </div>
     </div>
 {:else}

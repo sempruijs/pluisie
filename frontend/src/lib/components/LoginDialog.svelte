@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from "./Button.svelte";
-	import { Effect, pipe } from "effect";
+	import { Effect } from "effect";
 	import { Login } from "$lib/ts/login";
 	import { provideServerConfig, ServerConfig } from "$lib/ts/server";
 	import { serverConfig } from "$lib/config/config.template";
