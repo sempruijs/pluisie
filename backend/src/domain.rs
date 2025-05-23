@@ -41,7 +41,7 @@ pub struct Timeslot {
     pub org_id: Uuid,
     pub user_id: Uuid,
     pub date: NaiveDate,
-    pub hour: i16, 
+    pub hour: Vec<u8>, 
     pub is_enrolled: bool,
 }
 
