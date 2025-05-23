@@ -54,7 +54,7 @@ async fn create_user(
 ) -> Json<bool> {
     // Convert `CreateUserRequest` to `User`
     let user = User {
-        user_id: Uuid::new_v4(), // Generate a new UUID for the user
+        user_id: UserID::new(),
         name: payload.name.clone(),
         email: payload.email.clone(),
         password: payload.password.clone(),

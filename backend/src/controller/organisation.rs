@@ -41,7 +41,7 @@ async fn create_organisation(
     user: User,
 ) -> Json<bool> {
     let organisation = Organisation {
-        org_id: Uuid::new_v4(),
+        org_id: OrgID::new(),
         name: payload.name.clone(),
         picture: Some(payload.picture.clone()),
         description: Some(payload.description.clone()),
@@ -60,7 +60,7 @@ async fn create_organisation(
 /// Request body for delete a organisation.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct DeleteOrganisationRequest {
-    pub org_id: String,
+    pub org_id: OrgID,
 }
 
 #[utoipa::path(
@@ -96,7 +96,7 @@ async fn delete_organisation(
 /// Response for recieving organisation information.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct GetOrganisationResponse {
-    org_id: String,
+    org_id: OrgID,
     name: String,
     picture: String,
     description: String,
@@ -104,7 +104,7 @@ struct GetOrganisationResponse {
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct GetOrganisationRequest {
-    pub org_id: String,
+    pub org_id: OrgID,
 }
 
 #[utoipa::path(
@@ -134,7 +134,7 @@ struct GetOrganisationRequest {
 
     if let Ok(Some(organisation)) = organisation_service.get_org_id(org_id).await {
         return Json(GetOrganisationResponse {
-            org_id: organisation.org_id.to_string(),
+            org_id: organisation.org_id,
             name: organisation.name,
             picture: organisation.picture.unwrap_or_default(),
             description: organisation.description.unwrap_or_default(),
@@ -170,7 +170,7 @@ async fn get_all_organisation(
     match organisation_service.get_all_org().await {
         Ok(organisations) => {
             let result = organisations.into_iter().map(|org| GetOrganisationResponse {
-                org_id: org.org_id.to_string(),
+                org_id: org.org_id,
                 name: org.name,
                 picture: org.picture.unwrap(),
                 description: org.description.unwrap(),

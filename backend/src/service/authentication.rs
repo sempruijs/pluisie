@@ -13,7 +13,7 @@ use uuid::Uuid;
 /// Claims are encoded in the JWT.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
-    pub user_id: String,
+    pub user_id: UserID,
     pub exp: usize, // Expiration time (as a timestamp)
 }
 
@@ -67,19 +67,18 @@ impl<U: UserRepository> AuthenticationService for AuthenticationServiceImpl<U> {
             &Validation::default(),
         )
         .map(|data| data.claims);
-        // let user_id = UserID(Uuid::from_str(&claims.user_id).expect("Failed to generate uuid."));
 
         match claims {
             Ok(claims) => Ok(self
                 .user_repository
-                .from_uuid(UserID::try_from(claims.user_id.as_str()).expect("failed to parse user_id into Uuid"))
+                .from_uuid(claims.user_id)
                 .await?),
             Err(_) => Ok(None),
         }
     }
 }
 
-fn generate_jwt(user_id: Uuid, secret_key: String) -> Result<Option<String>, sqlx::Error> {
+fn generate_jwt(user_id: UserID, secret_key: String) -> Result<Option<String>, sqlx::Error> {
     // calculate experation time.
     let expiration = Utc::now()
         .checked_add_signed(Duration::hours(24))
@@ -87,7 +86,7 @@ fn generate_jwt(user_id: Uuid, secret_key: String) -> Result<Option<String>, sql
         .timestamp() as usize;
 
     let claims = Claims {
-        user_id: user_id.to_string(),
+        user_id: user_id,
         exp: expiration,
     };
 
