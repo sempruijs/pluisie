@@ -1,4 +1,5 @@
 use crate::service::access_notification::AccessNotificationService;
+use crate::domain::UserID;
  use uuid::Uuid;
 use rocket::post;
 use rocket::get;
@@ -16,7 +17,7 @@ use crate::User;
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
  struct AccessNotificationResponse {
     pub org_id: String,
-    pub user_id: String,
+    pub user_id: UserID,
     pub date: String,
     pub is_accepted: Option<bool>,
     pub description: String,
@@ -45,7 +46,7 @@ async fn get_access_notification(
                 .into_iter()
                 .map(|notification| AccessNotificationResponse {
                     org_id: notification.org_id.to_string(),
-                    user_id: notification.user_id.to_string(),
+                    user_id: UserID(notification.user_id),
                     date: notification.date.to_string(),
                     is_accepted: notification.is_accepted,
                     description: notification.description,

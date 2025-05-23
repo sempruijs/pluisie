@@ -46,7 +46,9 @@ pub struct Timeslot {
     pub is_enrolled: bool,
 }
 
+#[derive(Debug, Clone, ToSchema, Serialize, Deserialize)]
 pub struct UserID(pub Uuid);
+
 pub struct OrgID(pub Uuid);
 
 #[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow, ToSchema)]
