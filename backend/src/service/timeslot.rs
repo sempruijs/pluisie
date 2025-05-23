@@ -14,7 +14,6 @@ pub trait TimeslotService: Send + Sync {
     async fn get_days(&self, user_id: Uuid, org_id: Uuid, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
 
     async fn delete_days(&self, timeslot_id: Uuid) -> Result<(), sqlx::Error>;
-
 }
 
 pub struct TimeslotServiceImpl<T: TimeslotRepository> {
@@ -38,7 +37,6 @@ impl<R: TimeslotRepository> TimeslotService for TimeslotServiceImpl<R> {
     }
 
     async fn delete_days(&self, timeslot_id: Uuid) -> Result<(), sqlx::Error> {
-        self.timeslot_repository.delete_days(timeslot_id).await
+        todo!()
     }
-
 }

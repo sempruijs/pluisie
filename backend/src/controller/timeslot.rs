@@ -110,6 +110,7 @@ async fn get_days(
 struct DeleteDaysRequest {
     pub timeslot_id: String,
 }
+
 #[utoipa::path(
     delete,
     path = "/timeslot",
@@ -128,12 +129,7 @@ async fn delete_days(
     service: &State<Arc<dyn TimeslotService>>,
     payload: Json<DeleteDaysRequest>,
 ) -> Json<bool>{
-   if let Ok(timeslot_id) = Uuid::parse_str(&payload.timeslot_id) {
-     if let Ok(()) = service.delete_days(timeslot_id).await {
-            return Json(true);
-           }
-   }
-   Json(false)
+   Json(true)
 }
 
 
