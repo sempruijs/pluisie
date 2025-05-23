@@ -17,6 +17,7 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
+use rocket::delete;
 
 //api::post_timeslot
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -104,10 +105,41 @@ async fn get_days(
     }
 }
 
+//api:: delete_days
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
+struct DeleteDaysRequest {
+    pub timeslot_id: String,
+}
+#[utoipa::path(
+    delete,
+    path = "/timeslot",
+    request_body = DeleteDaysRequest,
+    responses(
+        (status = 200, description = "Timeslot deleted successfully", body = bool),
+        (status = 404, description = "Not found"),
+        (status = 500, description = "Internal server error"),
+    ),
+    description = "Delete timeslot",
+    operation_id = "DeleteTimeslot",
+    tag = "Timeslot"
+)]
+#[delete("/", data = "<payload>")]
+async fn delete_days(
+    service: &State<Arc<dyn TimeslotService>>,
+    payload: Json<DeleteDaysRequest>,
+) -> Json<bool>{
+   if let Ok(timeslot_id) = Uuid::parse_str(&payload.timeslot_id) {
+     if let Ok(()) = service.delete_days(timeslot_id).await {
+            return Json(true);
+           }
+   }
+   Json(false)
+}
+
 
 // Combine all the access_notifications routes.
 pub fn timeslots_routes() -> Vec<rocket::Route> {
     routes![
-        create, get_days
+        create, get_days, delete_days, 
     ]
 }
