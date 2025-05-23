@@ -3,21 +3,16 @@
 	import { Effect, pipe } from "effect";
 	import { Login } from "$lib/ts/login";
 	import { provideServerConfig, ServerConfig } from "$lib/ts/server";
-	import type { ServerConfigSchema } from "$lib/ts/server";
+	import { serverConfig } from "$lib/config/config.template";
 
 	const form = $state({
 		email: "",
 		password: "",
 	});
 
-	const productionConfig: ServerConfigSchema = {
-		ip: "45.32.236.116",
-		port: 8000,
-	};
-
 	const handleLogin = (email: string, password: string) => {
 		Effect.runPromise(
-			provideServerConfig(productionConfig)(Login({ email, password })),
+			provideServerConfig(serverConfig)(Login({ email, password })),
 		)
 			.then(({ jwt }) => {
 				console.log("JWT:", jwt);
