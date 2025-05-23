@@ -7,9 +7,9 @@ use sqlx::PgPool;
 pub trait OrganisationRepository: Send + Sync {
     async fn create(&self, organisation: Organisation) -> Result<(), sqlx::Error>;
 
-    async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error>;
+    async fn delete(&self, org_id: OrgID) -> Result<(), sqlx::Error>;
 
-    async fn get_org_id(&self, org_id: Uuid)-> Result<Option<Organisation>, sqlx::Error>;
+    async fn get_org_id(&self, org_id: OrgID)-> Result<Option<Organisation>, sqlx::Error>;
 
     async fn get_all_org(&self)-> Result<Vec<Organisation>, sqlx::Error>;
 
@@ -46,7 +46,7 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
         Ok(())
     }
 
-    async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error> {
+    async fn delete(&self, org_id: OrgID) -> Result<(), sqlx::Error> {
         sqlx::query!(
             r#"
             DELETE FROM organisations
@@ -60,7 +60,7 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
         Ok(())
     }
 
-    async fn get_org_id(&self, org_id: Uuid) -> Result<Option<Organisation>, sqlx::Error> {
+    async fn get_org_id(&self, org_id: OrgID) -> Result<Option<Organisation>, sqlx::Error> {
         let organisation = sqlx::query_as!(
             Organisation,
             r#"

@@ -3,7 +3,6 @@ use chrono::NaiveDate;
 use crate::parser::*;
 use crate::domain::User;
 use crate::domain::Day;
-use uuid::Uuid;
 use rocket::post;
 use rocket::response::status;
 use rocket::routes;
@@ -17,7 +16,7 @@ use utoipa::ToSchema;
 //api::subscribe_to_hours
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct SubscribeToHoursRequest {
-    pub org_id: String,
+    pub org_id: OrgID,
     pub date: String,
     pub hours: Vec<u8>,
     pub is_enrolled: bool,
@@ -58,7 +57,7 @@ async fn subscirbe_to_hours(
 //api::get_days
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct GetDaysRequest {
-    pub org_id: String,
+    pub org_id: OrgID,
     pub start_date: String,
     pub end_date: String,
 }

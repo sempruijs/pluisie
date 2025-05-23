@@ -16,7 +16,7 @@ use crate::User;
 //api::get_access_notification_by_user_id
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
  struct AccessNotificationResponse {
-    pub org_id: String,
+    pub org_id: OrgID,
     pub user_id: UserID,
     pub date: String,
     pub is_accepted: Option<bool>,
@@ -45,7 +45,7 @@ async fn get_access_notification(
             let response: Vec<AccessNotificationResponse> = access_notifications
                 .into_iter()
                 .map(|notification| AccessNotificationResponse {
-                    org_id: notification.org_id.to_string(),
+                    org_id: notification.org_id,
                     user_id: UserID(notification.user_id),
                     date: notification.date.to_string(),
                     is_accepted: notification.is_accepted,
@@ -63,7 +63,7 @@ async fn get_access_notification(
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
  struct CreateAccessNotificationRequest {
-    pub org_id: String,
+    pub org_id: OrgID,
     pub description: String,
  }
 

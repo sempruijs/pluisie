@@ -9,9 +9,9 @@ use chrono::NaiveDate;
 
 #[async_trait]
 pub trait TimeslotRepository: Send + Sync {
-    async fn get_days(&self, user_id: Uuid, org_id: Uuid, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
+    async fn get_days(&self, user_id: UserID, org_id: OrgID, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
 
-    async fn subscribe_to_hours(&self, date: NaiveDate, hours: Vec<u8>, is_enrolled: bool, user_id: Uuid, org_id: Uuid) -> Result<(), sqlx::Error>;
+    async fn subscribe_to_hours(&self, date: NaiveDate, hours: Vec<u8>, is_enrolled: bool, user_id: UserID, org_id: OrgID) -> Result<(), sqlx::Error>;
 }
 
 #[derive(Debug, Clone)]
@@ -29,8 +29,8 @@ impl TimeslotRepositoryImpl {
 impl TimeslotRepository for TimeslotRepositoryImpl {
     async fn get_days(
         &self,
-        user_id: Uuid,
-        org_id: Uuid,
+        user_id: UserID,
+        org_id: OrgID,
         start_date: NaiveDate,
         end_date: NaiveDate,
     ) -> Result<Vec<Day>, sqlx::Error> {
@@ -83,8 +83,8 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
         date: NaiveDate,
         hours: Vec<u8>,
         is_enrolled: bool,
-        user_id: Uuid,
-        org_id: Uuid,
+        user_id: UserID,
+        org_id: OrgID,
     ) -> Result<(), sqlx::Error> {
         let mut builder = QueryBuilder::new(
             "INSERT INTO timeslots (timeslot_id, org_id, user_id, date, hour, is_enrolled) ",
