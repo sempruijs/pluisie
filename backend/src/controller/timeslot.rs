@@ -87,11 +87,9 @@ async fn get_days(
     user: User,
     payload: Json<GetDaysRequest>,
 ) -> Result<Json<Vec<Day>>, status::Custom<String>> {
-    let org_id = payload.org_id.clone();
-    let start_date = &payload.start_date.clone();
-    let end_date = &payload.end_date.clone();
+    let p = payload;
 
-    match service.get_days(user.user_id, org_id, start_date.clone(), end_date.clone()).await {
+    match service.get_days(&user.user_id, &p.org_id, &p.start_date, &p.end_date).await {
         Ok(days) => Ok(Json(days)),
         Err(e) => Err(status::Custom(
             rocket::http::Status::InternalServerError,

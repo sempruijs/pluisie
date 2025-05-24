@@ -11,7 +11,7 @@ use chrono::NaiveDate;
 
 #[async_trait]
 pub trait TimeslotRepository: Send + Sync {
-    async fn get_days(&self, user_id: UserID, org_id: OrgID, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
+    async fn get_days(&self, user_id: &UserID, org_id: &OrgID, start_date: &NaiveDate, end_date: &NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
 
     async fn subscribe_to_hours(&self, date: NaiveDate, hours: Vec<u8>, is_enrolled: bool, user_id: UserID, org_id: OrgID) -> Result<(), sqlx::Error>;
 }
@@ -31,10 +31,10 @@ impl TimeslotRepositoryImpl {
 impl TimeslotRepository for TimeslotRepositoryImpl {
     async fn get_days(
         &self,
-        user_id: UserID,
-        org_id: OrgID,
-        start_date: NaiveDate,
-        end_date: NaiveDate,
+        user_id: &UserID,
+        org_id: &OrgID,
+        start_date: &NaiveDate,
+        end_date: &NaiveDate,
     ) -> Result<Vec<Day>, sqlx::Error> {
         let rows = sqlx::query!(
             r#"
@@ -47,8 +47,8 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
             GROUP BY date, hour
             ORDER BY date, hour
             "#,
-            *user_id,
-            *org_id,
+            user_id.0,
+            org_id.0,
             start_date,
             end_date,
         )
