@@ -1,7 +1,6 @@
 use crate::service::timeslot::TimeslotService;
- use crate::domain::organisation::OrgID;
+use crate::domain::organisation::OrgID;
 use chrono::NaiveDate;
-use crate::parser::*;
 use crate::domain::user::User;
 use crate::domain::timeslot::Day;
 use rocket::post;
@@ -18,7 +17,9 @@ use utoipa::ToSchema;
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct SubscribeToHoursRequest {
     pub org_id: OrgID,
-    pub date: String,
+
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    pub date: NaiveDate,
     pub hours: Vec<u8>,
     pub is_enrolled: bool,
  }
@@ -44,7 +45,7 @@ async fn subscirbe_to_hours(
     payload: Json<SubscribeToHoursRequest>,
 ) -> Json<bool> {
     let org_id = payload.org_id.clone();
-    let date: NaiveDate = parse_iso8601_date(&payload.date).expect("Failed to parse date");
+    let date: NaiveDate = payload.date.clone();
     let user_id = user.user_id;
     let hours = payload.hours.clone();
     let is_enrolled = payload.is_enrolled.clone();
@@ -59,9 +60,14 @@ async fn subscirbe_to_hours(
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct GetDaysRequest {
     pub org_id: OrgID,
-    pub start_date: String,
-    pub end_date: String,
+
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    pub start_date: NaiveDate,
+
+    #[schema(value_type = String, format = "date", example = "2024-07-24")]
+    pub end_date: NaiveDate,
 }
+
 #[utoipa::path(
     post,
     path = "/timeslot/get",
@@ -82,10 +88,10 @@ async fn get_days(
     payload: Json<GetDaysRequest>,
 ) -> Result<Json<Vec<Day>>, status::Custom<String>> {
     let org_id = payload.org_id.clone();
-    let start_date: NaiveDate = parse_iso8601_date(&payload.start_date).expect("Failed to parse start date");
-    let end_date: NaiveDate = parse_iso8601_date(&payload.end_date).expect("Failed to parse end date");
+    let start_date = &payload.start_date.clone();
+    let end_date = &payload.end_date.clone();
 
-    match service.get_days(user.user_id, org_id, start_date, end_date).await {
+    match service.get_days(user.user_id, org_id, start_date.clone(), end_date.clone()).await {
         Ok(days) => Ok(Json(days)),
         Err(e) => Err(status::Custom(
             rocket::http::Status::InternalServerError,

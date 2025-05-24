@@ -1,4 +1,5 @@
 use crate::service::access_notification::AccessNotificationService;
+use chrono::NaiveDate;
  use crate::domain::organisation::OrgID;
 use crate::domain::user::UserID;
 use rocket::post;
@@ -18,7 +19,9 @@ use crate::User;
  struct AccessNotificationResponse {
     pub org_id: OrgID,
     pub user_id: UserID,
-    pub date: String,
+
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    pub date: NaiveDate,
     pub is_accepted: Option<bool>,
     pub description: String,
  }
@@ -47,7 +50,7 @@ async fn get_access_notification(
                 .map(|notification| AccessNotificationResponse {
                     org_id: notification.org_id,
                     user_id: notification.user_id,
-                    date: notification.date.to_string(),
+                    date: notification.date,
                     is_accepted: notification.is_accepted,
                     description: notification.description,
                 })
