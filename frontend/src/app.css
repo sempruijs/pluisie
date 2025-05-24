@@ -151,11 +151,15 @@ body {
     @apply bg-yellow-200 border-2 border-yellow-400 hover:bg-yellow-200
 }
 
+.profilehover {
+    transition: 0.3s ease-in-out;
+}
+
 .profilehover:hover {
-    @apply border-b-2 border-l-2 border-black p-1 bg-gray-200
+    @apply border-b-2 border-gray-700 p-0.5
 }
 
 .profilehover:hover {
     transform: scale(1.3);
-    transition: ease-in-out 0.3s;
+    transition: 0.3s ease-in-out;
 }
