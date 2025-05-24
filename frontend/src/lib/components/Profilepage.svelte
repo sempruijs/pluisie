@@ -1,8 +1,8 @@
 <script lang="ts">
+    import Button from "./Button.svelte";
     import type { User } from "$lib/ts/domain";
     import { logout } from "$lib/ts/logout";
     import { Option } from "effect";
-
     export let user: User;
 
     const birthDate = "01-02-2003";
@@ -67,6 +67,9 @@
                 </div>
             </div>
         </div>
-        <button onclick={logout}>logut</button>
+        <Button
+        color="red"
+        className="mt-3"
+        on:click={logout}>Log out</Button>
     </div>
 </div>

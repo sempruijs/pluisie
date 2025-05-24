@@ -26,7 +26,7 @@
 </script>
 
 <div
-	class="bg-white h-75 w-full max-w-lg md:max-w-xl mx-3 p-8 rounded-lg shadow-2xl"
+	class="bg-white h-90 w-full max-w-lg md:max-w-xl mx-3 p-8 rounded-lg shadow-2xl"
 >
 	<div class="flex2 my-4">
 		<h1 class="pl-1 font-semibold">E-mail:</h1>
@@ -47,8 +47,8 @@
 		/>
 	</div>
 	<div class="flex justify-between my-4">
-		<button onclick={() => handleLogin(form.email, form.password)}
-			>Login</button
+		<Button on:click={() => handleLogin(form.email, form.password)}
+			>Login</Button
 		>
 		<Button color="red">Reset Account</Button>
 	</div>
