@@ -34,7 +34,6 @@ use sqlx::PgPool;
 // Import all the different layers that make up the backend.
 pub mod controller; // rest api requests handeling
 pub mod docs; // api documentation
-pub mod parser; 
 pub mod domain; // types
 pub mod repository; // responsable for communicating with the database
 pub mod service; // buisness logic
