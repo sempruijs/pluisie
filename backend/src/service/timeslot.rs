@@ -9,7 +9,7 @@ use crate::domain::user::UserID;
 pub trait TimeslotService: Send + Sync {
     async fn subscribe_to_hours(&self, date: NaiveDate, hours: Vec<u8>, is_enrolled: bool, user_id: UserID, org_id: OrgID) -> Result<(), sqlx::Error>;
 
-    async fn get_days(&self, user_id: UserID, org_id: OrgID, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
+    async fn get_days(&self, user_id: &UserID, org_id: &OrgID, start_date: &NaiveDate, end_date: &NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
 }
 
 pub struct TimeslotServiceImpl<T: TimeslotRepository> {
@@ -28,7 +28,7 @@ impl<R: TimeslotRepository> TimeslotService for TimeslotServiceImpl<R> {
         self.timeslot_repository.subscribe_to_hours(date, hours, is_enrolled, user_id, org_id).await
     }
 
-    async fn get_days(&self, user_id: UserID, org_id: OrgID, start_date: NaiveDate, end_date: NaiveDate) -> Result<Vec<Day>, sqlx::Error> {
+    async fn get_days(&self, user_id: &UserID, org_id: &OrgID, start_date: &NaiveDate, end_date: &NaiveDate) -> Result<Vec<Day>, sqlx::Error> {
         self.timeslot_repository.get_days(user_id, org_id, start_date, end_date).await
     }
 }
