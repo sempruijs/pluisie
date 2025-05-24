@@ -1,15 +1,15 @@
 use rocket::async_trait;
-use crate::domain::Organisation;
-use sqlx::types::Uuid;
+use crate::domain::organisation::OrgID;
+use crate::domain::organisation::Organisation;
 use sqlx::PgPool;
 
 #[async_trait]
 pub trait OrganisationRepository: Send + Sync {
     async fn create(&self, organisation: Organisation) -> Result<(), sqlx::Error>;
 
-    async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error>;
+    async fn delete(&self, org_id: OrgID) -> Result<(), sqlx::Error>;
 
-    async fn get_org_id(&self, org_id: Uuid)-> Result<Option<Organisation>, sqlx::Error>;
+    async fn get_org_id(&self, org_id: OrgID)-> Result<Option<Organisation>, sqlx::Error>;
 
     async fn get_all_org(&self)-> Result<Vec<Organisation>, sqlx::Error>;
 
@@ -35,7 +35,7 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
             INSERT INTO organisations (org_id, name, picture, description)
             VALUES ($1, $2, $3, $4)
             "#,
-            organisation.org_id,
+            *organisation.org_id,
             organisation.name,
             organisation.picture,
             organisation.description,
@@ -46,13 +46,13 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
         Ok(())
     }
 
-    async fn delete(&self, org_id: Uuid) -> Result<(), sqlx::Error> {
+    async fn delete(&self, org_id: OrgID) -> Result<(), sqlx::Error> {
         sqlx::query!(
             r#"
             DELETE FROM organisations
             WHERE org_id = $1
             "#,
-            org_id,
+            *org_id,
         )
         .execute(&self.pool)
         .await?;
@@ -60,7 +60,7 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
         Ok(())
     }
 
-    async fn get_org_id(&self, org_id: Uuid) -> Result<Option<Organisation>, sqlx::Error> {
+    async fn get_org_id(&self, org_id: OrgID) -> Result<Option<Organisation>, sqlx::Error> {
         let organisation = sqlx::query_as!(
             Organisation,
             r#"
@@ -68,7 +68,7 @@ impl OrganisationRepository for OrganisationRepositoryImpl {
             FROM organisations
             WHERE org_id = $1
             "#,
-            org_id,
+            *org_id,
         )
         .fetch_optional(&self.pool)
         .await?;

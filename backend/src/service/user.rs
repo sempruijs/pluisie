@@ -1,8 +1,8 @@
-use crate::domain::User;
+use crate::domain::user::User;
+use crate::domain::user::UserID;
 use crate::repository::user::*;
 use bcrypt::hash;
 use rocket::async_trait;
-use uuid::Uuid;
 
 // Here you add your business logic here.
 #[async_trait]
@@ -13,7 +13,7 @@ pub trait UserService: Send + Sync {
 
     /// Recieves a user given a user_id.
     /// Returns none if no user was found given the uuid.
-    async fn from_uuid(&self, user_id: Uuid) -> Result<Option<User>, sqlx::Error>;
+    async fn from_uuid(&self, user_id: UserID) -> Result<Option<User>, sqlx::Error>;
 
     async fn update(&self, updated_user: User) -> Result<(), sqlx::Error>;
 }
@@ -40,7 +40,7 @@ impl<R: UserRepository> UserService for UserServiceImpl<R> {
         self.user_repository.create(user).await
     }
 
-    async fn from_uuid(&self, user_id: Uuid) -> Result<Option<User>, sqlx::Error> {
+    async fn from_uuid(&self, user_id: UserID) -> Result<Option<User>, sqlx::Error> {
         // recieve the user from the database given a user_id.
         self.user_repository.from_uuid(user_id).await
     }

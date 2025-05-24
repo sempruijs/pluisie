@@ -3,7 +3,7 @@ use crate::service::access_notification::AccessNotificationService;
 use crate::service::access_notification::AccessNotificationServiceImpl;
 use crate::controller::access_notification::access_notification_routes;
 use crate::controller::organisation::organisation_routes;
-use crate::domain::User;
+use crate::domain::user::User;
 use crate::repository::organisation::*;
 use crate::service::authentication::*;
 use crate::service::organisation::*;
@@ -34,7 +34,6 @@ use sqlx::PgPool;
 // Import all the different layers that make up the backend.
 pub mod controller; // rest api requests handeling
 pub mod docs; // api documentation
-pub mod parser; 
 pub mod domain; // types
 pub mod repository; // responsable for communicating with the database
 pub mod service; // buisness logic

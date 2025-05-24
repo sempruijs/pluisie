@@ -1,5 +1,6 @@
-use crate::domain::Organisation;
-use crate::domain::User;
+use crate::domain::organisation::Organisation;
+use crate::domain::organisation::OrgID;
+use crate::domain::user::User;
 use crate::service::organisation::OrganisationService;
 use rocket::post;
 use rocket::delete;
@@ -10,7 +11,6 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
-use uuid::Uuid;
 use rocket::get; 
 
 /// Request body for creating a organisation.
@@ -41,7 +41,7 @@ async fn create_organisation(
     user: User,
 ) -> Json<bool> {
     let organisation = Organisation {
-        org_id: Uuid::new_v4(),
+        org_id: OrgID::new(),
         name: payload.name.clone(),
         picture: Some(payload.picture.clone()),
         description: Some(payload.description.clone()),
@@ -60,7 +60,7 @@ async fn create_organisation(
 /// Request body for delete a organisation.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct DeleteOrganisationRequest {
-    pub org_id: String,
+    pub org_id: OrgID,
 }
 
 #[utoipa::path(
@@ -83,20 +83,18 @@ async fn delete_organisation(
     user: User,
 ) -> Json<bool> {
 
-    if let Ok(org_id) = Uuid::parse_str(&payload.org_id) {
-        if user.is_super {
-         if let Ok(()) = organisation_service.delete(org_id).await {
+    if user.is_super {
+        if let Ok(()) = organisation_service.delete(payload.org_id.clone()).await {
             return Json(true);
-           }
-        } 
-    }
+        }
+    } 
     Json(false)
 }
 
 /// Response for recieving organisation information.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct GetOrganisationResponse {
-    org_id: String,
+    org_id: OrgID,
     name: String,
     picture: String,
     description: String,
@@ -104,7 +102,7 @@ struct GetOrganisationResponse {
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct GetOrganisationRequest {
-    pub org_id: String,
+    pub org_id: OrgID,
 }
 
 #[utoipa::path(
@@ -129,12 +127,9 @@ struct GetOrganisationRequest {
     payload: Json<GetOrganisationRequest>,
     organisation_service: &State<Arc<dyn OrganisationService>>,
 ) -> Json<GetOrganisationResponse> {
-    // TODO: remove the expect
-    let org_id = Uuid::parse_str(&payload.org_id).expect("failed to parse uuid while trying to recieve an organisation");
-
-    if let Ok(Some(organisation)) = organisation_service.get_org_id(org_id).await {
+    if let Ok(Some(organisation)) = organisation_service.get_org_id(payload.org_id.clone()).await {
         return Json(GetOrganisationResponse {
-            org_id: organisation.org_id.to_string(),
+            org_id: organisation.org_id,
             name: organisation.name,
             picture: organisation.picture.unwrap_or_default(),
             description: organisation.description.unwrap_or_default(),
@@ -170,7 +165,7 @@ async fn get_all_organisation(
     match organisation_service.get_all_org().await {
         Ok(organisations) => {
             let result = organisations.into_iter().map(|org| GetOrganisationResponse {
-                org_id: org.org_id.to_string(),
+                org_id: org.org_id,
                 name: org.name,
                 picture: org.picture.unwrap(),
                 description: org.description.unwrap(),

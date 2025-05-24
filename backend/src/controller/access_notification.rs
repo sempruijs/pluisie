@@ -1,5 +1,7 @@
 use crate::service::access_notification::AccessNotificationService;
- use uuid::Uuid;
+use chrono::NaiveDate;
+use crate::domain::organisation::OrgID;
+use crate::domain::user::UserID;
 use rocket::post;
 use rocket::get;
 use rocket::response::status;
@@ -15,9 +17,11 @@ use crate::User;
 //api::get_access_notification_by_user_id
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
  struct AccessNotificationResponse {
-    pub org_id: String,
-    pub user_id: String,
-    pub date: String,
+    pub org_id: OrgID,
+    pub user_id: UserID,
+
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    pub date: NaiveDate,
     pub is_accepted: Option<bool>,
     pub description: String,
  }
@@ -44,9 +48,9 @@ async fn get_access_notification(
             let response: Vec<AccessNotificationResponse> = access_notifications
                 .into_iter()
                 .map(|notification| AccessNotificationResponse {
-                    org_id: notification.org_id.to_string(),
-                    user_id: notification.user_id.to_string(),
-                    date: notification.date.to_string(),
+                    org_id: notification.org_id,
+                    user_id: notification.user_id,
+                    date: notification.date,
                     is_accepted: notification.is_accepted,
                     description: notification.description,
                 })
@@ -62,7 +66,7 @@ async fn get_access_notification(
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
  struct CreateAccessNotificationRequest {
-    pub org_id: String,
+    pub org_id: OrgID,
     pub description: String,
  }
 
@@ -85,9 +89,7 @@ async fn create_access_notification(
     user: User,
     payload: Json<CreateAccessNotificationRequest>,
 ) -> Json<bool> {
-    let org_id = Uuid::parse_str(&payload.org_id).unwrap();
-
-    match service.create_access_notification(org_id, user.user_id, payload.description.clone()).await {
+    match service.create_access_notification(payload.org_id.clone(), user.user_id, payload.description.clone()).await {
         Ok(true) => Json(true),
         _ => Json(false),
     }
