@@ -44,13 +44,9 @@ async fn subscirbe_to_hours(
     user: User,
     payload: Json<SubscribeToHoursRequest>,
 ) -> Json<bool> {
-    let org_id = payload.org_id.clone();
-    let date: NaiveDate = payload.date.clone();
-    let user_id = user.user_id;
-    let hours = payload.hours.clone();
-    let is_enrolled = payload.is_enrolled.clone();
+    let p = payload;
 
-    match service.subscribe_to_hours(date, hours, is_enrolled, user_id, org_id).await {
+    match service.subscribe_to_hours(&p.date, &p.hours, &p.is_enrolled, &user.user_id, &p.org_id).await {
         Ok(()) => Json(true),
         _ => Json(false),
     }
