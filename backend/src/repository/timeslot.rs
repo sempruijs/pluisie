@@ -13,7 +13,7 @@ use chrono::NaiveDate;
 pub trait TimeslotRepository: Send + Sync {
     async fn get_days(&self, user_id: &UserID, org_id: &OrgID, start_date: &NaiveDate, end_date: &NaiveDate) -> Result<Vec<Day>, sqlx::Error>;
 
-    async fn subscribe_to_hours(&self, date: NaiveDate, hours: Vec<u8>, is_enrolled: bool, user_id: UserID, org_id: OrgID) -> Result<(), sqlx::Error>;
+    async fn subscribe_to_hours(&self, date: &NaiveDate, hours: &Vec<u8>, is_enrolled: &bool, user_id: &UserID, org_id: &OrgID) -> Result<(), sqlx::Error>;
 }
 
 #[derive(Debug, Clone)]
@@ -82,11 +82,11 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
 
     async fn subscribe_to_hours(
         &self,
-        date: NaiveDate,
-        hours: Vec<u8>,
-        is_enrolled: bool,
-        user_id: UserID,
-        org_id: OrgID,
+        date: &NaiveDate,
+        hours: &Vec<u8>,
+        is_enrolled: &bool,
+        user_id: &UserID,
+        org_id: &OrgID,
     ) -> Result<(), sqlx::Error> {
         let mut builder = QueryBuilder::new(
             "INSERT INTO timeslots (timeslot_id, org_id, user_id, date, hour, is_enrolled) ",
@@ -95,12 +95,12 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
         builder.push("VALUES ");
 
         let mut separated = builder.separated(", ");
-        let hours = hours.into_iter().map(|hour| hour as i16).collect::<Vec<i16>>();
+        let hours = hours.into_iter().map(|hour| *hour as i16).collect::<Vec<i16>>();
 
         for hour in hours {
             separated.push_bind(Uuid::new_v4())
-                .push_bind(*org_id)
-                .push_bind(*user_id)
+                .push_bind(org_id)
+                .push_bind(user_id)
                 .push_bind(date)
                 .push_bind(hour as i16)
                 .push_bind(is_enrolled);
