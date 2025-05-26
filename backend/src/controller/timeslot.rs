@@ -1,4 +1,5 @@
 use crate::service::timeslot::TimeslotService;
+use rocket::http::Status;
 use crate::domain::organisation::OrgID;
 use chrono::NaiveDate;
 use crate::domain::user::User;
@@ -30,7 +31,7 @@ struct SubscribeToHoursRequest {
     path = "/timeslot",
     request_body = SubscribeToHoursRequest,
     responses(
-        (status = 200, description = "Subscribed to hours successfully", body = bool),
+        (status = 204, description = "Subscribed to hours successfully"),
         (status = 404, description = "Not found"),
         (status = 500, description = "Internal server error"),
     ),
@@ -43,11 +44,11 @@ async fn subscirbe_to_hours(
     service: &State<Arc<dyn TimeslotService>>,
     user: User,
     payload: Json<SubscribeToHoursRequest>,
-) -> Result<Json<bool>, status::Custom<String>> {
+) -> Result<Status, status::Custom<String>> {
     let p = payload;
 
     match service.subscribe_to_hours(&p.date, &p.hours, &p.is_enrolled, &user.user_id, &p.org_id).await {
-        Ok(()) => Ok(Json(true)),
+        Ok(()) => Ok(Status::NoContent),
         Err(e) => Err(status::Custom(
             rocket::http::Status::InternalServerError,
             format!("Database error: {}", e),
