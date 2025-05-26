@@ -2,6 +2,10 @@ use crate::controller::authentication::authentication_routes;
 use crate::service::access_notification::AccessNotificationService;
 use crate::service::access_notification::AccessNotificationServiceImpl;
 use crate::controller::access_notification::access_notification_routes;
+use crate::service::timeslot::TimeslotService;
+use crate::repository::timeslot::TimeslotRepositoryImpl;
+use crate::service::timeslot::TimeslotServiceImpl;
+use crate::controller::timeslot::timeslot_routes;
 use crate::controller::organisation::organisation_routes;
 use crate::domain::user::User;
 use crate::repository::organisation::*;
@@ -117,6 +121,11 @@ async fn main() -> Result<(), rocket::Error> {
         OrganisationServiceImpl::new(organisation_repository.clone()),
     );
 
+    let timeslot_repository = TimeslotRepositoryImpl::new(pool.clone());
+    let timeslot_service: Arc<dyn TimeslotService> = Arc::new(
+        TimeslotServiceImpl::new(timeslot_repository.clone()),
+    );
+
     let authentication_service: Arc<dyn AuthenticationService> = Arc::new(
         AuthenticationServiceImpl::new(user_repository.clone(), secret_key),
     );
@@ -138,6 +147,7 @@ async fn main() -> Result<(), rocket::Error> {
         .manage(organisation_service)
         .manage(authentication_service)
         .manage(access_notification_service)
+        .manage(timeslot_service)
         // expose swagger ui.
         // Go to http://localhost:8000/docs to view your endpoint documentation.
         .mount(
@@ -146,6 +156,7 @@ async fn main() -> Result<(), rocket::Error> {
         )
         // Mount all your routes here.
         .mount("/users", user_routes())
+        .mount("/timeslot", timeslot_routes())
         .mount("/organisation", organisation_routes())
         .mount("/login", authentication_routes())
         .mount("/access-notification", access_notification_routes())
