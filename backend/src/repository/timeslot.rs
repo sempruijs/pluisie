@@ -80,7 +80,7 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
         Ok(days)
     }
 
-    async fn subscribe_to_hours(
+        async fn subscribe_to_hours(
         &self,
         date: &NaiveDate,
         hours: &Vec<u8>,
@@ -92,23 +92,17 @@ impl TimeslotRepository for TimeslotRepositoryImpl {
             "INSERT INTO timeslots (timeslot_id, org_id, user_id, date, hour, is_enrolled) ",
         );
 
-        builder.push("VALUES ");
-
-        let mut separated = builder.separated(", ");
-        let hours = hours.into_iter().map(|hour| *hour as i16).collect::<Vec<i16>>();
-
-        for hour in hours {
-            separated.push_bind(Uuid::new_v4())
+        builder.push_values(hours, |mut row, hour| {
+            row.push_bind(Uuid::new_v4())
                 .push_bind(org_id)
                 .push_bind(user_id)
                 .push_bind(date)
-                .push_bind(hour as i16)
+                .push_bind(*hour as i16)
                 .push_bind(is_enrolled);
-        }
+        });
 
         builder.build().execute(&self.pool).await?;
 
         Ok(())
     }
-
 }

@@ -43,12 +43,15 @@ async fn subscirbe_to_hours(
     service: &State<Arc<dyn TimeslotService>>,
     user: User,
     payload: Json<SubscribeToHoursRequest>,
-) -> Json<bool> {
+) -> Result<Json<bool>, status::Custom<String>> {
     let p = payload;
 
     match service.subscribe_to_hours(&p.date, &p.hours, &p.is_enrolled, &user.user_id, &p.org_id).await {
-        Ok(()) => Json(true),
-        _ => Json(false),
+        Ok(()) => Ok(Json(true)),
+        Err(e) => Err(status::Custom(
+            rocket::http::Status::InternalServerError,
+            format!("Database error: {}", e),
+        )),
     }
 }
 
@@ -95,7 +98,7 @@ async fn get_days(
 }
 
 // Combine all the access_notifications routes.
-pub fn timeslots_routes() -> Vec<rocket::Route> {
+pub fn timeslot_routes() -> Vec<rocket::Route> {
     routes![
         subscirbe_to_hours, get_days, 
     ]
