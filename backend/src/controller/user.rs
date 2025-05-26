@@ -1,4 +1,6 @@
 use crate::domain::user::*;
+use rocket::http::Status;
+use rocket::response::status::Custom;
 use rocket::put;
 use crate::service::user::UserService;
 use rocket::get;
@@ -38,7 +40,7 @@ struct UpdateUserRequest {
     path = "/users",
     request_body = CreateUserRequest,
     responses(
-        (status = 201, description = "User created successfully", body = bool),
+        (status = 201, description = "User created successfully"),
         (status = 400, description = "Invalid input data"),
         (status = 500, description = "Internal server error")
     ),
@@ -50,7 +52,7 @@ struct UpdateUserRequest {
 async fn create_user(
     payload: Json<CreateUserRequest>,
     user_service: &State<Arc<dyn UserService>>,
-) -> Json<bool> {
+) -> Result<Status, Custom<String>>  {
     // Convert `CreateUserRequest` to `User`
     let user = User {
         user_id: UserID::new(),
@@ -64,8 +66,11 @@ async fn create_user(
 
     // Call the `create` method and await its result
     match user_service.create(user).await {
-        Ok(()) => Json(true),
-        Err(_) => Json(false),
+        Ok(()) => Ok(Status::Created),
+        Err(e) => {
+            let msg = format!("Internal error: {e}");
+            Err(status::Custom(Status::InternalServerError, msg))
+        },
     }
 }
 
