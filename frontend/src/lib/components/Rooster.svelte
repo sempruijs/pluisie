@@ -3,17 +3,26 @@
 
   let selectedSlots = [];
 
-  const timeSlots = [
-    { id: 1, time: "11:00–14:00", filled: 1, total: 2 },
-    { id: 2, time: "14:00–17:00", filled: 1, total: 2 },
-    { id: 3, time: "17:00–21:00", filled: 1, total: 2 }
+  // Start with 0 filled slots
+  let timeSlots = [
+    { id: 1, time: "11:00–14:00", filled: 0, total: 2 },
+    { id: 2, time: "14:00–17:00", filled: 0, total: 2 },
+    { id: 3, time: "17:00–21:00", filled: 0, total: 2 }
   ];
 
   function toggleSlot(slotId) {
-    if (selectedSlots.includes(slotId)) {
+    const isSelected = selectedSlots.includes(slotId);
+
+    if (isSelected) {
       selectedSlots = selectedSlots.filter(id => id !== slotId);
+      timeSlots = timeSlots.map(slot =>
+        slot.id === slotId ? { ...slot, filled: slot.filled - 1 } : slot
+      );
     } else {
       selectedSlots = [...selectedSlots, slotId];
+      timeSlots = timeSlots.map(slot =>
+        slot.id === slotId ? { ...slot, filled: slot.filled + 1 } : slot
+      );
     }
   }
 </script>
