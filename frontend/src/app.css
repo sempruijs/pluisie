@@ -163,3 +163,12 @@ body {
     transform: scale(1.3);
     transition: 0.3s ease-in-out;
 }
+
+.arrowhover {
+    transition: 0.3s ease-in-out;
+}
+
+.arrowhover:hover {
+    transition: 0.3s ease-in-out;
+    transform: scale(1.4);
+}
