@@ -1,7 +1,7 @@
 <script>
   export let headerImageUrl = "/hideoutlogo.png";
 
-  let selectedSlot = null;
+  let selectedSlots = [];
 
   const timeSlots = [
     { id: 1, time: "11:00–14:00", filled: 1, total: 2 },
@@ -9,8 +9,12 @@
     { id: 3, time: "17:00–21:00", filled: 1, total: 2 }
   ];
 
-  function selectSlot(slotId) {
-    selectedSlot = slotId;
+  function toggleSlot(slotId) {
+    if (selectedSlots.includes(slotId)) {
+      selectedSlots = selectedSlots.filter(id => id !== slotId);
+    } else {
+      selectedSlots = [...selectedSlots, slotId];
+    }
   }
 </script>
 
@@ -27,10 +31,10 @@
   <div class="space-y-4">
     {#each timeSlots as slot}
       <button
-        on:click={() => selectSlot(slot.id)}
+        on:click={() => toggleSlot(slot.id)}
         class={`w-full flex justify-between items-center px-4 py-3 rounded-xl shadow transition
           ${
-            selectedSlot === slot.id
+            selectedSlots.includes(slot.id)
               ? 'bg-orange-500 text-white'
               : 'bg-orange-300 text-black'
           }`}
