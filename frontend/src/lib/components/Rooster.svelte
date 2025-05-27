@@ -1,4 +1,6 @@
 <script>
+  export let headerImageUrl = "/hideoutlogo.png";
+
   let selectedSlot = null;
 
   const timeSlots = [
@@ -12,13 +14,14 @@
   }
 </script>
 
-<div class="max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg font-sans">
+<div class="max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg">
   <!-- Header -->
-  <div class="text-center mb-6">
-    <h1 class="text-3xl font-bold tracking-wider">HIDEOUT</h1>
-    <p class="text-sm uppercase tracking-widest">Science Cafe</p>
-    <h2 class="mt-4 text-lg font-semibold tracking-wide">VRIJDAG 20 JUNI</h2>
+  <div class="mb-6">
+    <img src={headerImageUrl} alt="Header" class="w-full h-auto object-contain" />
   </div>
+
+  <!-- Date -->
+  <h2 class="text-center text-lg font-semibold tracking-wide mb-4">VRIJDAG 20 JUNI</h2>
 
   <!-- Time Slots -->
   <div class="space-y-4">
@@ -41,7 +44,7 @@
   </div>
 
   <!-- Supervisor Section -->
-  <div class="mt-6 p-4 rounded-xl border border-gray-300 bg-white text-sm">
+  <div class="mt-6 p-4 rounded-xl border border-black bg-gray-300 text-sm">
     <p class="font-semibold">SUPERVISOR: JAN DE BOER</p>
     <p>1. BERTJAN</p>
     <p>2. /</p>
