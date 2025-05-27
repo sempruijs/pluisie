@@ -60,5 +60,9 @@
             </button>
         </div>
     </div>
-    
+</div>
+<div class="grid grid-cols-7 gap-2 mt-4 text-center">
+    {#each ['MA', 'DI', 'WO', 'DO', 'VR', 'ZA', 'ZO'] as weekday}
+        <div class="font-bold text-sm text-gray-700">{weekday}</div>
+    {/each}
 </div>
