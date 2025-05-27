@@ -32,9 +32,7 @@
           ${
             selectedSlot === slot.id
               ? 'bg-orange-500 text-white'
-              : slot.id === 2
-              ? 'bg-orange-400'
-              : 'bg-orange-300'
+              : 'bg-orange-300 text-black'
           }`}
       >
         <span class="font-medium">{slot.time}</span>
