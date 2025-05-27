@@ -12,94 +12,43 @@
   }
 </script>
 
-<style>
-  .container {
-    max-width: 400px;
-    margin: auto;
-    padding: 1rem;
-    font-family: sans-serif;
-    background-color: #f9f9f9;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .header {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-
-  .slot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #fca311;
-    border-radius: 12px;
-    padding: 1rem;
-    margin: 0.5rem 0;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.2s;
-  }
-
-  .slot:hover {
-    transform: scale(1.02);
-    background-color: #ff8800;
-  }
-
-  .slot.selected {
-    background-color: #ff6700;
-  }
-
-  .supervisor {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: #e5e5e5;
-    border-radius: 12px;
-    font-size: 0.9rem;
-  }
-
-  .button {
-    display: block;
-    width: 100%;
-    margin-top: 1rem;
-    padding: 0.75rem;
-    background-color: #fca311;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-
-  .button:hover {
-    background-color: #ff8800;
-  }
-</style>
-
-<div class="container">
-  <div class="header">
-    <h2>HIDEOUT</h2>
-    <div>SCIENCE CAFE</div>
-    <h3>VRIJDAG 20 JUNI</h3>
+<div class="max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg font-sans">
+  <!-- Header -->
+  <div class="text-center mb-6">
+    <h1 class="text-3xl font-bold tracking-wider">HIDEOUT</h1>
+    <p class="text-sm uppercase tracking-widest">Science Cafe</p>
+    <h2 class="mt-4 text-lg font-semibold tracking-wide">VRIJDAG 20 JUNI</h2>
   </div>
 
-  {#each timeSlots as slot}
-    <div
-      class="slot {selectedSlot === slot.id ? 'selected' : ''}"
-      on:click={() => selectSlot(slot.id)}
-    >
-      <span>{slot.time}</span>
-      <span>{slot.filled}/{slot.total}</span>
-    </div>
-  {/each}
-
-  <div class="supervisor">
-    <strong>SUPERVISOR: JAN DE BOER</strong>
-    <div>1. BERTJAN</div>
-    <div>2. /</div>
+  <!-- Time Slots -->
+  <div class="space-y-4">
+    {#each timeSlots as slot}
+      <button
+        on:click={() => selectSlot(slot.id)}
+        class={`w-full flex justify-between items-center px-4 py-3 rounded-xl shadow transition
+          ${
+            selectedSlot === slot.id
+              ? 'bg-orange-500 text-white'
+              : slot.id === 2
+              ? 'bg-orange-400'
+              : 'bg-orange-300'
+          }`}
+      >
+        <span class="font-medium">{slot.time}</span>
+        <span class="text-sm font-semibold">{slot.filled}/{slot.total}</span>
+      </button>
+    {/each}
   </div>
 
-  <button class="button">AANMELDEN</button>
+  <!-- Supervisor Section -->
+  <div class="mt-6 p-4 rounded-xl border border-gray-300 bg-white text-sm">
+    <p class="font-semibold">SUPERVISOR: JAN DE BOER</p>
+    <p>1. BERTJAN</p>
+    <p>2. /</p>
+  </div>
+
+  <!-- Sign Up Button -->
+  <button class="mt-6 w-full bg-orange-400 text-white font-bold py-2 rounded-xl hover:bg-orange-500 transition">
+    AANMELDEN
+  </button>
 </div>
