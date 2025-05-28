@@ -3,7 +3,7 @@
 
   let selectedSlots = [];
 
-  // Start with 0 filled slots
+  // Timeslots
   let timeSlots = [
     { id: 1, time: "11:00–14:00", filled: 0, total: 2 },
     { id: 2, time: "14:00–17:00", filled: 0, total: 2 },
@@ -27,13 +27,12 @@
   }
 </script>
 
-<div class="max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg">
+<div class="relative max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg pb-20">
   <!-- Header -->
   <div class="mb-6">
     <img src={headerImageUrl} alt="Header" class="w-full h-auto object-contain" />
   </div>
 
-  <!-- Date -->
   <h2 class="text-center text-lg font-semibold tracking-wide mb-4">VRIJDAG 20 JUNI</h2>
 
   <!-- Time Slots -->
@@ -54,15 +53,17 @@
     {/each}
   </div>
 
-  <!-- Supervisor Section -->
+  <!-- Supervisor -->
   <div class="mt-6 p-4 rounded-xl border border-black bg-gray-300 text-sm">
     <p class="font-semibold">SUPERVISOR: JAN DE BOER</p>
     <p>1. BERTJAN</p>
     <p>2. /</p>
   </div>
 
-  <!-- Sign Up Button -->
-  <button class="mt-6 w-full bg-orange-400 text-white font-bold py-2 rounded-xl hover:bg-orange-500 transition">
+  <!-- Fixed Sign Up Button -->
+  <button
+    class="absolute bottom-4 right-4 bg-orange-400 text-white font-bold py-2 px-4 rounded-xl hover:bg-orange-500 transition shadow-lg"
+  >
     AANMELDEN
   </button>
 </div>
