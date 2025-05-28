@@ -78,11 +78,11 @@
         </script>
         <button 
             on:click={() => toggleFull(date)}
-            class="w-8 h-8 rounded-full transition-all duration-150 font-medium arrowhover calendarhover
+            class="w-8 h-8 rounded-full transition-all duration-150 font-medium 
                 {isFull(date)
                     ? 'bg-red-300 text-white'
                     : [1, 2, 3, 4, 5].includes(date.getDay())
-                        ? 'bg-green-200 hover:bg-orange-300'
+                        ? 'bg-green-200 arrowhover calendarhover hover:bg-orange-300'
                         : 'bg-gray-300'}"
         >
             {date.getDate()}
