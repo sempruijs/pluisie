@@ -3,7 +3,6 @@
 
   let selectedSlots = [];
 
-  // Timeslots
   let timeSlots = [
     { id: 1, time: "11:00–14:00", filled: 0, total: 2 },
     { id: 2, time: "14:00–17:00", filled: 0, total: 2 },
@@ -62,7 +61,11 @@
 
   <!-- Fixed Sign Up Button -->
   <button
-    class="absolute bottom-4 right-4 bg-orange-400 text-white font-bold py-2 px-4 rounded-xl hover:bg-orange-500 transition shadow-lg"
+    class={`absolute bottom-4 right-4 font-bold py-2 px-4 rounded-xl shadow-lg transition 
+      ${selectedSlots.length > 0 
+        ? 'bg-orange-400 text-white hover:bg-orange-500 cursor-pointer' 
+        : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+    disabled={selectedSlots.length === 0}
   >
     AANMELDEN
   </button>
