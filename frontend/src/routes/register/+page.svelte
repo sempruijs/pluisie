@@ -92,25 +92,29 @@
             <div class="form-control">
                 <h3 class="form-label">Voornaam:</h3>
             <input type="text" required
+                    placeholder="Voornaam"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={voornaam}
                     />
             </div>
                     <h3>Tussenvoegsels:</h3>
             <input type="text"
+                    placeholder="Tussenvoegsels"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={tussenvoegsels}
                     />
             <div class="form-control">
                     <h3 class="form-label">Achternaam:</h3>
             <input type="text" required
+                    placeholder="Achternaam"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={achternaam}
                     />
             </div>
             <div class="form-control">
-                <h3 class="form-label">E-mail:</h3>
+                <h3 class="form-label">Persoonlijke e-mail:</h3>
         <input type="text" required
+                placeholder="Persoonlijke e-mail"
                 class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                 bind:value={email}
                 />
@@ -127,6 +131,7 @@
             </div>
                     <h3>Telefoonnummer:</h3>
             <input type="text"
+                    placeholder="Telefoonnummer"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={telefoonnummer}
                     />
