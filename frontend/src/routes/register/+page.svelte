@@ -35,7 +35,7 @@
         }
 
         let selected = 'Indicium';
-        let options = ['Avanti', 'Indicium', 'Codex', 'SOG', 'test', 'test', 'test', 'test']
+        let options = ['Avanti', 'Indicium', 'Codex', 'SOG']
         let open = false;
 
         function selectOption(option) {
