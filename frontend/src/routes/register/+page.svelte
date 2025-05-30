@@ -90,21 +90,21 @@
         </div>
         <div class="py-8 sha">
             <div class="form-control">
-                <h3 class="form-label">Voornaam:</h3>
+                <h3 class="form-label textcontrast">Voornaam:</h3>
             <input type="text" required
                     placeholder="Voornaam"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={voornaam}
                     />
             </div>
-                    <h3>Tussenvoegsels:</h3>
+                    <h3 class="textcontrast">Tussenvoegsels:</h3>
             <input type="text"
                     placeholder="Tussenvoegsels"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={tussenvoegsels}
                     />
             <div class="form-control">
-                    <h3 class="form-label">Achternaam:</h3>
+                    <h3 class="form-label textcontrast">Achternaam:</h3>
             <input type="text" required
                     placeholder="Achternaam"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
@@ -112,7 +112,7 @@
                     />
             </div>
             <div class="form-control">
-                <h3 class="form-label">Persoonlijke e-mail:</h3>
+                <h3 class="form-label textcontrast">Persoonlijke e-mail:</h3>
         <input type="text" required
                 placeholder="Persoonlijke e-mail"
                 class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
@@ -120,7 +120,7 @@
                 />
         </div>
             <div class="form-control">
-                    <h3 class="form-label">Geboortedatum:</h3>
+                    <h3 class="form-label textcontrast">Geboortedatum:</h3>
             <input type="text" required
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     placeholder="dd-mm-jjjj"
@@ -129,14 +129,14 @@
                     on:input={formatGeboortedatum}
                     />
             </div>
-                    <h3>Telefoonnummer:</h3>
+                    <h3 class="textcontrast">Telefoonnummer:</h3>
             <input type="text"
                     placeholder="Telefoonnummer"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={telefoonnummer}
                     />
             <div class="form-control">
-            <h3 class="form-label">IVA uploaden:</h3>
+            <h3 class="form-label textcontrast">IVA uploaden:</h3>
                 <div class="w-full mx-auto h-50 bg-dragfile shadow-2xl border-2 border-dashed border-gray-400 mb-3">
                     <div class="text-center my-10 justify-items-center text-gray-500">
                         <p>Sleep hier je bestanden naar toe</p>
