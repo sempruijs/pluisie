@@ -1,7 +1,15 @@
 <script>
     import Button from "$lib/components/Button.svelte";
     import Header from "$lib/components/Header.svelte";
+    import { slide } from 'svelte/transition';
+   
     let geboortedatum = '';
+    let dropdownContainer;
+    let voornaam = "";
+    let tussenvoegsels = "";
+    let achternaam = "";
+    let email = "";
+    let telefoonnummer = "";
 
     function opendropDown() {
         open = !open
@@ -36,19 +44,23 @@
         }
         
         let showPopup = false;
-        function handleSubmit(){
+        function handleSubmit(evt){
             console.log ("test mf's")
             showPopup = true;
+
+            fetch("http://localhost:8000/users", {
+                method: "POST",
+                body: JSON.stringify({
+                    naam: voornaam + " " + tussenvoegsels + " " + achternaam,
+                    email,
+                })
+            })
 
             setTimeout(()=> {
                 showPopup = false;
                  window.location.href = "/"
             }, 9000);
         }
-
-        import { slide } from 'svelte/transition';
-
-        let dropdownContainer;
 
 </script>
 <Header />
@@ -81,22 +93,26 @@
                 <h3 class="form-label">Voornaam:</h3>
             <input type="text" required
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                    bind:value={voornaam}
                     />
             </div>
                     <h3>Tussenvoegsels:</h3>
             <input type="text"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                    bind:value={tussenvoegsels}
                     />
             <div class="form-control">
                     <h3 class="form-label">Achternaam:</h3>
             <input type="text" required
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                    bind:value={achternaam}
                     />
             </div>
             <div class="form-control">
                 <h3 class="form-label">E-mail:</h3>
         <input type="text" required
                 class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                bind:value={email}
                 />
         </div>
             <div class="form-control">
@@ -112,6 +128,7 @@
                     <h3>Telefoonnummer:</h3>
             <input type="text"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                    bind:value={telefoonnummer}
                     />
             <div class="form-control">
             <h3 class="form-label">IVA uploaden:</h3>
