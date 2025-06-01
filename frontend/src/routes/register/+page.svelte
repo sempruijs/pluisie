@@ -68,7 +68,7 @@
     <div class="center-v center-h mt-10">
         <img src="/hideoutlogo.png" alt="Logo" />
     </div>
-    <div class="max-w-5/10 mx-auto">
+    <div class="max-w-8/10 mx-auto">
         <div class="h-auto bg-color-register mx-auto m-10 p-8 rounded-xl shadow-2xl shadow-black">
             <p>
                 Bedankt voor je interesse!
@@ -89,6 +89,7 @@
             <h1 class="font-bold text-3xl">Aanmeldformulier</h1>
         </div>
         <div class="py-8 sha">
+            <div>
             <div class="form-control">
                 <h3 class="form-label textcontrast">Voornaam:</h3>
             <input type="text" required
@@ -111,6 +112,17 @@
                     bind:value={achternaam}
                     />
             </div>
+            </div>
+            <div class="form-control">
+                <h3 class="form-label textcontrast">Geboortedatum:</h3>
+        <input type="text" required
+                class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                placeholder="dd-mm-jjjj"
+                maxlength="10"
+                bind:value={geboortedatum}
+                on:input={formatGeboortedatum}
+                />
+        </div>
             <div class="form-control">
                 <h3 class="form-label textcontrast">Persoonlijke e-mail:</h3>
         <input type="text" required
@@ -119,37 +131,16 @@
                 bind:value={email}
                 />
         </div>
-            <div class="form-control">
-                    <h3 class="form-label textcontrast">Geboortedatum:</h3>
-            <input type="text" required
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                    placeholder="dd-mm-jjjj"
-                    maxlength="10"
-                    bind:value={geboortedatum}
-                    on:input={formatGeboortedatum}
-                    />
-            </div>
+           
                     <h3 class="textcontrast">Telefoonnummer:</h3>
             <input type="text"
                     placeholder="Telefoonnummer"
                     class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={telefoonnummer}
                     />
-            <div class="form-control">
-            <h3 class="form-label textcontrast">IVA uploaden:</h3>
-                <div class="w-full mx-auto h-50 bg-dragfile shadow-2xl border-2 border-dashed border-gray-400 mb-3">
-                    <div class="text-center my-10 justify-items-center text-gray-500">
-                        <p>Sleep hier je bestanden naar toe</p>
-                        <p class="my-3">Of:</p>
-                        <Button color="yellow">
-                            Upload vanaf je computer
-                        </Button>
-                    </div>
-                </div>
-            </div>
             
-            <div class="w-full">
-                <label class="block mb-1 text-black"><h3>Selecteer je vereniging:</h3></label>
+            <div class="w-full mb-3">
+                <label class="block mb-1 text-black"><h3 class="textcontrast">Selecteer je vereniging:</h3></label>
             
             <div class="relative">
                 <button
@@ -184,6 +175,18 @@
             </div>
              </div>
             </div>
+            <div class="form-control">
+                <h3 class="form-label textcontrast">IVA uploaden:</h3>
+                    <div class="w-full mx-auto h-50 bg-dragfile shadow-2xl border-2 border-dashed border-gray-400 mb-3">
+                        <div class="text-center my-10 justify-items-center text-gray-500">
+                            <p>Sleep hier je bestanden naar toe</p>
+                            <p class="my-3">Of:</p>
+                            <Button color="yellow">
+                                Upload vanaf je computer
+                            </Button>
+                        </div>
+                    </div>
+                </div>
             <div class="my-5">
             <Button color="orange" padding="lg" width="max"
             on:click={handleSubmit}
@@ -209,6 +212,7 @@
                     </div>
                 </div>
             {/if}
+            
         </div>   
     </div>
 </div> 
