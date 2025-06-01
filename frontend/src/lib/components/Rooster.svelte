@@ -64,7 +64,6 @@
     <img src={headerImageUrl} alt="Header" class="w-full h-auto object-contain" />
   </div>
 
-  <!-- Date -->
   <h2 class="text-center text-lg font-semibold tracking-wide mb-4">VRIJDAG 20 JUNI</h2>
 
   <!-- Time Slots -->
@@ -97,7 +96,6 @@
     {/each}
   </div>
 
-  <!-- Supervisor -->
   <div class="mt-6 p-4 rounded-xl border border-black bg-gray-300 text-sm">
     <p class="font-semibold">SUPERVISOR: JAN DE BOER</p>
     <p>1. BERTJAN</p>
