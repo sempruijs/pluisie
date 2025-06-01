@@ -116,7 +116,7 @@
             <div class="form-control">
                 <h3 class="form-label textcontrast">Geboortedatum:</h3>
         <input type="text" required
-                class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                class="w-30 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                 placeholder="dd-mm-jjjj"
                 maxlength="10"
                 bind:value={geboortedatum}
@@ -127,7 +127,7 @@
                 <h3 class="form-label textcontrast">Persoonlijke e-mail:</h3>
         <input type="text" required
                 placeholder="Persoonlijke e-mail"
-                class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                class="w-100 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                 bind:value={email}
                 />
         </div>
@@ -135,7 +135,7 @@
                     <h3 class="textcontrast">Telefoonnummer:</h3>
             <input type="text"
                     placeholder="Telefoonnummer"
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                    class="w-65 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                     bind:value={telefoonnummer}
                     />
             
@@ -164,7 +164,7 @@
                         
                         {#each options as option}
                         <li
-                            class="px-4 py-2 hover:bg-gray-200 selectlist cursor-pointer"
+                            class="px-4 py-2 hover:bg-gray-200 hover:font-bold selectlist cursor-pointer"
                             on:click={() => selectOption(option)}
                         >
                             {option}
