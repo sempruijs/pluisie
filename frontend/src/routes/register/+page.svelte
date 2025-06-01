@@ -86,33 +86,38 @@
             </p>
         </div>
         <div>
-            <h1 class="font-bold text-3xl">Aanmeldformulier</h1>
+            <h1 class="font-bold text-3xl textcontrast">Aanmeldformulier</h1>
         </div>
         <div class="py-8 sha">
-            <div>
-            <div class="form-control">
-                <h3 class="form-label textcontrast">Voornaam:</h3>
-            <input type="text" required
-                    placeholder="Voornaam"
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                    bind:value={voornaam}
+            <div class="flex gap-2 w-full">
+                <div class="form-control w-2/6">
+                    <h3 class="form-label textcontrast">Voornaam:</h3>
+                    <input type="text" required
+                        placeholder="Voornaam"
+                        class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                        bind:value={voornaam}
                     />
-            </div>
-                    <h3 class="textcontrast">Tussenvoegsels:</h3>
-            <input type="text"
-                    placeholder="Tussenvoegsels"
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                    bind:value={tussenvoegsels}
+                </div>
+            
+                <div class="form-control w-1/6">
+                    <h3 class="form-label textcontrast">T.V.</h3>
+                    <input type="text"
+                        placeholder="T.V."
+                        class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                        bind:value={tussenvoegsels}
                     />
-            <div class="form-control">
+                </div>
+            
+                <div class="form-control w-3/6">
                     <h3 class="form-label textcontrast">Achternaam:</h3>
-            <input type="text" required
-                    placeholder="Achternaam"
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                    bind:value={achternaam}
+                    <input type="text" required
+                        placeholder="Achternaam"
+                        class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                        bind:value={achternaam}
                     />
+                </div>
             </div>
-            </div>
+            
             <div class="form-control">
                 <h3 class="form-label textcontrast">Geboortedatum:</h3>
         <input type="text" required
@@ -127,7 +132,7 @@
                 <h3 class="form-label textcontrast">Persoonlijke e-mail:</h3>
         <input type="text" required
                 placeholder="Persoonlijke e-mail"
-                class="w-100 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                class="h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                 bind:value={email}
                 />
         </div>
