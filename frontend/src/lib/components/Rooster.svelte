@@ -51,9 +51,14 @@
     unsubscribingSlots = [];
     isUnsubscribing = false;
   }
+
+  function cancelUnsubscribing() {
+    unsubscribingSlots = [];
+    isUnsubscribing = false;
+  }
 </script>
 
-<div class="relative max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg pb-20">
+<div class="max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg pb-6">
   <!-- Header -->
   <div class="mb-6">
     <img src={headerImageUrl} alt="Header" class="w-full h-auto object-contain" />
@@ -78,7 +83,7 @@
                 ? 'bg-red-400 text-white'
                 : slot.filled === 0
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-gray-300 text-gray-600'
+                  : 'bg-orange-300 text-black'
               : selectedSlots.includes(slot.id)
                 ? 'bg-orange-500 text-white'
                 : slot.filled >= slot.total
@@ -99,21 +104,21 @@
     <p>2. /</p>
   </div>
 
-  <!-- Fixed Action Buttons -->
-  <div class="absolute bottom-4 right-4 flex gap-2">
-    <!-- Aanmelden -->
+  <!-- Action Buttons -->
+  <div class="mt-6 flex justify-center gap-4 flex-wrap">
+    <!-- AANMELDEN -->
     <button
       on:click={confirmSignup}
       class={`font-bold py-2 px-4 rounded-xl shadow-lg transition 
-        ${selectedSlots.length > 0 
+        ${selectedSlots.length > 0 && !isUnsubscribing
           ? 'bg-orange-400 text-white hover:bg-orange-500 cursor-pointer' 
           : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-      disabled={selectedSlots.length === 0}
+      disabled={selectedSlots.length === 0 || isUnsubscribing}
     >
       AANMELDEN
     </button>
 
-    <!-- Afmelden -->
+    <!-- AFMELDEN -->
     <button
       on:click={isUnsubscribing ? confirmUnsubscribe : startUnsubscribing}
       class={`font-bold py-2 px-4 rounded-xl shadow-lg transition 
@@ -134,5 +139,15 @@
     >
       {isUnsubscribing ? 'BEVESTIG' : 'AFMELDEN'}
     </button>
+
+    {#if isUnsubscribing}
+      <!-- ANNULEREN -->
+      <button
+        on:click={cancelUnsubscribing}
+        class="font-bold py-2 px-4 rounded-xl shadow-lg transition bg-orange-400 text-white hover:bg-orange-500"
+      >
+        ANNULEREN
+      </button>
+    {/if}
   </div>
 </div>
