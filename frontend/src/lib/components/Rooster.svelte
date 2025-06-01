@@ -78,7 +78,7 @@
                 ? 'bg-red-400 text-white'
                 : slot.filled === 0
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-orange-300 text-black'
+                  : 'bg-gray-300 text-gray-600'
               : selectedSlots.includes(slot.id)
                 ? 'bg-orange-500 text-white'
                 : slot.filled >= slot.total
@@ -122,11 +122,12 @@
             ? unsubscribingSlots.length > 0
               ? 'bg-red-500 text-white hover:bg-red-600 cursor-pointer'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            : timeSlots.every(slot => slot.filled === 0)
+            : selectedSlots.length > 0 || timeSlots.every(slot => slot.filled === 0)
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
               : 'bg-red-400 text-white hover:bg-red-500 cursor-pointer'
         }`}
       disabled={
+        selectedSlots.length > 0 ||
         (isUnsubscribing && unsubscribingSlots.length === 0) ||
         (!isUnsubscribing && timeSlots.every(slot => slot.filled === 0))
       }
