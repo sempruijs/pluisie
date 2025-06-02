@@ -1,9 +1,8 @@
 use crate::service::timeslot::TimeslotService;
+use crate::domain::organisation::OrgID;
 use chrono::NaiveDate;
-use crate::parser::*;
-use crate::domain::User;
-use crate::domain::Day;
-use uuid::Uuid;
+use crate::domain::user::User;
+use crate::domain::timeslot::Day;
 use rocket::post;
 use rocket::response::status;
 use rocket::routes;
@@ -17,8 +16,10 @@ use utoipa::ToSchema;
 //api::subscribe_to_hours
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct SubscribeToHoursRequest {
-    pub org_id: String,
-    pub date: String,
+    pub org_id: OrgID,
+
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    pub date: NaiveDate,
     pub hours: Vec<u8>,
     pub is_enrolled: bool,
  }
@@ -42,26 +43,30 @@ async fn subscirbe_to_hours(
     service: &State<Arc<dyn TimeslotService>>,
     user: User,
     payload: Json<SubscribeToHoursRequest>,
-) -> Json<bool> {
-    let org_id = Uuid::parse_str(&payload.org_id).expect("Faild to parse org_id");
-    let date: NaiveDate = parse_iso8601_date(&payload.date).expect("Failed to parse date");
-    let user_id = user.user_id;
-    let hours = payload.hours.clone();
-    let is_enrolled = payload.is_enrolled.clone();
+) -> Result<Json<bool>, status::Custom<String>> {
+    let p = payload;
 
-    match service.subscribe_to_hours(date, hours, is_enrolled, user_id, org_id).await {
-        Ok(()) => Json(true),
-        _ => Json(false),
+    match service.subscribe_to_hours(&p.date, &p.hours, &p.is_enrolled, &user.user_id, &p.org_id).await {
+        Ok(()) => Ok(Json(true)),
+        Err(e) => Err(status::Custom(
+            rocket::http::Status::InternalServerError,
+            format!("Database error: {}", e),
+        )),
     }
 }
 
 //api::get_days
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 struct GetDaysRequest {
-    pub org_id: String,
-    pub start_date: String,
-    pub end_date: String,
+    pub org_id: OrgID,
+
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    pub start_date: NaiveDate,
+
+    #[schema(value_type = String, format = "date", example = "2024-07-24")]
+    pub end_date: NaiveDate,
 }
+
 #[utoipa::path(
     post,
     path = "/timeslot/get",
@@ -81,11 +86,9 @@ async fn get_days(
     user: User,
     payload: Json<GetDaysRequest>,
 ) -> Result<Json<Vec<Day>>, status::Custom<String>> {
-    let org_id = Uuid::parse_str(&payload.org_id).expect("faild to parse org_id");
-    let start_date: NaiveDate = parse_iso8601_date(&payload.start_date).expect("Failed to parse start date");
-    let end_date: NaiveDate = parse_iso8601_date(&payload.end_date).expect("Failed to parse end date");
+    let p = payload;
 
-    match service.get_days(user.user_id, org_id, start_date, end_date).await {
+    match service.get_days(&user.user_id, &p.org_id, &p.start_date, &p.end_date).await {
         Ok(days) => Ok(Json(days)),
         Err(e) => Err(status::Custom(
             rocket::http::Status::InternalServerError,
@@ -95,7 +98,7 @@ async fn get_days(
 }
 
 // Combine all the access_notifications routes.
-pub fn timeslots_routes() -> Vec<rocket::Route> {
+pub fn timeslot_routes() -> Vec<rocket::Route> {
     routes![
         subscirbe_to_hours, get_days, 
     ]

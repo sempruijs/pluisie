@@ -1,4 +1,4 @@
-use crate::domain::User;
+use crate::domain::user::*;
 use rocket::put;
 use crate::service::user::UserService;
 use rocket::get;
@@ -11,7 +11,6 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
-use uuid::Uuid;
 
 /// Request body for creating a user.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -54,7 +53,7 @@ async fn create_user(
 ) -> Json<bool> {
     // Convert `CreateUserRequest` to `User`
     let user = User {
-        user_id: Uuid::new_v4(), // Generate a new UUID for the user
+        user_id: UserID::new(),
         name: payload.name.clone(),
         email: payload.email.clone(),
         password: payload.password.clone(),

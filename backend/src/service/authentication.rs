@@ -1,4 +1,5 @@
-use crate::domain::User;
+use crate::domain::user::User;
+use crate::domain::user::UserID;
 use crate::repository::user::UserRepository;
 use bcrypt::verify;
 use chrono::{Duration, Utc};
@@ -7,13 +8,11 @@ use jsonwebtoken::{encode, EncodingKey, Header};
 use rocket::async_trait;
 use serde::Deserialize;
 use serde::Serialize;
-use std::str::FromStr;
-use uuid::Uuid;
 
 /// Claims are encoded in the JWT.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
-    pub user_id: String,
+    pub user_id: UserID,
     pub exp: usize, // Expiration time (as a timestamp)
 }
 
@@ -71,14 +70,14 @@ impl<U: UserRepository> AuthenticationService for AuthenticationServiceImpl<U> {
         match claims {
             Ok(claims) => Ok(self
                 .user_repository
-                .from_uuid(Uuid::from_str(&claims.user_id).expect("Failed to generate uuid."))
+                .from_uuid(claims.user_id)
                 .await?),
             Err(_) => Ok(None),
         }
     }
 }
 
-fn generate_jwt(user_id: Uuid, secret_key: String) -> Result<Option<String>, sqlx::Error> {
+fn generate_jwt(user_id: UserID, secret_key: String) -> Result<Option<String>, sqlx::Error> {
     // calculate experation time.
     let expiration = Utc::now()
         .checked_add_signed(Duration::hours(24))
@@ -86,7 +85,7 @@ fn generate_jwt(user_id: Uuid, secret_key: String) -> Result<Option<String>, sql
         .timestamp() as usize;
 
     let claims = Claims {
-        user_id: user_id.to_string(),
+        user_id: user_id,
         exp: expiration,
     };
 

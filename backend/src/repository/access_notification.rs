@@ -1,14 +1,15 @@
-use crate::domain::AccessNotification;
+use crate::domain::access_notification::AccessNotification;
 use rocket::async_trait;
-use sqlx::types::Uuid;
 use sqlx::PgPool;
 use chrono::Utc;
+use crate::domain::user::UserID;
+ use crate::domain::organisation::OrgID;
 
 #[async_trait]
 pub trait AccessNotificationRepository: Send + Sync {
-    async fn get_access_notification(&self, user_id: Uuid) -> Result<Vec<AccessNotification>, sqlx::Error>;
+    async fn get_access_notification(&self, user_id: UserID) -> Result<Vec<AccessNotification>, sqlx::Error>;
 
-    async fn create_access_notification(&self, org_id: Uuid, user_id: Uuid, description: String) -> Result<bool, sqlx::Error>;
+    async fn create_access_notification(&self, org_id: OrgID, user_id: UserID, description: String) -> Result<bool, sqlx::Error>;
 }
 
 #[derive(Debug, Clone)]
@@ -24,7 +25,7 @@ impl AccessNotificationRepositoryImpl {
 
 #[async_trait]
 impl AccessNotificationRepository for AccessNotificationRepositoryImpl {
-    async fn get_access_notification(&self, user_id: Uuid) -> Result<Vec<AccessNotification>, sqlx::Error> {
+    async fn get_access_notification(&self, user_id: UserID) -> Result<Vec<AccessNotification>, sqlx::Error> {
         let access_notification = sqlx::query_as::<_,
         AccessNotification>(
             r#" 
@@ -42,8 +43,8 @@ impl AccessNotificationRepository for AccessNotificationRepositoryImpl {
 
     async fn create_access_notification(
         &self,
-        org_id: Uuid,
-        user_id: Uuid,
+        org_id: OrgID,
+        user_id: UserID,
         description: String,
     ) -> Result<bool, sqlx::Error> {
         let date = Utc::now().date_naive();
@@ -53,8 +54,8 @@ impl AccessNotificationRepository for AccessNotificationRepositoryImpl {
             INSERT INTO access_notifications (org_id, user_id, date, is_accepted, description)
             VALUES ($1, $2, $3, NULL, $4)
             "#,
-            org_id,
-            user_id,
+            *org_id,
+            *user_id,
             date,
             description
         )
