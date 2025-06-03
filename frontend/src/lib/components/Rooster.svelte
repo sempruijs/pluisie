@@ -58,13 +58,13 @@
   }
 </script>
 
-<div class="max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg pb-6">
+<div class="max-w-sm mx-10 mt-21 bg-white rounded-xl p-6 shadow-lg pb-6">
   <!-- Header -->
   <div class="mb-6">
     <img src={headerImageUrl} alt="Header" class="w-full h-auto object-contain" />
   </div>
 
-  <h2 class="text-center text-lg font-semibold tracking-wide mb-4">VRIJDAG 20 JUNI</h2>
+  <h2 class="text-center text-lg font-semibold tracking-wide mb-4">VRIJDAG 2 JUNI</h2>
 
   <!-- Time Slots -->
   <div class="space-y-4">
