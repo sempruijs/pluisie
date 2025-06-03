@@ -21,7 +21,7 @@
         ? selectedSlots.filter(id => id !== slotId)
         : [...selectedSlots, slotId];
     } else {
-      // Toggle subscription, allow deselecting
+      // Toggle subscription
       if (slot.filled >= slot.total) return;
       selectedSlots = isSelected
         ? selectedSlots.filter(id => id !== slotId)
