@@ -1,7 +1,15 @@
 <script>
     import Button from "$lib/components/Button.svelte";
     import Header from "$lib/components/Header.svelte";
+    import { slide } from 'svelte/transition';
+   
     let geboortedatum = '';
+    let dropdownContainer;
+    let voornaam = "";
+    let tussenvoegsels = "";
+    let achternaam = "";
+    let email = "";
+    let telefoonnummer = "";
 
     function opendropDown() {
         open = !open
@@ -27,7 +35,7 @@
         }
 
         let selected = 'Indicium';
-        let options = ['Avanti', 'Indicium', 'Codex', 'SOG', 'test', 'test', 'test', 'test']
+        let options = ['Avanti', 'Indicium', 'Codex', 'SOG']
         let open = false;
 
         function selectOption(option) {
@@ -36,9 +44,17 @@
         }
         
         let showPopup = false;
-        function handleSubmit(){
+        function handleSubmit(evt){
             console.log ("test mf's")
             showPopup = true;
+
+            fetch("http://localhost:8000/users", {
+                method: "POST",
+                body: JSON.stringify({
+                    naam: voornaam + " " + tussenvoegsels + " " + achternaam,
+                    email,
+                })
+            })
 
             setTimeout(()=> {
                 showPopup = false;
@@ -46,17 +62,13 @@
             }, 9000);
         }
 
-        import { slide } from 'svelte/transition';
-
-        let dropdownContainer;
-
 </script>
 <Header />
 <div class="flex-1 bg-gradient-plant pt-16">
     <div class="center-v center-h mt-10">
         <img src="/hideoutlogo.png" alt="Logo" />
     </div>
-    <div class="max-w-5/10 mx-auto">
+    <div class="max-w-8/10 mx-auto">
         <div class="h-auto bg-color-register mx-auto m-10 p-8 rounded-xl shadow-2xl shadow-black">
             <p>
                 Bedankt voor je interesse!
@@ -74,60 +86,66 @@
             </p>
         </div>
         <div>
-            <h1 class="font-bold text-3xl">Aanmeldformulier</h1>
+            <h1 class="font-bold text-3xl textcontrast">Aanmeldformulier</h1>
         </div>
         <div class="py-8 sha">
-            <div class="form-control">
-                <h3 class="form-label">Voornaam:</h3>
-            <input type="text" required
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+            <div class="flex gap-2 w-full">
+                <div class="form-control w-2/6">
+                    <h3 class="form-label textcontrast">Voornaam:</h3>
+                    <input type="text" required
+                        placeholder="Voornaam"
+                        class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                        bind:value={voornaam}
                     />
-            </div>
-                    <h3>Tussenvoegsels:</h3>
-            <input type="text"
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                </div>
+            
+                <div class="form-control w-1/6">
+                    <h3 class="form-label textcontrast">T.V.</h3>
+                    <input type="text"
+                        placeholder="T.V."
+                        class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                        bind:value={tussenvoegsels}
                     />
-            <div class="form-control">
-                    <h3 class="form-label">Achternaam:</h3>
-            <input type="text" required
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                </div>
+            
+                <div class="form-control w-3/6">
+                    <h3 class="form-label textcontrast">Achternaam:</h3>
+                    <input type="text" required
+                        placeholder="Achternaam"
+                        class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                        bind:value={achternaam}
                     />
-            </div>
-            <div class="form-control">
-                <h3 class="form-label">E-mail:</h3>
-        <input type="text" required
-                class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                />
-        </div>
-            <div class="form-control">
-                    <h3 class="form-label">Geboortedatum:</h3>
-            <input type="text" required
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                    placeholder="dd-mm-jjjj"
-                    maxlength="10"
-                    bind:value={geboortedatum}
-                    on:input={formatGeboortedatum}
-                    />
-            </div>
-                    <h3>Telefoonnummer:</h3>
-            <input type="text"
-                    class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                    />
-            <div class="form-control">
-            <h3 class="form-label">IVA uploaden:</h3>
-                <div class="w-full mx-auto h-50 bg-dragfile shadow-2xl border-2 border-dashed border-gray-400 mb-3">
-                    <div class="text-center my-10 justify-items-center text-gray-500">
-                        <p>Sleep hier je bestanden naar toe</p>
-                        <p class="my-3">Of:</p>
-                        <Button color="yellow">
-                            Upload vanaf je computer
-                        </Button>
-                    </div>
                 </div>
             </div>
             
-            <div class="w-full">
-                <label class="block mb-1 text-black"><h3>Selecteer je vereniging:</h3></label>
+            <div class="form-control">
+                <h3 class="form-label textcontrast">Geboortedatum:</h3>
+        <input type="text" required
+                class="w-30 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                placeholder="dd-mm-jjjj"
+                maxlength="10"
+                bind:value={geboortedatum}
+                on:input={formatGeboortedatum}
+                />
+        </div>
+            <div class="form-control">
+                <h3 class="form-label textcontrast">Persoonlijke e-mail:</h3>
+        <input type="text" required
+                placeholder="Persoonlijke e-mail"
+                class="h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                bind:value={email}
+                />
+        </div>
+           
+                    <h3 class="textcontrast">Telefoonnummer:</h3>
+            <input type="text"
+                    placeholder="Telefoonnummer"
+                    class="w-65 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                    bind:value={telefoonnummer}
+                    />
+            
+            <div class="w-full mb-3">
+                <label class="block mb-1 text-black"><h3 class="textcontrast">Selecteer je vereniging:</h3></label>
             
             <div class="relative">
                 <button
@@ -151,7 +169,7 @@
                         
                         {#each options as option}
                         <li
-                            class="px-4 py-2 hover:bg-gray-200 selectlist cursor-pointer"
+                            class="px-4 py-2 hover:bg-gray-200 hover:font-bold selectlist cursor-pointer"
                             on:click={() => selectOption(option)}
                         >
                             {option}
@@ -162,6 +180,18 @@
             </div>
              </div>
             </div>
+            <div class="form-control">
+                <h3 class="form-label textcontrast">IVA uploaden:</h3>
+                    <div class="w-full mx-auto h-50 bg-dragfile shadow-2xl border-2 border-dashed border-gray-400 mb-3">
+                        <div class="text-center my-10 justify-items-center text-gray-500">
+                            <p>Sleep hier je bestanden naar toe</p>
+                            <p class="my-3">Of:</p>
+                            <Button color="yellow">
+                                Upload vanaf je computer
+                            </Button>
+                        </div>
+                    </div>
+                </div>
             <div class="my-5">
             <Button color="orange" padding="lg" width="max"
             on:click={handleSubmit}
@@ -187,6 +217,7 @@
                     </div>
                 </div>
             {/if}
+            
         </div>   
     </div>
 </div> 

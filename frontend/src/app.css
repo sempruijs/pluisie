@@ -2,6 +2,7 @@
 
 body {
     font-family: 'Roboto Slab', serif;
+    font-size: large;
 }
 
 .main-font {
@@ -9,10 +10,11 @@ body {
     font-weight: 1000;
 }
 
+
 .font-header {
     font-family: 'Roboto Slab', serif;
     font-weight: 650;
-    font-size: 16px;
+    font-size: large;
 }
 .bg-gradient {
     background-image: url("/Homebg.svg");
@@ -27,6 +29,19 @@ body {
 
     background-attachment: fixed;
     background-repeat: no-repeat;
+    transition: background-position 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .bg-gradient-plant {
+        background-image: url("/registratiepaginatablet.svg");
+    }
+}
+
+@media (max-width: 480px) {
+    .bg-gradient-plant {
+        background-image: url("/registratiepagina ultieme design.svg");
+    }
 }
 
 .center-h {
@@ -162,4 +177,21 @@ body {
 .profilehover:hover {
     transform: scale(1.3);
     transition: 0.3s ease-in-out;
+}
+
+.arrowhover {
+    transition: 0.3s ease-in-out;
+}
+
+.arrowhover:hover {
+    transition: 0.3s ease-in-out;
+    transform: scale(1.2);
+}
+
+.calendarhover:focus {
+    @apply bg-orange-400
+}
+
+.textcontrast {
+    @apply bg-green-100 rounded-xl p-1.25 shadow-xl mb-2 max-w-50
 }
