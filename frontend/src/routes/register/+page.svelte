@@ -86,7 +86,7 @@
             </p>
         </div>
         <div>
-            <h1 class="font-bold text-3xl textcontrast">Aanmeldformulier</h1>
+            <h1 class="font-bold text-3xl">Aanmeldformulier</h1>
         </div>
         <div class="py-8 sha">
             <div class="flex gap-2 w-full">

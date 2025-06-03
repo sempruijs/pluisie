@@ -58,7 +58,7 @@
   }
 </script>
 
-<div class="max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg pb-6">
+<div class="max-w-sm mx-5 mt-21 bg-gray-100 rounded-2xl p-6 shadow-lg pb-6">
   <!-- Header -->
   <div class="mb-6">
     <img src={headerImageUrl} alt="Header" class="w-full h-auto object-contain" />
