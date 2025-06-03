@@ -13,17 +13,19 @@
   function toggleSlot(slotId) {
     const isSubscribed = subscribedSlots.includes(slotId);
     const isSelected = selectedSlots.includes(slotId);
+    const slot = timeSlots.find(s => s.id === slotId);
 
     if (isSubscribed) {
-      // Deselect for unsubscribing
+      // Toggle unsubscription
       selectedSlots = isSelected
         ? selectedSlots.filter(id => id !== slotId)
         : [...selectedSlots, slotId];
     } else {
-      const slot = timeSlots.find(s => s.id === slotId);
-      if (slot.filled >= slot.total || isSelected) return;
-
-      selectedSlots = [...selectedSlots, slotId];
+      // Toggle subscription, allow deselecting
+      if (slot.filled >= slot.total) return;
+      selectedSlots = isSelected
+        ? selectedSlots.filter(id => id !== slotId)
+        : [...selectedSlots, slotId];
     }
   }
 
@@ -34,8 +36,10 @@
 
       if (isSubscribed) {
         // Unsubscribe
-        slot.filled = Math.max(0, slot.filled - 1);
-        subscribedSlots = subscribedSlots.filter(id => id !== slotId);
+        if (slot.filled > 0) {
+          slot.filled--;
+          subscribedSlots = subscribedSlots.filter(id => id !== slotId);
+        }
       } else {
         // Subscribe
         if (slot.filled < slot.total) {
@@ -44,7 +48,6 @@
         }
       }
     }
-
     selectedSlots = [];
   }
 
@@ -70,9 +73,7 @@
     {#each timeSlots as slot}
       <button
         on:click={() => toggleSlot(slot.id)}
-        disabled={
-          !isSlotSubscribed(slot.id) && slot.filled >= slot.total
-        }
+        disabled={!isSlotSubscribed(slot.id) && slot.filled >= slot.total}
         class={`w-full flex justify-between items-center px-4 py-3 rounded-xl shadow transition
           ${
             isSlotSubscribed(slot.id)
@@ -80,10 +81,10 @@
                 ? 'bg-red-400 text-white'
                 : 'bg-green-400 text-white'
               : isSlotSelected(slot.id)
-              ? 'bg-orange-500 text-white'
-              : slot.filled >= slot.total
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-orange-300 text-black'
+                ? 'bg-orange-500 text-white'
+                : slot.filled >= slot.total
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-orange-300 text-black'
           }`}
       >
         <span class="font-medium">{slot.time}</span>
@@ -92,6 +93,7 @@
     {/each}
   </div>
 
+  <!-- Supervisor Info -->
   <div class="mt-6 p-4 rounded-xl border border-black bg-gray-300 text-sm">
     <p class="font-semibold">SUPERVISOR: JAN DE BOER</p>
     <p>1. BERTJAN</p>
