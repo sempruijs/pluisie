@@ -29,12 +29,12 @@
 	class="bg-white h-90 w-full max-w-lg md:max-w-xl mx-3 p-8 rounded-lg shadow-2xl"
 >
 	<div class="flex2 my-4">
-		<h1 class="pl-1 font-semibold">E-mail:</h1>
+		<h1 class="pl-1 font-semibold">Persoonlijke e-mail:</h1>
 		<input
 			type="text"
 			bind:value={form.email}
 			class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 shadow-gray-200 rounded-lg outline-none selecttext"
-			placeholder="email"
+			placeholder="Persoonlijke email"
 		/>
 	</div>
 	<div class="flex2 my-4">

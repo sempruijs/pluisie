@@ -34,7 +34,7 @@
 
             setTimeout(()=> {
                 showPopup = false;
-                window.location.href = "/profile/cafes-status"
+                window.location.href = "/selectcafe/calendar"
             }, 3250);
         }
 

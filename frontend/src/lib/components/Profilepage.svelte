@@ -67,9 +67,6 @@
                 </div>
             </div>
         </div>
-        <Button
-        color="red"
-        className="mt-3"
-        on:click={logout}>Log out</Button>
+        <button onclick={logout}>logut</button>
     </div>
 </div>
