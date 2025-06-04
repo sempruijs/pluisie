@@ -13,6 +13,8 @@ pub struct User {
     pub password: String,
     pub is_super: bool,
     pub iva: String,
+    pub phone_number: String,
+    pub date_of_birth: String,
 }
 
 #[derive(Debug, Eq, Clone, PartialEq, ToSchema, Serialize, Hash, Deserialize, FromRow, sqlx::Type)]
