@@ -4,8 +4,9 @@ use sqlx::FromRow;
 use utoipa::ToSchema;
 use uuid::Uuid;
 use std::convert::TryFrom;
+use chrono::NaiveDate;
 
-#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow)]
+#[derive(Debug, PartialEq, Eq, Clone, Serialize, Deserialize, FromRow, ToSchema)]
 pub struct User {
     pub user_id: UserID,
     pub name: String,
@@ -14,7 +15,8 @@ pub struct User {
     pub is_super: bool,
     pub iva: String,
     pub phone_number: String,
-    pub date_of_birth: String,
+    #[schema(value_type = String)]
+    pub date_of_birth: NaiveDate,
 }
 
 #[derive(Debug, Eq, Clone, PartialEq, ToSchema, Serialize, Hash, Deserialize, FromRow, sqlx::Type)]

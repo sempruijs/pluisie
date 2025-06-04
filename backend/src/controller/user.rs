@@ -13,6 +13,7 @@ use serde::Deserialize;
 use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
+use chrono::NaiveDate;
 
 /// Request body for creating a user.
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -23,7 +24,8 @@ struct CreateUserRequest {
     pub is_super: bool,
     pub iva: String,
     pub phone_number: String,
-    pub date_of_birth: String,
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    pub date_of_birth: NaiveDate,
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -33,7 +35,8 @@ struct UpdateUserRequest {
     pub password: String,
     pub iva: String,
     pub phone_number: String,
-    pub date_of_birth: String,
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    pub date_of_birth: NaiveDate,
 }
 
 // Utoipa is the crate that generates swagger documentation for your endpoints.
@@ -125,7 +128,8 @@ struct GetUserResponse {
     is_super: bool,
     iva: String,
     phone_number: String,
-    date_of_birth: String,
+    #[schema(value_type = String, format = "date", example = "2024-05-24")]
+    date_of_birth: NaiveDate,
 }
 
 #[utoipa::path(

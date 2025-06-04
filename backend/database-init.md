@@ -6,7 +6,7 @@ CREATE TABLE users (
     is_super BOOLEAN NOT NULL,
     iva TEXT NOT NULL,
     phone_number TEXT NOT NULL,
-    date_of_birth TEXT NOT NULL
+    date_of_birth DATE NOT NULL
 );
 
 CREATE TABLE organisations (
