@@ -101,7 +101,7 @@ async fn update_user(
     payload: Json<UpdateUserRequest>,
     user_service: &State<Arc<dyn UserService>>,
     user: User,
-) -> Json<bool> {
+) -> Result<Status, Custom<String>> {
     let updated_user = User {
         user_id: user.user_id,
         name: payload.name.clone(),
@@ -114,9 +114,12 @@ async fn update_user(
         date_of_birth: payload.date_of_birth.clone(),
     };
 
-    match user_service.update(updated_user).await {
-        Ok(()) => Json(true),
-        Err(_) => Json(false),
+  match user_service.update(updated_user).await {
+        Ok(()) => Ok(Status::Ok),
+        Err(e) => {
+            let msg = format!("Internal error: {e}");
+            Err(status::Custom(Status::InternalServerError, msg))
+        },
     }
 }
 
@@ -161,6 +164,7 @@ async fn get_user(
         phone_number: user.phone_number,
         date_of_birth: user.date_of_birth,
     }))
+
 }
 
 // Combine all the user routes.

@@ -13,6 +13,8 @@ use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
 use crate::User;
+use crate::controller::access_notification::status::Custom;
+use rocket::http::Status;
 
 //api::get_access_notification_by_user_id
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -88,13 +90,15 @@ async fn create_access_notification(
     service: &State<Arc<dyn AccessNotificationService>>,
     user: User,
     payload: Json<CreateAccessNotificationRequest>,
-) -> Json<bool> {
-    match service.create_access_notification(payload.org_id.clone(), user.user_id, payload.description.clone()).await {
-        Ok(true) => Json(true),
-        _ => Json(false),
+) -> Result<Status, Custom<String>> {
+     match service
+        .create_access_notification(payload.org_id.clone(), user.user_id, payload.description.clone())
+        .await
+    {
+        Ok(true) => Ok(Status::Created),
+        _ => Err(Custom(Status::InternalServerError, "Internal error".to_string())),
     }
 }
-
 // Combine all the access_notifications routes.
 pub fn access_notification_routes() -> Vec<rocket::Route> {
     routes![
