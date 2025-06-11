@@ -180,7 +180,7 @@
         </div>
         <div class="form-control">
             <h3 class="form-label textcontrast">Wachtwoord:</h3>
-    <input type="text" required
+    <input type="password" required
             placeholder="Wachtwoord"
             class="h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
             bind:value={$createUserRequest.password}
