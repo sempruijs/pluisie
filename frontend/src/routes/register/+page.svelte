@@ -21,11 +21,6 @@
     email: "",
   });
 
-    // $: createUserRequest.update(req => ({
-    //     ...req,
-    //     name: [firstName, infix, lastName].filter(Boolean).join(' ').trim()
-    // }));
-    
     const handleSubmit = () => {
         Effect.runPromise(
             provideServerConfig(serverConfig)(Register(get(createUserRequest))),
