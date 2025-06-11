@@ -48,16 +48,19 @@
 	</div>
 	<div class="flex justify-between my-4">
 		<Button on:click={() => handleLogin(form.email, form.password)}
+			color="green" border="no" hover="green"
 			>Login</Button
 		>
-		<Button color="red">Reset Account</Button>
+		<Button 
+		color="red" border="no" hover="red" className="hover:text-white"
+		>Reset Account</Button>
 	</div>
 	<div class="flex w-full h-0.5 bg-gray-300 my-5">
 		<div class="w-full flex flex-col items-center">
 			<h3 class="my-2 font-semibold text-center">Of:</h3>
 			<div class="flex justify-center">
 				<a href="/register">
-					<Button color="orange" padding="lg">
+					<Button color="orange" padding="lg" border="no" hover="orange">
 						Registreer je nu als vrijwilliger
 					</Button>
 				</a>

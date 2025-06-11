@@ -127,6 +127,5 @@
         </div>
     </div>
 
-<!--Here's supposed to be the UL with selecting a café-->
 
 

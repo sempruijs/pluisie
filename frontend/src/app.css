@@ -195,3 +195,20 @@ body {
 .textcontrast {
     @apply bg-green-100 rounded-xl p-1.25 shadow-xl mb-2 max-w-50
 }
+
+.uploadlocation {
+    @apply bg-blue-400 text-black py-2 px-4 rounded-lg shadow hover:bg-blue-500 hover:text-gray-200
+}
+
+.uploadlocation {
+    transition: 0.2s ease-in-out;
+}
+
+.inbehandelingstyling {
+    @apply p-2 rounded-2xl hover:bg-gray-200 hover:p-2 hover:rounded-2xl;
+    transition: ease-in-out 0.2s;
+}
+
+.inbehandelingstyling:hover {
+    transform: scale(1.025);
+}
