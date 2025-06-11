@@ -11,21 +11,20 @@
     import { base } from "$app/paths";
     import {get} from "svelte/store";
 
-  const createUserRequest = writable<CreateUserRequest>({
-        name: "string",
-        date_of_birth: "string",
-        is_super: false,
-        iva: "string",
-        password: "string",
-        phone_number: "string",
-        email: "string",
-      });
+  let createUserRequest = writable({
+    name: "",
+    date_of_birth: "",
+    is_super: false,
+    iva: "",
+    password: "",
+    phone_number: "",
+    email: "",
+  });
 
     // $: createUserRequest.update(req => ({
     //     ...req,
     //     name: [firstName, infix, lastName].filter(Boolean).join(' ').trim()
     // }));
-    const fullName = "harko de Graaf";
     
     const handleSubmit = () => {
       createUserRequest.update((req) => ({
@@ -52,17 +51,10 @@
         };
 
     $effect(() => {
-        console.log("date of birth: ", date_of_birth);
+        console.log($createUserRequest);
     })
 
-    let date_of_birth = $state("");
     let dropdownContainer = "";
-    let firstName = "";
-    let infix = "";
-    let lastName = "";
-    let email = "";
-    let phone_number = "";
-    let password = "";
 
     function opendropDown() {
         open = !open
@@ -72,6 +64,7 @@
      })
         )
     }
+
     function formatGeboortedatum(e) {
         let input = e.target.value.replace(/\D/g, '');
         if (input.length > 8) input = input.slice(0, 8);
@@ -85,35 +78,35 @@
         if (year) formatted += '-' + year;
 
         date_of_birth = formatted;
-        }
+    }
 
-        let selected = 'Indicium';
-        let options = ['Avanti', 'Indicium', 'Codex', 'SOG']
-        let open = false;
+    let selected = 'Indicium';
+    let options = ['Avanti', 'Indicium', 'Codex', 'SOG']
+    let open = false;
 
-        function selectOption(option) {
-            selected = option;
-            console.log("Selected option:", selected);
-            open = false;
-        }
+    function selectOption(option) {
+        selected = option;
+        console.log("Selected option:", selected);
+        open = false;
+    }
         
-        let showPopup = false;
-        function handlePopup(evt){
-            console.log ("test mf's")
-            showPopup = true;
+    let showPopup = false;
+    function handlePopup(evt){
+        console.log ("test mf's")
+        showPopup = true;
 
-            setTimeout(()=> {
-                showPopup = false;
-                 window.location.href = "/"
-            }, 9000);
-        }
+        setTimeout(()=> {
+            showPopup = false;
+             window.location.href = "/"
+        }, 9000);
+    }
 
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
         if (file) {
             console.log("Bestand geüpload:", file.name);
-        }        }
-
+        }
+    }
 </script>
 <Header />
 <div class="flex-1 bg-gradient-plant pt-16">
@@ -147,7 +140,7 @@
                     <input type="text" required
                         placeholder="Voornaam"
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                        bind:value={firstName}
+                        bind:value={$createUserRequest.name}
                     />
                 </div>
             
@@ -156,7 +149,6 @@
                     <input type="text"
                         placeholder="T.V."
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                        bind:value={infix}
                     />
                 </div>
             
@@ -165,7 +157,6 @@
                     <input type="text" required
                         placeholder="Achternaam"
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                        bind:value={lastName}
                     />
                 </div>
             </div>
@@ -177,23 +168,24 @@
                 class="w-30 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                 placeholder="dd-mm-jjjj"
                 maxlength="10"
-                bind:value={date_of_birth}
+                bind:value={$createUserRequest.date_of_birth}
                 />
         </div>
             <div class="form-control">
                 <h3 class="form-label textcontrast">Persoonlijke e-mail:</h3>
-        <input type="text" required
-                placeholder="Persoonlijke e-mail"
-                class="h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                bind:value={email}
-                />
+        <input
+            type="text" required
+            placeholder="Persoonlijke e-mail"
+            class="h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+            bind:value={$createUserRequest.email}
+        />
         </div>
         <div class="form-control">
             <h3 class="form-label textcontrast">Wachtwoord:</h3>
     <input type="text" required
             placeholder="Wachtwoord"
             class="h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-            bind:value={password}
+            bind:value={$createUserRequest.password}
             />
     </div>
 
@@ -202,7 +194,7 @@
             <input type="text"
                     placeholder="Telefoonnummer"
                     class="w-65 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                    bind:value={phone_number}
+                    bind:value={$createUserRequest.phone_number}
                     />
             
             <div class="w-full mb-3">
