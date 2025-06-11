@@ -5,7 +5,6 @@
     import { Option } from "effect";
     export let user: User;
 
-    const birthDate = "01-02-2003";
     const vereniging = "Indicium";
     const cafesStatus = "In behandeling...";
     const profileImageUrl = "";
@@ -41,9 +40,9 @@
             <div class="space-y-3 text-base">
                 <div class="flex justify-between pb-2">
                     <span>Geboortedatum:</span>
-                    <span>{birthDate}</span>
+                    <span>{user.date_of_birth}</span>
                 </div>
-                <div class="flex justify-between pb-2">
+                <div class="flex justify-between pb-2 overflow-auto">
                     <span>IVA:</span>
                     <!-- Make "IVA" clickable -->
                     <a
@@ -61,12 +60,14 @@
                     <!-- Make "Cafés" clickable -->
                     <a
                         href="/profile/cafes-status"
-                        class="text-orange-500 italic underline hover:underline"
+                        class="text-orange-500 italic inbehandelingstyling"
                         >{cafesStatus}</a
                     >
                 </div>
             </div>
         </div>
-        <button onclick={logout}>logut</button>
+        <Button on:click={logout}
+        className="mt-3 hover:text-white" color="red" border="no" hover="red"
+        >logout</Button>
     </div>
 </div>

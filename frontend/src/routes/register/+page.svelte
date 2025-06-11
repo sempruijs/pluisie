@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { date } from 'effect/FastCheck';
     import Button from "$lib/components/Button.svelte";
     import Header from "$lib/components/Header.svelte";
     import { slide } from 'svelte/transition';
@@ -10,8 +11,11 @@
     import { Effect } from "effect";
     import { base } from "$app/paths";
     import {get} from "svelte/store";
+  import { subscribe } from "effect/PubSub";
 
+let dateOfBirth = "";
   let createUserRequest = writable({
+ 
     name: "",
     date_of_birth: "",
     is_super: false,
@@ -158,7 +162,7 @@
                 <h3 class="form-label textcontrast">Geboortedatum:</h3>
             <input
                 type="date" required
-                class="w-30 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                class="w-45 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                 placeholder="dd-mm-jjjj"
                 maxlength="10"
                 bind:value={$createUserRequest.date_of_birth}
@@ -232,7 +236,7 @@
                         <div class="text-center my-10 justify-items-center text-gray-500">
                             <p>Sleep hier je bestanden naar toe</p>
                             <p class="my-3">Of:</p>
-                            <label class="curser-pointer inline-block bg-yellow-500 text-white py-2 px-4 rounded-lg shadow hover:bg-yellow-600">
+                            <label class="uploadlocation">
                                 Upload vanaf je computer
                                 <input
                                     type="file"
@@ -259,7 +263,7 @@
                     </div>
                 </div>
             <div class="my-5">
-            <Button color="orange" padding="lg" width="max"
+            <Button color="orange" padding="lg" width="max" border="no" hover="orange"
             on:click={() => {
                 handlePopup();
                 handleSubmit();
