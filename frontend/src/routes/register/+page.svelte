@@ -1,15 +1,62 @@
-<script>
+<script lang="ts">
     import Button from "$lib/components/Button.svelte";
     import Header from "$lib/components/Header.svelte";
     import { slide } from 'svelte/transition';
-   
-    let geboortedatum = '';
-    let dropdownContainer;
-    let voornaam = "";
-    let tussenvoegsels = "";
-    let achternaam = "";
+    import { Register } from "$lib/ts/register";
+    import { provideServerConfig } from "$lib/ts/server";
+    import { serverConfig } from "$lib/config/config.template";
+    import { writable } from "svelte/store";
+    import type { CreateUserRequest } from "$lib/ts/register";
+    import { Effect } from "effect";
+    import { base } from "$app/paths";
+    import {get} from "svelte/store";
+
+  const createUserRequest = writable<CreateUserRequest>({
+        name: "string",
+        date_of_birth: "string",
+        is_super: false,
+        iva: "string",
+        password: "string",
+        phone_number: "string",
+        email: "string",
+      });
+
+    $: createUserRequest.update(req => ({
+        ...req,
+        fullName: [firstName, infix, lastName].filter(Boolean).join(' ').trim()
+    }));
+    
+    const handleSubmit = () => {
+      createUserRequest.update((req) => ({
+        ...req,
+        name: fullName,
+        date_of_birth,
+        email,
+        phone_number,
+        password,
+      }));
+
+
+    Effect.runPromise(
+        provideServerConfig(serverConfig)(Register(get(createUserRequest))),
+    )
+        .then(() => {
+            console.log("Created User");
+            window.location.href = "/"
+        })
+            .catch((error) => {
+                alert("Alert, creating user not succeeded." + error.message);
+            });
+        };
+
+    let date_of_birth = "";
+    let dropdownContainer = "";
+    let firstName = "";
+    let infix = "";
+    let lastName = "";
     let email = "";
-    let telefoonnummer = "";
+    let phone_number = "";
+    let password = "";
 
     function opendropDown() {
         open = !open
@@ -31,7 +78,7 @@
         if (month) formatted += '-' + month;
         if (year) formatted += '-' + year;
 
-        geboortedatum = formatted;
+        date_of_birth = formatted;
         }
 
         let selected = 'Indicium';
@@ -40,27 +87,26 @@
 
         function selectOption(option) {
             selected = option;
+            console.log("Selected option:", selected);
             open = false;
         }
         
         let showPopup = false;
-        function handleSubmit(evt){
+        function handlePopup(evt){
             console.log ("test mf's")
             showPopup = true;
-
-            fetch("http://localhost:8000/users", {
-                method: "POST",
-                body: JSON.stringify({
-                    naam: voornaam + " " + tussenvoegsels + " " + achternaam,
-                    email,
-                })
-            })
 
             setTimeout(()=> {
                 showPopup = false;
                  window.location.href = "/"
             }, 9000);
         }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+        if (file) {
+            console.log("Bestand geüpload:", file.name);
+        }        }
 
 </script>
 <Header />
@@ -86,7 +132,7 @@
             </p>
         </div>
         <div>
-            <h1 class="font-bold text-3xl">Aanmeldformulier</h1>
+            <h1 class="font-bold text-3xl">Aanmeld Formulier</h1>
         </div>
         <div class="py-8 sha">
             <div class="flex gap-2 w-full">
@@ -95,7 +141,7 @@
                     <input type="text" required
                         placeholder="Voornaam"
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                        bind:value={voornaam}
+                        bind:value={firstName}
                     />
                 </div>
             
@@ -104,7 +150,7 @@
                     <input type="text"
                         placeholder="T.V."
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                        bind:value={tussenvoegsels}
+                        bind:value={infix}
                     />
                 </div>
             
@@ -113,7 +159,7 @@
                     <input type="text" required
                         placeholder="Achternaam"
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                        bind:value={achternaam}
+                        bind:value={lastName}
                     />
                 </div>
             </div>
@@ -124,7 +170,7 @@
                 class="w-30 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                 placeholder="dd-mm-jjjj"
                 maxlength="10"
-                bind:value={geboortedatum}
+                bind:value={date_of_birth}
                 on:input={formatGeboortedatum}
                 />
         </div>
@@ -136,12 +182,21 @@
                 bind:value={email}
                 />
         </div>
+        <div class="form-control">
+            <h3 class="form-label textcontrast">Wachtwoord:</h3>
+    <input type="text" required
+            placeholder="Wachtwoord"
+            class="h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+            bind:value={password}
+            />
+    </div>
+
            
                     <h3 class="textcontrast">Telefoonnummer:</h3>
             <input type="text"
                     placeholder="Telefoonnummer"
                     class="w-65 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                    bind:value={telefoonnummer}
+                    bind:value={phone_number}
                     />
             
             <div class="w-full mb-3">
@@ -186,15 +241,38 @@
                         <div class="text-center my-10 justify-items-center text-gray-500">
                             <p>Sleep hier je bestanden naar toe</p>
                             <p class="my-3">Of:</p>
-                            <Button color="yellow">
+                            <label class="curser-pointer inline-block bg-yellow-500 text-white py-2 px-4 rounded-lg shadow hover:bg-yellow-600">
                                 Upload vanaf je computer
-                            </Button>
+                                <input
+                                    type="file"
+                                    accept=".pdf,.jpg,.jpeg,.png"
+                                    class="hidden"
+                                    on:change={(e) => {
+                                        const file = e.target.files[0];
+                                        if (file) {
+                                           const reader = new FileReader();
+                                           reader.onload = () =>{
+                                            const base64String = reader.result as string;
+                                            createUserRequest.update(req => ({
+                                                ...req,
+                                                iva: base64String,
+                                            }));
+                                            console.log("bestand geüpload als string:",base64String.substring(0, 100));
+                                           }
+                                           reader.readAsDataURL(file);
+                                        }
+                                    }}
+                                />
+                            </label>
                         </div>
                     </div>
                 </div>
             <div class="my-5">
             <Button color="orange" padding="lg" width="max"
-            on:click={handleSubmit}
+            on:click={() => {
+                handlePopup();
+                handleSubmit();
+            }}
             >
                 Verstuur aanmelding
             </Button>
