@@ -27,20 +27,9 @@
     // }));
     
     const handleSubmit = () => {
-      createUserRequest.update((req) => ({
-        ...req,
-        name: fullName,
-        date_of_birth,
-        email,
-        phone_number,
-        password,
-      }));
-
-
-
-    Effect.runPromise(
-        provideServerConfig(serverConfig)(Register(get(createUserRequest))),
-    )
+        Effect.runPromise(
+            provideServerConfig(serverConfig)(Register(get(createUserRequest))),
+        )
         .then(() => {
             console.log("Created User");
             window.location.href = "/"
@@ -51,10 +40,17 @@
         };
 
     $effect(() => {
-        console.log($createUserRequest);
-    })
+        const fullName = [firstName, infix, lastName].filter(Boolean).join(" ").trim();
+        createUserRequest.update((req) => ({
+            ...req,
+            name: fullName,
+        }));
+    });
 
     let dropdownContainer = "";
+    let firstName = $state("");
+    let infix = $state("");
+    let lastName = $state("");
 
     function opendropDown() {
         open = !open
@@ -140,7 +136,7 @@
                     <input type="text" required
                         placeholder="Voornaam"
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
-                        bind:value={$createUserRequest.name}
+                        bind:value={firstName}
                     />
                 </div>
             
@@ -149,6 +145,7 @@
                     <input type="text"
                         placeholder="T.V."
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                        bind:value={infix}
                     />
                 </div>
             
@@ -157,6 +154,7 @@
                     <input type="text" required
                         placeholder="Achternaam"
                         class="w-full h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
+                        bind:value={lastName}
                     />
                 </div>
             </div>
