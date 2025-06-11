@@ -21,10 +21,11 @@
         email: "string",
       });
 
-    $: createUserRequest.update(req => ({
-        ...req,
-        fullName: [firstName, infix, lastName].filter(Boolean).join(' ').trim()
-    }));
+    // $: createUserRequest.update(req => ({
+    //     ...req,
+    //     name: [firstName, infix, lastName].filter(Boolean).join(' ').trim()
+    // }));
+    const fullName = "harko de Graaf";
     
     const handleSubmit = () => {
       createUserRequest.update((req) => ({
@@ -35,6 +36,7 @@
         phone_number,
         password,
       }));
+
 
 
     Effect.runPromise(
@@ -49,7 +51,11 @@
             });
         };
 
-    let date_of_birth = "";
+    $effect(() => {
+        console.log("date of birth: ", date_of_birth);
+    })
+
+    let date_of_birth = $state("");
     let dropdownContainer = "";
     let firstName = "";
     let infix = "";
@@ -166,12 +172,12 @@
             
             <div class="form-control">
                 <h3 class="form-label textcontrast">Geboortedatum:</h3>
-        <input type="text" required
+            <input
+                type="date" required
                 class="w-30 h-7.5 bg-gray-200 shadow-xl border px-3 border-gray-400 rounded-lg outline-none selecttext mb-3" 
                 placeholder="dd-mm-jjjj"
                 maxlength="10"
                 bind:value={date_of_birth}
-                on:input={formatGeboortedatum}
                 />
         </div>
             <div class="form-control">
