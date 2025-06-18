@@ -25,18 +25,25 @@ let dateOfBirth = "";
     email: "",
   });
 
-    const handleSubmit = () => {
-        Effect.runPromise(
-            provideServerConfig(serverConfig)(Register(get(createUserRequest))),
-        )
-        .then(() => {
-            console.log("Created User");
-            window.location.href = "/"
-        })
-            .catch((error) => {
-                alert("Alert, creating user not succeeded." + error.message);
-            });
-        };
+        const handleSubmit = () => {
+    const start = performance.now();
+
+    Effect.runPromise(
+        provideServerConfig(serverConfig)(Register(get(createUserRequest))),
+    )
+    .then(() => {
+        const end = performance.now();
+        const duration = end - start;
+        console.log(`User creation request took ${duration.toFixed(2)} ms`);
+        
+        console.log("Created User");
+        window.location.href = "/";
+    })
+    .catch((error) => {
+        alert("Alert, creating user not succeeded." + error.message);
+    });
+    };
+
 
     $effect(() => {
         const fullName = [firstName, infix, lastName].filter(Boolean).join(" ").trim();
@@ -94,13 +101,6 @@ let dateOfBirth = "";
             showPopup = false;
              window.location.href = "/"
         }, 9000);
-    }
-
-    function handleFileUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-            console.log("Bestand geüpload:", file.name);
-        }
     }
 </script>
 <Header />
