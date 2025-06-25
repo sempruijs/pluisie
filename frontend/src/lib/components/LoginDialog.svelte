@@ -51,9 +51,7 @@
 			color="green" border="no" hover="green"
 			>Login</Button
 		>
-		<Button 
-		color="red" border="no" hover="red" className="hover:text-white"
-		>Reset Account</Button>
+
 	</div>
 	<div class="flex w-full h-0.5 bg-gray-300 my-5">
 		<div class="w-full flex flex-col items-center">
