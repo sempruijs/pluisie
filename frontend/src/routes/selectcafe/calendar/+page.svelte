@@ -9,8 +9,10 @@
     selectedDate = event.detail;
   }
 </script>
-<main class="flex-1 flex items-center justify-center bg-gradient-plant">
+<main class="flex-1 flex items-center justify-center bg-gradient-plant p-4
+             flex-col md:flex-row md:gap-6">
   <Header />
-  <Calendar on:selectedDate={updateSelectedDate} />
-  <Rooster {selectedDate} />
+
+  <Calendar on:selectedDate={updateSelectedDate} class="w-full md:w-auto" />
+  <Rooster {selectedDate} class="w-full md:w-auto" />
 </main>
