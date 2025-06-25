@@ -10,7 +10,7 @@
     <div class="flex-grow flex justify-center font-header gap-8">
       <a href="/" class="headerhover font-semibold">Home</a>
       <a href="/register" class="headerhover font-semibold">Registreren</a>
-      <a href="/contact" class="headerhover font-semibold">Contact</a>
+  
     </div>
 
 
