@@ -60,7 +60,7 @@
 			<h3 class="my-2 font-semibold text-center">Of:</h3>
 			<div class="flex justify-center">
 				<a href="/register">
-					<Button color="orange" padding="lg" border="no" hover="orange">
+					<Button color="orange" padding="lg" border="no" hover="orange"> 
 						Registreer je nu als vrijwilliger
 					</Button>
 				</a>
