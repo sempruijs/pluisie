@@ -1,5 +1,20 @@
-<script>
+<script lang="ts">
   export let headerImageUrl = "/hideoutlogo.png";
+  export let selectedDate = ""
+
+   function formatDate(dateStr) {
+    const months = ['JANUARI', 'FEBRUARI', 'MAART', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AUGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DECEMBER'];
+    const days = ['ZONDAG', 'MAANDAG', 'DINSDAG', 'WOENSDAG', 'DONDERDAG', 'VRIJDAG', 'ZATERDAG'];
+
+    const date = new Date(dateStr);
+    const day = days[date.getDay()];
+    const dateNum = date.getDate();
+    const month = months[date.getMonth()];
+
+    return `${day} ${dateNum} ${month}`;
+  }
+
+  $: selectedDayString = formatDate(selectedDate);
 
   let subscribedSlots = [];
   let selectedSlots = [];
@@ -66,7 +81,7 @@
     <img src={headerImageUrl} alt="Header" class="w-full h-auto object-contain" />
   </div>
 
-  <h2 class="text-center text-lg font-semibold tracking-wide mb-4">VRIJDAG 20 JUNI</h2>
+  <h2 class="text-center text-lg font-semibold tracking-wide mb-4">{selectedDayString}</h2>
 
   <!-- Time Slots -->
   <div class="space-y-4">

@@ -1,4 +1,8 @@
 <script lang="ts">
+	  import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
+    
+
     const monthNames: string[] = [
         'Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni',
         'July', 'Augustus', 'September', 'Oktober', 'November', 'December'
@@ -53,6 +57,12 @@
         const key = date.toISOString().slice(0, 10);
         return fullDays.includes(key);
     }
+
+    function handleDateClick(date: Date) {
+    dispatch("selectdate", date.toISOString().slice(0, 10));
+    }
+
+
 </script>
 
 <div class="flex justify-center mb-4">
@@ -77,7 +87,7 @@
             const day = date.getDate();
         </script>
         <button 
-            on:click={() => toggleFull(date)}
+            on:click={() => {toggleFull(date); handleDateClick(date); }}
             class="w-8 h-8 rounded-full transition-all duration-150 font-medium 
                 {isFull(date)
                     ? 'bg-red-300 text-white'
