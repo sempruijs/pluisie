@@ -17,7 +17,7 @@
   if (color === "red") color_style = "bg-red-300";
   if (color === "yellow") color_style = "bg-yellow-300";
   if (color === "blue") color_style = "bg-blue-300";
-   if (padding === "lg") padding_style = "px-10 py-5";
+   if (padding === "lg") padding_style = "px-10 py-6";
   if (width === "max") width_style = "w-full";
   if (border === "thick") border_style = "border border-2";
   if (border === "no") border_style = "";
