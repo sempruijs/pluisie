@@ -103,6 +103,8 @@
                  <Button
                  color="orange"
                  class="mt-3"
+                 border="no"
+                 hover="orange"
                   on:click={handleSubmit}
                   >
                   
