@@ -13,7 +13,6 @@ use std::sync::Arc;
 use utoipa::ToSchema;
 use rocket::get; 
 use rocket::http::Status;
-use rocket::response::status;
 use rocket::response::status::Custom;
 
 
@@ -43,7 +42,7 @@ async fn create_organisation(
     payload: Json<CreateOrganisationRequest>,
     organisation_service: &State<Arc<dyn OrganisationService>>,
     user: User,
-) -> Result<Status, Custom<String>> {
+) -> Status {
     let organisation = Organisation {
         org_id: OrgID::new(),
         name: payload.name.clone(),
@@ -53,17 +52,11 @@ async fn create_organisation(
 
    if user.is_super {
         match organisation_service.create(organisation).await {
-            Ok(()) => Ok(Status::Created),
-            Err(e) => Err(status::Custom(
-                rocket::http::Status::InternalServerError,
-                format!("Database error: {}", e),
-            )),
+            Ok(()) => Status::Created,
+            Err(_) => Status::InternalServerError,
         }
     } else {
-        Err(status::Custom(
-            rocket::http::Status::Forbidden,
-            "You are not allowed to create an organisation.".to_string(),
-        ))
+        Status::Forbidden
     }
 }
 /// Request body for delete a organisation.
@@ -90,21 +83,15 @@ async fn delete_organisation(
     payload: Json<DeleteOrganisationRequest>,
     organisation_service: &State<Arc<dyn OrganisationService>>,
     user: User,
-) -> Result<Status, Custom<String>> {
+) -> Status {
 
        if user.is_super {
         match organisation_service.delete(payload.org_id.clone()).await {
-            Ok(()) => Ok(Status::NoContent), // 204 No Content bij succes
-            Err(e) => Err(status::Custom(
-                rocket::http::Status::InternalServerError,
-                format!("Database error: {}", e),
-            )),
+            Ok(()) => Status::NoContent,
+            Err(_) => Status::InternalServerError,
         }
          } else {
-        Err(status::Custom(
-            rocket::http::Status::Forbidden,
-            "You are not allowed to delete this organisation.".to_string(),
-        ))
+        Status::Forbidden
     }
 }
 
@@ -143,17 +130,12 @@ struct GetOrganisationRequest {
     _user: User,
     payload: Json<GetOrganisationRequest>,
     organisation_service: &State<Arc<dyn OrganisationService>>,
-) -> Result<Json<GetOrganisationResponse>, Custom<String>> {
-   if let Ok(Some(organisation)) = organisation_service.get_org_id(payload.org_id.clone()).await {
-        return Ok(Json(GetOrganisationResponse {
-            org_id: organisation.org_id,
-            name: organisation.name,
-            picture: organisation.picture.unwrap_or_default(),
-            description: organisation.description.unwrap_or_default(),
-        }));
+) -> Status {
+   if let Ok(Some(_)) = organisation_service.get_org_id(payload.org_id.clone()).await {
+        return Status::Ok;
     }
 
- Err(Custom(Status::NotFound, "Organisation not found".into()))
+ Status::NotFound
 }
  
 
@@ -173,18 +155,10 @@ struct GetOrganisationRequest {
 async fn get_all_organisation(
     organisation_service: &State<Arc<dyn OrganisationService>>,
     _user: User,
-) -> Result<Json<Vec<GetOrganisationResponse>>, Custom<String>> {
+) -> Status {
     match organisation_service.get_all_org().await {
-        Ok(organisations) => {
-            let result = organisations.into_iter().map(|org| GetOrganisationResponse {
-                org_id: org.org_id,
-                name: org.name,
-                picture: org.picture.unwrap(),
-                description: org.description.unwrap(),
-            }).collect::<Vec<GetOrganisationResponse>>();
-            Ok(Json(result))
-        },
-        Err(_) =>Err(Custom(Status::InternalServerError, "Internal error".to_string()))
+        Ok(_) => Status::Ok,
+        Err(_) => Status::InternalServerError
 }
 
 }

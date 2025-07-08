@@ -1,11 +1,10 @@
 use crate::domain::user::*;
 use rocket::http::Status;
-use rocket::response::status::Custom;
+use rocket::response::status;
 use rocket::put;
 use crate::service::user::UserService;
 use rocket::get;
 use rocket::post;
-use rocket::response::status;
 use rocket::routes;
 use rocket::serde::json::Json;
 use rocket::State;
@@ -59,7 +58,7 @@ struct UpdateUserRequest {
 async fn create_user(
     payload: Json<CreateUserRequest>,
     user_service: &State<Arc<dyn UserService>>,
-) -> Result<Status, Custom<String>>  {
+) -> Status {
     // Convert `CreateUserRequest` to `User`
     let user = User {
         user_id: UserID::new(),
@@ -75,11 +74,8 @@ async fn create_user(
 
     // Call the `create` method and await its result
     match user_service.create(user).await {
-        Ok(()) => Ok(Status::Created),
-        Err(e) => {
-            let msg = format!("Internal error: {e}");
-            Err(status::Custom(Status::InternalServerError, msg))
-        },
+        Ok(()) => Status::Created,
+        Err(_) => Status::InternalServerError,
     }
 }
 
@@ -101,7 +97,7 @@ async fn update_user(
     payload: Json<UpdateUserRequest>,
     user_service: &State<Arc<dyn UserService>>,
     user: User,
-) -> Result<Status, Custom<String>> {
+) -> Status {
     let updated_user = User {
         user_id: user.user_id,
         name: payload.name.clone(),
@@ -115,11 +111,8 @@ async fn update_user(
     };
 
   match user_service.update(updated_user).await {
-        Ok(()) => Ok(Status::Ok),
-        Err(e) => {
-            let msg = format!("Internal error: {e}");
-            Err(status::Custom(Status::InternalServerError, msg))
-        },
+        Ok(()) => Status::Ok,
+        Err(_) => Status::InternalServerError,
     }
 }
 
@@ -155,16 +148,8 @@ async fn get_user(
     // user is recieved by decoding the JWT.
     // when a User is required as argument for an endpoiint, is automatically protected with JWT.
     user: User,
-) -> Result<Json<GetUserResponse>, status::Custom<String>> {
-    Ok(Json(GetUserResponse {
-        email: user.email,
-        name: user.name,
-        is_super: user.is_super,
-        iva: user.iva,
-        phone_number: user.phone_number,
-        date_of_birth: user.date_of_birth,
-    }))
-
+) -> Status {
+    Status::Ok
 }
 
 // Combine all the user routes.

@@ -13,7 +13,6 @@ use serde::Serialize;
 use std::sync::Arc;
 use utoipa::ToSchema;
 use crate::User;
-use crate::controller::access_notification::status::Custom;
 use rocket::http::Status;
 
 //api::get_access_notification_by_user_id
@@ -44,25 +43,10 @@ use rocket::http::Status;
 async fn get_access_notification(
     service: &State<Arc<dyn AccessNotificationService>>,
     user: User
-) -> Result<Json<Vec<AccessNotificationResponse>>, status::Custom<String>> {
+) -> Status {
     match service.get_access_notification(user.user_id).await {
-        Ok(access_notifications) => {
-            let response: Vec<AccessNotificationResponse> = access_notifications
-                .into_iter()
-                .map(|notification| AccessNotificationResponse {
-                    org_id: notification.org_id,
-                    user_id: notification.user_id,
-                    date: notification.date,
-                    is_accepted: notification.is_accepted,
-                    description: notification.description,
-                })
-                .collect();
-            Ok(Json(response))
-        }
-        Err(e) => Err(status::Custom(
-            rocket::http::Status::InternalServerError,
-            format!("Database error: {}", e),
-        )),
+        Ok(_) => Status::Ok,
+        Err(_) => Status::InternalServerError,
     }
 }
 
@@ -90,13 +74,13 @@ async fn create_access_notification(
     service: &State<Arc<dyn AccessNotificationService>>,
     user: User,
     payload: Json<CreateAccessNotificationRequest>,
-) -> Result<Status, Custom<String>> {
+) -> Status {
      match service
         .create_access_notification(payload.org_id.clone(), user.user_id, payload.description.clone())
         .await
     {
-        Ok(true) => Ok(Status::Created),
-        _ => Err(Custom(Status::InternalServerError, "Internal error".to_string())),
+        Ok(true) => Status::Created,
+        _ => Status::InternalServerError,
     }
 }
 // Combine all the access_notifications routes.

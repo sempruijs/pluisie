@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
- use crate::domain::organisation::OrgID;
+use crate::domain::organisation::OrgID;
 use chrono::NaiveDate;
 use sqlx::FromRow;
 use crate::domain::user::UserID;

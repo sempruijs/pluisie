@@ -1,12 +1,10 @@
 use crate::service::timeslot::TimeslotService;
 use rocket::http::Status;
-use rocket::response::status::Custom;
 use crate::domain::organisation::OrgID;
 use chrono::NaiveDate;
 use crate::domain::user::User;
 use crate::domain::timeslot::Day;
 use rocket::post;
-use rocket::response::status;
 use rocket::routes;
 use rocket::serde::json::Json;
 use rocket::State;
@@ -45,12 +43,12 @@ async fn subscirbe_to_hours(
     service: &State<Arc<dyn TimeslotService>>,
     user: User,
     payload: Json<SubscribeToHoursRequest>,
-) -> Result<Status, Custom<String>> {
+) -> Status {
     let p = payload;
 
     match service.subscribe_to_hours(&p.date, &p.hours, &p.is_enrolled, &user.user_id, &p.org_id).await {
-        Ok(()) => Ok(Status::Ok),
-        Err(e) => Err(Custom(Status::InternalServerError, e.to_string())),
+        Ok(()) => Status::Ok,
+        Err(_) => Status::InternalServerError,
     }
 }
 
@@ -84,15 +82,12 @@ async fn get_days(
     service: &State<Arc<dyn TimeslotService>>,
     user: User,
     payload: Json<GetDaysRequest>,
-) -> Result<Status, Custom<String>> {
+) -> Status {
     let p = payload;
 
     match service.get_days(&user.user_id, &p.org_id, &p.start_date, &p.end_date).await {
-        Ok(_) => Ok(Status::Ok), 
-        Err(e) => Err(status::Custom(
-            rocket::http::Status::InternalServerError,
-            format!("Database error: {}", e),
-        )),
+        Ok(_) => Status::Ok,
+        Err(_) => Status::InternalServerError,
     }
 }
 
